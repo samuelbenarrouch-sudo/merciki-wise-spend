@@ -8,10 +8,16 @@ const wordSize: Record<Size, string> = {
   lg: "text-[36px]",
 };
 
-const dotSize: Record<Size, string> = {
-  sm: "h-[7px] w-[7px] -translate-y-[14px]",
-  md: "h-[9px] w-[9px] -translate-y-[18px]",
-  lg: "h-[11px] w-[11px] -translate-y-[24px]",
+const dotSize: Record<Size, number> = {
+  sm: 8,
+  md: 10,
+  lg: 13,
+};
+
+const dotOffset: Record<Size, number> = {
+  sm: 10,
+  md: 13,
+  lg: 17,
 };
 
 export interface LogoProps {
@@ -29,6 +35,9 @@ export function Logo({
 }: LogoProps) {
   const wordColor = variant === "light" ? "text-background" : "text-primary";
   const baselineColor = variant === "light" ? "text-background/70" : "text-slate";
+  const d = dotSize[size];
+  const offset = dotOffset[size];
+  const stroke = variant === "light" ? "#ffffff" : "#12211D";
 
   return (
     <div className={cn("inline-flex flex-col leading-none", className)} aria-label="MERCIKI">
@@ -44,13 +53,41 @@ export function Logo({
         <span className="relative inline-flex items-end">
           {/* dotless i using ı (Latin small letter dotless i) */}
           <span aria-hidden="true">ı</span>
+          {/* lowered, stylised sun-smiley dot */}
           <span
             aria-hidden="true"
-            className={cn(
-              "absolute left-1/2 top-0 -translate-x-1/2 rounded-full bg-accent",
-              dotSize[size],
-            )}
-          />
+            className="absolute left-1/2 top-0 -translate-x-1/2 rounded-full bg-accent"
+            style={{
+              width: d,
+              height: d,
+              transform: `translate(-50%, -${offset}px)`,
+            }}
+          >
+            <svg
+              width={d}
+              height={d}
+              viewBox="0 0 16 16"
+              fill="none"
+              className="absolute inset-0"
+              aria-hidden="true"
+            >
+              {/* subtle sun rays */}
+              <circle cx="8" cy="3" r="0.8" fill="currentColor" className="text-background/60" />
+              <circle cx="8" cy="13" r="0.8" fill="currentColor" className="text-background/60" />
+              <circle cx="3" cy="8" r="0.8" fill="currentColor" className="text-background/60" />
+              <circle cx="13" cy="8" r="0.8" fill="currentColor" className="text-background/60" />
+              {/* eyes */}
+              <circle cx="5.5" cy="6" r="1" fill={stroke} />
+              <circle cx="10.5" cy="6" r="1" fill={stroke} />
+              {/* smile */}
+              <path
+                d="M5 9.5C5.8 10.5 10.2 10.5 11 9.5"
+                stroke={stroke}
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
         </span>
       </span>
       {showBaseline ? (
