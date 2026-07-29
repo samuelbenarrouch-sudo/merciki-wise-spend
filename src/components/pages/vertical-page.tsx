@@ -435,7 +435,7 @@ export function VerticalPage({
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 {vertical.partners.map((p) => (
-                  <PartnerLogo key={p.name} name={p.name} />
+                  <PartnerLogo key={p.name} name={p.name} domain={p.domain} />
                 ))}
               </div>
             </div>

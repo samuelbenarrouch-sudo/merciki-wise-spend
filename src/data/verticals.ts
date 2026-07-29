@@ -2,6 +2,7 @@ export type Audience = "particuliers" | "professionnels";
 
 export interface Partner {
   name: string;
+  domain?: string;
   note?: string;
 }
 
@@ -60,16 +61,16 @@ export const VERTICALS: Vertical[] = [
       { name: "Gaz", description: "Offres de gaz naturel pour le chauffage, l'eau chaude et la cuisson." },
     ],
     partners: [
-      { name: "Octopus Energy" },
-      { name: "Ilek" },
-      { name: "Engie" },
-      { name: "Selectra" },
-      { name: "TotalEnergies" },
-      { name: "OHM Énergie" },
-      { name: "Gazel Énergie" },
-      { name: "Eneffic" },
-      { name: "Jeety" },
-      { name: "Vattenfall" },
+      { name: "Octopus Energy", domain: "octopus.energy" },
+      { name: "Ilek", domain: "ilek.fr" },
+      { name: "Engie", domain: "engie.com" },
+      { name: "Selectra", domain: "selectra.info" },
+      { name: "TotalEnergies", domain: "totalenergies.com" },
+      { name: "OHM Énergie", domain: "ohm-energie.com" },
+      { name: "Gazel Énergie", domain: "gazel-energie.com" },
+      { name: "Eneffic", domain: "eneffic.com" },
+      { name: "Jeety", domain: "jeety.fr" },
+      { name: "Vattenfall", domain: "vattenfall.com" },
     ],
     faq: [
       { q: "Le changement de fournisseur entraîne-t-il une coupure ?", a: "Non, absolument aucune coupure. Vos compteurs restent en place, aucun technicien n'intervient et votre alimentation n'est jamais interrompue." },
@@ -104,10 +105,10 @@ export const VERTICALS: Vertical[] = [
       { name: "Forfaits mobiles", description: "Forfaits avec ou sans engagement, adaptés à votre consommation de data." },
     ],
     partners: [
-      { name: "Free" },
-      { name: "SFR" },
-      { name: "Orange" },
-      { name: "Bouygues Telecom" },
+      { name: "Free", domain: "free.fr" },
+      { name: "SFR", domain: "sfr.fr" },
+      { name: "Orange", domain: "orange.fr" },
+      { name: "Bouygues Telecom", domain: "bouygues.com" },
     ],
     faq: [
       { q: "Vais-je perdre mon numéro de téléphone en changeant d'opérateur ?", a: "Non. Grâce à la portabilité, votre numéro est conservé automatiquement. Nous nous chargeons de la procédure avec vous." },
@@ -142,7 +143,11 @@ export const VERTICALS: Vertical[] = [
       { name: "Santé couple", description: "Formule mutualisée pour deux personnes vivant sous le même toit." },
       { name: "Santé famille", description: "Couverture pour les parents et les enfants, avec des garanties pédiatriques." },
     ],
-    partners: [{ name: "April" }, { name: "Néoliane" }, { name: "SPVIE" }],
+    partners: [
+      { name: "April", domain: "april.fr" },
+      { name: "Néoliane", domain: "neoliane.fr" },
+      { name: "SPVIE", domain: "spvie.com" },
+    ],
     faq: [
       { q: "Puis-je changer de mutuelle à tout moment ?", a: "Oui, grâce à la loi de résiliation infra-annuelle, vous pouvez changer de mutuelle à tout moment après la première année de contrat." },
       { q: "Qui s'occupe de résilier mon ancienne mutuelle ?", a: "La nouvelle mutuelle prend en charge la résiliation de l'ancienne, sans coupure de couverture." },
@@ -175,7 +180,10 @@ export const VERTICALS: Vertical[] = [
       { name: "Assurance santé chien", description: "Prise en charge des soins, accidents, chirurgie et prévention pour votre chien." },
       { name: "Assurance santé chat", description: "Formules adaptées aux chats d'intérieur comme aux chats ayant accès à l'extérieur." },
     ],
-    partners: [{ name: "SantéVet" }, { name: "Néoliane" }],
+    partners: [
+      { name: "SantéVet", domain: "santevet.com" },
+      { name: "Néoliane", domain: "neoliane.fr" },
+    ],
     faq: [
       { q: "À partir de quel âge puis-je assurer mon animal ?", a: "Généralement dès deux à trois mois. Assurer votre animal jeune permet de bénéficier de meilleures conditions et d'éviter les exclusions liées à l'âge." },
       { q: "Les maladies déjà connues sont-elles couvertes ?", a: "Non, les affections antérieures à la souscription sont exclues. C'est pourquoi il est préférable d'assurer votre animal quand il est en bonne santé." },
@@ -207,7 +215,11 @@ export const VERTICALS: Vertical[] = [
     products: [
       { name: "Délégation d'assurance de prêt immobilier", description: "Remplacement du contrat groupe de la banque par une assurance individuelle grâce à la loi Lemoine." },
     ],
-    partners: [{ name: "Zenioo" }, { name: "iAssur" }, { name: "AFI ESCA" }],
+    partners: [
+      { name: "Zenioo", domain: "zenioo.com" },
+      { name: "iAssur", domain: "iassur.fr" },
+      { name: "AFI ESCA", domain: "afiesca.com" },
+    ],
     faq: [
       { q: "Puis-je changer d'assurance emprunteur à tout moment ?", a: "Oui, grâce à la loi Lemoine, vous pouvez changer votre assurance de prêt immobilier à tout moment, sans frais." },
       { q: "La banque peut-elle refuser mon nouveau contrat ?", a: "La banque ne peut refuser que si les garanties du nouveau contrat sont inférieures à celles exigées. Nous vérifions cette équivalence avant toute démarche." },
@@ -242,9 +254,9 @@ export const VERTICALS: Vertical[] = [
       { name: "Panneaux photovoltaïques", description: "Produisez votre propre électricité et réduisez durablement votre facture." },
     ],
     partners: [
-      { name: "Daikin", note: "Leader mondial du marché. La gamme Altherma est plébiscitée en rénovation comme en construction neuve. Rendements élevés, compresseurs très fiables et réseau de SAV parmi les plus denses de France." },
-      { name: "Atlantic", note: "Le champion français, avec une fabrication vendéenne. La gamme Alféa Extensa est l'une des plus vendues du pays. Excellent rapport qualité/prix et disponibilité immédiate des pièces détachées." },
-      { name: "Mitsubishi Electric", note: "Référence absolue pour les performances par grand froid grâce à la technologie brevetée Zubadan, qui maintient la puissance de chauffage jusqu'à -15 °C. Fonctionnement particulièrement silencieux." },
+      { name: "Daikin", domain: "daikin.com", note: "Leader mondial du marché. La gamme Altherma est plébiscitée en rénovation comme en construction neuve. Rendements élevés, compresseurs très fiables et réseau de SAV parmi les plus denses de France." },
+      { name: "Atlantic", domain: "atlantic.fr", note: "Le champion français, avec une fabrication vendéenne. La gamme Alféa Extensa est l'une des plus vendues du pays. Excellent rapport qualité/prix et disponibilité immédiate des pièces détachées." },
+      { name: "Mitsubishi Electric", domain: "mitsubishielectric.com", note: "Référence absolue pour les performances par grand froid grâce à la technologie brevetée Zubadan, qui maintient la puissance de chauffage jusqu'à -15 °C. Fonctionnement particulièrement silencieux." },
     ],
     faq: [
       { q: "Quelle solution choisir entre pompe à chaleur Air/Eau et Air/Air ?", a: "L'Air/Eau remplace une chaudière et alimente un circuit de chauffage central. L'Air/Air est plus adaptée à des logements sans radiateurs à eau et permet la climatisation en été." },
@@ -280,7 +292,7 @@ export const VERTICALS: Vertical[] = [
       { name: "Encaissement e-commerce", description: "Solution de paiement pour votre site marchand, avec intégrations standard." },
       { name: "Lien de paiement à distance", description: "Envoyez un lien de paiement sécurisé par SMS, email ou messagerie." },
     ],
-    partners: [{ name: "myPOS" }],
+    partners: [{ name: "myPOS", domain: "mypos.com" }],
     faq: [
       { q: "Combien de temps faut-il pour être équipé ?", a: "Une fois le contrat validé, la livraison du terminal et l'ouverture du compte marchand prennent en général quelques jours ouvrés." },
       { q: "Quelle est la différence entre location et achat du TPE ?", a: "L'achat évite les loyers récurrents mais demande un investissement initial. La location inclut souvent la maintenance et l'évolution du matériel." },
@@ -315,16 +327,16 @@ export const VERTICALS: Vertical[] = [
       { name: "Optimisation multi-sites", description: "Consolidation et négociation d'un contrat unique pour l'ensemble de vos sites." },
     ],
     partners: [
-      { name: "Octopus Energy" },
-      { name: "Ilek" },
-      { name: "Engie" },
-      { name: "Selectra" },
-      { name: "TotalEnergies" },
-      { name: "OHM Énergie" },
-      { name: "Gazel Énergie" },
-      { name: "Eneffic" },
-      { name: "Jeety" },
-      { name: "Vattenfall" },
+      { name: "Octopus Energy", domain: "octopus.energy" },
+      { name: "Ilek", domain: "ilek.fr" },
+      { name: "Engie", domain: "engie.com" },
+      { name: "Selectra", domain: "selectra.info" },
+      { name: "TotalEnergies", domain: "totalenergies.com" },
+      { name: "OHM Énergie", domain: "ohm-energie.com" },
+      { name: "Gazel Énergie", domain: "gazel-energie.com" },
+      { name: "Eneffic", domain: "eneffic.com" },
+      { name: "Jeety", domain: "jeety.fr" },
+      { name: "Vattenfall", domain: "vattenfall.com" },
     ],
     faq: [
       { q: "Puis-je changer de fournisseur en cours d'année ?", a: "Cela dépend de votre contrat en cours et de sa date d'échéance. Nous analysons vos conditions de sortie avant toute démarche." },
@@ -350,6 +362,20 @@ export function getAllPartnerNames(): string[] {
   const set = new Set<string>();
   for (const v of VERTICALS) for (const p of v.partners) set.add(p.name);
   return Array.from(set);
+}
+
+export function getAllPartners(): Partner[] {
+  const seen = new Set<string>();
+  const out: Partner[] = [];
+  for (const v of VERTICALS) {
+    for (const p of v.partners) {
+      if (!seen.has(p.name)) {
+        seen.add(p.name);
+        out.push(p);
+      }
+    }
+  }
+  return out;
 }
 
 export const COMPANY = {

@@ -16,7 +16,7 @@ import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerStrip } from "@/components/partners/partner-strip";
 import {
   COMPANY, getVerticalsByAudience,
-  type Audience, type Vertical,
+  type Audience, type Vertical, type Partner,
 } from "@/data/verticals";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -100,14 +100,14 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
   );
 }
 
-function dedupePartners(verticals: Vertical[]) {
+function dedupePartners(verticals: Vertical[]): Partner[] {
   const seen = new Set<string>();
-  const out: { name: string }[] = [];
+  const out: Partner[] = [];
   for (const v of verticals) {
     for (const p of v.partners) {
       if (!seen.has(p.name)) {
         seen.add(p.name);
-        out.push({ name: p.name });
+        out.push(p);
       }
     }
   }
@@ -216,11 +216,16 @@ function VerticalCard({
         <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
           NOS PARTENAIRES
         </span>
-        <div className="flex flex-wrap gap-2">
-          {v.partners.map((p) => (
-            <PartnerLogo key={p.name} name={p.name} className="px-3 py-1.5 text-xs shadow-none" />
-          ))}
-        </div>
+          <div className="flex flex-wrap gap-2">
+            {v.partners.map((p) => (
+              <PartnerLogo
+                key={p.name}
+                name={p.name}
+                domain={p.domain}
+                className="px-3 py-1.5 text-xs shadow-none"
+              />
+            ))}
+          </div>
       </div>
       <Button asChild variant="outline" size="md" className="mt-auto w-full">
         <Link
@@ -313,7 +318,7 @@ function ReassuranceSection({ copy }: { copy: HubCopy }) {
 
 /* ---------------- PARTNERS ---------------- */
 
-function PartnersSection({ partners }: { partners: { name: string }[] }) {
+function PartnersSection({ partners }: { partners: Partner[] }) {
   if (partners.length === 0) return null;
   const half = Math.ceil(partners.length / 2);
   const row1 = partners.slice(0, half);
