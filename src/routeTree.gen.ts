@@ -21,6 +21,7 @@ import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
+import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
 const PublicRoute = PublicRouteImport.update({
@@ -84,6 +85,12 @@ const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicParticuliersRoute,
 } as any)
+const PublicProfessionnelsSlugRoute =
+  PublicProfessionnelsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => PublicProfessionnelsRoute,
+  } as any)
 const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
 }
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/professionnels'
     | '/recrutement'
     | '/particuliers/$slug'
+    | '/professionnels/$slug'
     | '/particuliers/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/recrutement'
     | '/'
     | '/particuliers/$slug'
+    | '/professionnels/$slug'
     | '/particuliers'
     | '/professionnels'
   id:
@@ -172,6 +184,7 @@ export interface FileRouteTypes {
     | '/_public/recrutement'
     | '/_public/'
     | '/_public/particuliers/$slug'
+    | '/_public/professionnels/$slug'
     | '/_public/particuliers/'
     | '/_public/professionnels/'
   fileRoutesById: FileRoutesById
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicParticuliersIndexRouteImport
       parentRoute: typeof PublicParticuliersRoute
     }
+    '/_public/professionnels/$slug': {
+      id: '/_public/professionnels/$slug'
+      path: '/$slug'
+      fullPath: '/professionnels/$slug'
+      preLoaderRoute: typeof PublicProfessionnelsSlugRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
+    }
     '/_public/particuliers/$slug': {
       id: '/_public/particuliers/$slug'
       path: '/$slug'
@@ -290,10 +310,12 @@ const PublicParticuliersRouteWithChildren =
   PublicParticuliersRoute._addFileChildren(PublicParticuliersRouteChildren)
 
 interface PublicProfessionnelsRouteChildren {
+  PublicProfessionnelsSlugRoute: typeof PublicProfessionnelsSlugRoute
   PublicProfessionnelsIndexRoute: typeof PublicProfessionnelsIndexRoute
 }
 
 const PublicProfessionnelsRouteChildren: PublicProfessionnelsRouteChildren = {
+  PublicProfessionnelsSlugRoute: PublicProfessionnelsSlugRoute,
   PublicProfessionnelsIndexRoute: PublicProfessionnelsIndexRoute,
 }
 
@@ -333,3 +355,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
