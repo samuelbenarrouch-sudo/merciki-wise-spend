@@ -29,7 +29,7 @@ export function PartnerLogo({ name, domain, className, imgClassName, loading = "
           alt={`Logo ${name}`}
           className={cn("h-7 w-auto max-w-[120px] object-contain", imgClassName)}
           onError={() => setFailed(true)}
-          loading="lazy"
+          loading={loading}
           decoding="async"
         />
       </div>
