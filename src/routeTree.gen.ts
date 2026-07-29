@@ -25,6 +25,7 @@ import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
+import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
@@ -110,6 +111,12 @@ const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicParticuliersRoute,
 } as any)
+const LeadgenerationProductProductIdRoute =
+  LeadgenerationProductProductIdRouteImport.update({
+    id: '/product/$productId',
+    path: '/product/$productId',
+    getParentRoute: () => LeadgenerationRoute,
+  } as any)
 const PublicProfessionnelsSlugRoute =
   PublicProfessionnelsSlugRouteImport.update({
     id: '/$slug',
@@ -138,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -154,6 +162,7 @@ export interface FileRoutesByTo {
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
 }
@@ -175,6 +184,7 @@ export interface FileRoutesById {
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/leadgeneration/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/product/$productId'
     | '/particuliers/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/leadgeneration'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/product/$productId'
     | '/particuliers'
     | '/professionnels'
   id:
@@ -232,6 +244,7 @@ export interface FileRouteTypes {
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
+    | '/leadgeneration/product/$productId'
     | '/_public/particuliers/'
     | '/_public/professionnels/'
   fileRoutesById: FileRoutesById
@@ -355,6 +368,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicParticuliersIndexRouteImport
       parentRoute: typeof PublicParticuliersRoute
     }
+    '/leadgeneration/product/$productId': {
+      id: '/leadgeneration/product/$productId'
+      path: '/product/$productId'
+      fullPath: '/leadgeneration/product/$productId'
+      preLoaderRoute: typeof LeadgenerationProductProductIdRouteImport
+      parentRoute: typeof LeadgenerationRoute
+    }
     '/_public/professionnels/$slug': {
       id: '/_public/professionnels/$slug'
       path: '/$slug'
@@ -429,12 +449,14 @@ interface LeadgenerationRouteChildren {
   LeadgenerationDashboardRoute: typeof LeadgenerationDashboardRoute
   LeadgenerationLoginRoute: typeof LeadgenerationLoginRoute
   LeadgenerationIndexRoute: typeof LeadgenerationIndexRoute
+  LeadgenerationProductProductIdRoute: typeof LeadgenerationProductProductIdRoute
 }
 
 const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
   LeadgenerationDashboardRoute: LeadgenerationDashboardRoute,
   LeadgenerationLoginRoute: LeadgenerationLoginRoute,
   LeadgenerationIndexRoute: LeadgenerationIndexRoute,
+  LeadgenerationProductProductIdRoute: LeadgenerationProductProductIdRoute,
 }
 
 const LeadgenerationRouteWithChildren = LeadgenerationRoute._addFileChildren(
