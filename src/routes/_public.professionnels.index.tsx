@@ -1,10 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Container } from "@/components/ui/container";
+import { AudienceHubPage } from "@/components/pages/audience-hub-page";
 
 export const Route = createFileRoute("/_public/professionnels/")({
-  component: () => (
-    <Container className="py-16 md:py-24">
-      <h1 className="text-h1 text-ink">Professionnels</h1>
-    </Container>
-  ),
+  component: () => <AudienceHubPage audience="professionnels" />,
+  head: () => ({
+    meta: [
+      { title: "Professionnels — Énergie et monétique | MERCIKI" },
+      {
+        name: "description",
+        content:
+          "MERCIKI négocie vos contrats d'énergie professionnels et met en concurrence les solutions d'encaissement pour votre entreprise. Service 100 % gratuit et sans interruption d'activité.",
+      },
+      { property: "og:title", content: "Professionnels — MERCIKI" },
+      {
+        property: "og:description",
+        content:
+          "Moins de charges, un meilleur encaissement. Un interlocuteur unique pour vos contrats d'entreprise.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/professionnels" },
+    ],
+    links: [{ rel: "canonical", href: "/professionnels" }],
+  }),
 });
