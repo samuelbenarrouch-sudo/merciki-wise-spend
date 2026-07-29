@@ -1,24 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Container } from "@/components/ui/container";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background">
+      <Container className="flex min-h-screen flex-col items-start justify-center py-16">
+        <span className="text-label uppercase text-accent tracking-wider">
+          Fondations prêtes
+        </span>
+        <h1 className="mt-3 text-h1 text-ink">MERCIKI</h1>
+        <p className="mt-4 max-w-xl text-body text-slate">
+          Optimisation des dépenses en énergie, télécoms, assurances, énergies
+          renouvelables et monétique. Les pages arrivent bientôt.
+        </p>
+      </Container>
+    </main>
   );
 }
