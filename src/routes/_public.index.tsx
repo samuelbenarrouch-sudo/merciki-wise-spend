@@ -20,7 +20,7 @@ import {
   getVerticalsByAudience, getAllPartnerNames,
   type Vertical,
 } from "@/data/verticals";
-import heroImg from "@/assets/hero-conseil.jpg";
+import heroImg from "@/assets/hero-conseil.jpg.asset.json";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
