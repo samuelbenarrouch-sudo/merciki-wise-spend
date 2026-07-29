@@ -4,6 +4,9 @@ import { Container } from "@/components/ui/container";
 import { getProduct } from "@/data/products";
 import { EnergyForm } from "@/components/forms/EnergyForm";
 import { TelecomsForm } from "@/components/forms/TelecomsForm";
+import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
+import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
+import { EmprunteurForm } from "@/components/forms/EmprunteurForm";
 
 export const Route = createFileRoute("/leadgeneration/product/$productId")({
   head: ({ params }) => {
@@ -55,6 +58,12 @@ function ProductPage() {
             <EnergyForm />
           ) : product.id === "telecoms" ? (
             <TelecomsForm />
+          ) : product.id === "mutuelle-sante" ? (
+            <MutuelleSanteForm />
+          ) : product.id === "sante-animale" ? (
+            <SanteAnimaleForm />
+          ) : product.id === "emprunteur" ? (
+            <EmprunteurForm />
           ) : (
             <div className="rounded-2xl bg-mist p-8 text-center text-slate">
               Le formulaire de qualification de lead sera disponible prochainement.
