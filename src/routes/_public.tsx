@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FloatingCallButton } from "@/components/layout/floating-call-button";
 import { ScrollToTop } from "@/components/layout/scroll-to-top";
+import { CookieBanner } from "@/components/layout/cookie-banner";
 
 export const Route = createFileRoute("/_public")({
   component: PublicLayout,
@@ -18,6 +19,7 @@ function PublicLayout() {
       </main>
       <Footer />
       <FloatingCallButton />
+      <CookieBanner />
     </div>
   );
 }
