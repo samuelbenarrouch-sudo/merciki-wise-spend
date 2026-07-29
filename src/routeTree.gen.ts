@@ -23,12 +23,6 @@ import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as PublicProfessionnelsMonetiqueRouteImport } from './routes/_public.professionnels.monetique'
 import { Route as PublicProfessionnelsEnergieRouteImport } from './routes/_public.professionnels.energie'
-import { Route as PublicParticuliersTelecomsRouteImport } from './routes/_public.particuliers.telecoms'
-import { Route as PublicParticuliersMutuelleSanteRouteImport } from './routes/_public.particuliers.mutuelle-sante'
-import { Route as PublicParticuliersMutuelleAnimaleRouteImport } from './routes/_public.particuliers.mutuelle-animale'
-import { Route as PublicParticuliersEnergiesRenouvelablesRouteImport } from './routes/_public.particuliers.energies-renouvelables'
-import { Route as PublicParticuliersEnergieRouteImport } from './routes/_public.particuliers.energie'
-import { Route as PublicParticuliersAssuranceEmprunteurRouteImport } from './routes/_public.particuliers.assurance-emprunteur'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -103,42 +97,6 @@ const PublicProfessionnelsEnergieRoute =
     path: '/energie',
     getParentRoute: () => PublicProfessionnelsRoute,
   } as any)
-const PublicParticuliersTelecomsRoute =
-  PublicParticuliersTelecomsRouteImport.update({
-    id: '/telecoms',
-    path: '/telecoms',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
-const PublicParticuliersMutuelleSanteRoute =
-  PublicParticuliersMutuelleSanteRouteImport.update({
-    id: '/mutuelle-sante',
-    path: '/mutuelle-sante',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
-const PublicParticuliersMutuelleAnimaleRoute =
-  PublicParticuliersMutuelleAnimaleRouteImport.update({
-    id: '/mutuelle-animale',
-    path: '/mutuelle-animale',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
-const PublicParticuliersEnergiesRenouvelablesRoute =
-  PublicParticuliersEnergiesRenouvelablesRouteImport.update({
-    id: '/energies-renouvelables',
-    path: '/energies-renouvelables',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
-const PublicParticuliersEnergieRoute =
-  PublicParticuliersEnergieRouteImport.update({
-    id: '/energie',
-    path: '/energie',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
-const PublicParticuliersAssuranceEmprunteurRoute =
-  PublicParticuliersAssuranceEmprunteurRouteImport.update({
-    id: '/assurance-emprunteur',
-    path: '/assurance-emprunteur',
-    getParentRoute: () => PublicParticuliersRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -150,12 +108,6 @@ export interface FileRoutesByFullPath {
   '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
-  '/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
-  '/particuliers/energie': typeof PublicParticuliersEnergieRoute
-  '/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
-  '/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
-  '/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
-  '/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
   '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
@@ -169,12 +121,6 @@ export interface FileRoutesByTo {
   '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
-  '/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
-  '/particuliers/energie': typeof PublicParticuliersEnergieRoute
-  '/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
-  '/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
-  '/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
-  '/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
   '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
@@ -192,12 +138,6 @@ export interface FileRoutesById {
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
-  '/_public/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
-  '/_public/particuliers/energie': typeof PublicParticuliersEnergieRoute
-  '/_public/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
-  '/_public/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
-  '/_public/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
-  '/_public/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
   '/_public/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/_public/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
@@ -215,12 +155,6 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/professionnels'
     | '/recrutement'
-    | '/particuliers/assurance-emprunteur'
-    | '/particuliers/energie'
-    | '/particuliers/energies-renouvelables'
-    | '/particuliers/mutuelle-animale'
-    | '/particuliers/mutuelle-sante'
-    | '/particuliers/telecoms'
     | '/professionnels/energie'
     | '/professionnels/monetique'
     | '/particuliers/'
@@ -234,12 +168,6 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/recrutement'
     | '/'
-    | '/particuliers/assurance-emprunteur'
-    | '/particuliers/energie'
-    | '/particuliers/energies-renouvelables'
-    | '/particuliers/mutuelle-animale'
-    | '/particuliers/mutuelle-sante'
-    | '/particuliers/telecoms'
     | '/professionnels/energie'
     | '/professionnels/monetique'
     | '/particuliers'
@@ -256,12 +184,6 @@ export interface FileRouteTypes {
     | '/_public/professionnels'
     | '/_public/recrutement'
     | '/_public/'
-    | '/_public/particuliers/assurance-emprunteur'
-    | '/_public/particuliers/energie'
-    | '/_public/particuliers/energies-renouvelables'
-    | '/_public/particuliers/mutuelle-animale'
-    | '/_public/particuliers/mutuelle-sante'
-    | '/_public/particuliers/telecoms'
     | '/_public/professionnels/energie'
     | '/_public/professionnels/monetique'
     | '/_public/particuliers/'
@@ -372,71 +294,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfessionnelsEnergieRouteImport
       parentRoute: typeof PublicProfessionnelsRoute
     }
-    '/_public/particuliers/telecoms': {
-      id: '/_public/particuliers/telecoms'
-      path: '/telecoms'
-      fullPath: '/particuliers/telecoms'
-      preLoaderRoute: typeof PublicParticuliersTelecomsRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
-    '/_public/particuliers/mutuelle-sante': {
-      id: '/_public/particuliers/mutuelle-sante'
-      path: '/mutuelle-sante'
-      fullPath: '/particuliers/mutuelle-sante'
-      preLoaderRoute: typeof PublicParticuliersMutuelleSanteRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
-    '/_public/particuliers/mutuelle-animale': {
-      id: '/_public/particuliers/mutuelle-animale'
-      path: '/mutuelle-animale'
-      fullPath: '/particuliers/mutuelle-animale'
-      preLoaderRoute: typeof PublicParticuliersMutuelleAnimaleRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
-    '/_public/particuliers/energies-renouvelables': {
-      id: '/_public/particuliers/energies-renouvelables'
-      path: '/energies-renouvelables'
-      fullPath: '/particuliers/energies-renouvelables'
-      preLoaderRoute: typeof PublicParticuliersEnergiesRenouvelablesRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
-    '/_public/particuliers/energie': {
-      id: '/_public/particuliers/energie'
-      path: '/energie'
-      fullPath: '/particuliers/energie'
-      preLoaderRoute: typeof PublicParticuliersEnergieRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
-    '/_public/particuliers/assurance-emprunteur': {
-      id: '/_public/particuliers/assurance-emprunteur'
-      path: '/assurance-emprunteur'
-      fullPath: '/particuliers/assurance-emprunteur'
-      preLoaderRoute: typeof PublicParticuliersAssuranceEmprunteurRouteImport
-      parentRoute: typeof PublicParticuliersRoute
-    }
   }
 }
 
 interface PublicParticuliersRouteChildren {
-  PublicParticuliersAssuranceEmprunteurRoute: typeof PublicParticuliersAssuranceEmprunteurRoute
-  PublicParticuliersEnergieRoute: typeof PublicParticuliersEnergieRoute
-  PublicParticuliersEnergiesRenouvelablesRoute: typeof PublicParticuliersEnergiesRenouvelablesRoute
-  PublicParticuliersMutuelleAnimaleRoute: typeof PublicParticuliersMutuelleAnimaleRoute
-  PublicParticuliersMutuelleSanteRoute: typeof PublicParticuliersMutuelleSanteRoute
-  PublicParticuliersTelecomsRoute: typeof PublicParticuliersTelecomsRoute
   PublicParticuliersIndexRoute: typeof PublicParticuliersIndexRoute
 }
 
 const PublicParticuliersRouteChildren: PublicParticuliersRouteChildren = {
-  PublicParticuliersAssuranceEmprunteurRoute:
-    PublicParticuliersAssuranceEmprunteurRoute,
-  PublicParticuliersEnergieRoute: PublicParticuliersEnergieRoute,
-  PublicParticuliersEnergiesRenouvelablesRoute:
-    PublicParticuliersEnergiesRenouvelablesRoute,
-  PublicParticuliersMutuelleAnimaleRoute:
-    PublicParticuliersMutuelleAnimaleRoute,
-  PublicParticuliersMutuelleSanteRoute: PublicParticuliersMutuelleSanteRoute,
-  PublicParticuliersTelecomsRoute: PublicParticuliersTelecomsRoute,
   PublicParticuliersIndexRoute: PublicParticuliersIndexRoute,
 }
 
