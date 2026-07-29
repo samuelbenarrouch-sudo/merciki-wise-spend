@@ -13,11 +13,11 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
-import { Route as PublicPolitiqueConfidentialiteRouteImport } from './routes/_public.politique-confidentialite'
+import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
-import { Route as PublicCookiesRouteImport } from './routes/_public.cookies'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
+import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
@@ -43,10 +43,10 @@ const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
   path: '/professionnels',
   getParentRoute: () => PublicRoute,
 } as any)
-const PublicPolitiqueConfidentialiteRoute =
-  PublicPolitiqueConfidentialiteRouteImport.update({
-    id: '/politique-confidentialite',
-    path: '/politique-confidentialite',
+const PublicPolitiqueDeConfidentialiteRoute =
+  PublicPolitiqueDeConfidentialiteRouteImport.update({
+    id: '/politique-de-confidentialite',
+    path: '/politique-de-confidentialite',
     getParentRoute: () => PublicRoute,
   } as any)
 const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
@@ -59,16 +59,17 @@ const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
   path: '/mentions-legales',
   getParentRoute: () => PublicRoute,
 } as any)
-const PublicCookiesRoute = PublicCookiesRouteImport.update({
-  id: '/cookies',
-  path: '/cookies',
-  getParentRoute: () => PublicRoute,
-} as any)
 const PublicContactRoute = PublicContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicConditionsGeneralesRoute =
+  PublicConditionsGeneralesRouteImport.update({
+    id: '/conditions-generales',
+    path: '/conditions-generales',
+    getParentRoute: () => PublicRoute,
+  } as any)
 const PublicAProposRoute = PublicAProposRouteImport.update({
   id: '/a-propos',
   path: '/a-propos',
@@ -100,11 +101,11 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/a-propos': typeof PublicAProposRoute
+  '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
-  '/cookies': typeof PublicCookiesRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/particuliers': typeof PublicParticuliersRouteWithChildren
-  '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -114,10 +115,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/a-propos': typeof PublicAProposRoute
+  '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
-  '/cookies': typeof PublicCookiesRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
-  '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -129,11 +130,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
   '/_public/a-propos': typeof PublicAProposRoute
+  '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
-  '/_public/cookies': typeof PublicCookiesRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
-  '/_public/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
@@ -147,11 +148,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/a-propos'
+    | '/conditions-generales'
     | '/contact'
-    | '/cookies'
     | '/mentions-legales'
     | '/particuliers'
-    | '/politique-confidentialite'
+    | '/politique-de-confidentialite'
     | '/professionnels'
     | '/recrutement'
     | '/particuliers/$slug'
@@ -161,10 +162,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/a-propos'
+    | '/conditions-generales'
     | '/contact'
-    | '/cookies'
     | '/mentions-legales'
-    | '/politique-confidentialite'
+    | '/politique-de-confidentialite'
     | '/recrutement'
     | '/'
     | '/particuliers/$slug'
@@ -175,11 +176,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_public'
     | '/_public/a-propos'
+    | '/_public/conditions-generales'
     | '/_public/contact'
-    | '/_public/cookies'
     | '/_public/mentions-legales'
     | '/_public/particuliers'
-    | '/_public/politique-confidentialite'
+    | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
     | '/_public/recrutement'
     | '/_public/'
@@ -223,11 +224,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfessionnelsRouteImport
       parentRoute: typeof PublicRoute
     }
-    '/_public/politique-confidentialite': {
-      id: '/_public/politique-confidentialite'
-      path: '/politique-confidentialite'
-      fullPath: '/politique-confidentialite'
-      preLoaderRoute: typeof PublicPolitiqueConfidentialiteRouteImport
+    '/_public/politique-de-confidentialite': {
+      id: '/_public/politique-de-confidentialite'
+      path: '/politique-de-confidentialite'
+      fullPath: '/politique-de-confidentialite'
+      preLoaderRoute: typeof PublicPolitiqueDeConfidentialiteRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/particuliers': {
@@ -244,18 +245,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicMentionsLegalesRouteImport
       parentRoute: typeof PublicRoute
     }
-    '/_public/cookies': {
-      id: '/_public/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof PublicCookiesRouteImport
-      parentRoute: typeof PublicRoute
-    }
     '/_public/contact': {
       id: '/_public/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof PublicContactRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/conditions-generales': {
+      id: '/_public/conditions-generales'
+      path: '/conditions-generales'
+      fullPath: '/conditions-generales'
+      preLoaderRoute: typeof PublicConditionsGeneralesRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/a-propos': {
@@ -324,11 +325,11 @@ const PublicProfessionnelsRouteWithChildren =
 
 interface PublicRouteChildren {
   PublicAProposRoute: typeof PublicAProposRoute
+  PublicConditionsGeneralesRoute: typeof PublicConditionsGeneralesRoute
   PublicContactRoute: typeof PublicContactRoute
-  PublicCookiesRoute: typeof PublicCookiesRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
-  PublicPolitiqueConfidentialiteRoute: typeof PublicPolitiqueConfidentialiteRoute
+  PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
   PublicRecrutementRoute: typeof PublicRecrutementRoute
   PublicIndexRoute: typeof PublicIndexRoute
@@ -336,11 +337,11 @@ interface PublicRouteChildren {
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAProposRoute: PublicAProposRoute,
+  PublicConditionsGeneralesRoute: PublicConditionsGeneralesRoute,
   PublicContactRoute: PublicContactRoute,
-  PublicCookiesRoute: PublicCookiesRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
-  PublicPolitiqueConfidentialiteRoute: PublicPolitiqueConfidentialiteRoute,
+  PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
   PublicRecrutementRoute: PublicRecrutementRoute,
   PublicIndexRoute: PublicIndexRoute,

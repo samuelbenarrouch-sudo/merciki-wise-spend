@@ -11,8 +11,8 @@ import {
 
 const legalLinks = [
   { label: "Mentions légales", href: "/mentions-legales" },
-  { label: "Politique de confidentialité", href: "/politique-confidentialite" },
-  { label: "Cookies", href: "/cookies" },
+  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  { label: "Conditions générales", href: "/conditions-generales" },
 ];
 
 function ColumnTitle({ children }: { children: React.ReactNode }) {
