@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerCarousel } from "@/components/partners/partner-carousel";
 import {
   VERTICALS, COMPANY, TRUST,
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/_public/")({
 function HomePage() {
   const particuliers = getVerticalsByAudience("particuliers");
   const professionnels = getVerticalsByAudience("professionnels");
-  const allPartners = getAllPartnerNames().map((name) => ({ name }));
+  const allPartners = getAllPartners();
 
   return (
     <>
@@ -292,7 +293,12 @@ function VerticalCard({
           </span>
           <div className="flex flex-wrap gap-2">
             {visiblePartners.map((p) => (
-              <PartnerLogo key={p.name} name={p.name} className="px-3 py-1.5 text-xs shadow-none" />
+              <PartnerLogo
+                key={p.name}
+                name={p.name}
+                domain={p.domain}
+                className="px-3 py-1.5 text-xs shadow-none"
+              />
             ))}
             {remaining > 0 ? (
               <span className="inline-flex items-center rounded-xl border border-mist bg-background px-3 py-1.5 text-xs font-semibold text-slate">
@@ -441,10 +447,7 @@ function StatsSection() {
 
 /* ---------------- PARTNERS ---------------- */
 
-function PartnersSection({ partners }: { partners: { name: string }[] }) {
-  const half = Math.ceil(partners.length / 2);
-  const row1 = partners.slice(0, half);
-  const row2 = partners.slice(half);
+function PartnersSection({ partners }: { partners: Partner[] }) {
   return (
     <Section background="white">
       <Container>
@@ -454,15 +457,7 @@ function PartnersSection({ partners }: { partners: { name: string }[] }) {
           subtitle="Nous travaillons avec les principaux acteurs du marché français."
           className="mb-12"
         />
-        <div className="hidden lg:block">
-          <PartnerStrip partners={partners} />
-        </div>
-        <div className="flex flex-col gap-4 lg:hidden">
-          <PartnerStrip partners={row1} marquee />
-          <div className="[&_.animate-merciki-marquee]:[animation-direction:reverse]">
-            <PartnerStrip partners={row2} marquee />
-          </div>
-        </div>
+        <PartnerCarousel partners={partners} autoPlay />
       </Container>
     </Section>
   );
