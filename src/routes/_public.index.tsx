@@ -20,7 +20,7 @@ import {
   getVerticalsByAudience, getAllPartnerNames,
   type Vertical,
 } from "@/data/verticals";
-import heroImg from "@/assets/hero-conseil.jpg";
+import heroImg from "@/assets/hero-conseil.jpg.asset.json";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
@@ -118,7 +118,7 @@ function HeroSection() {
 
           <div className="relative">
             <img
-              src={heroImg}
+              src={heroImg.url}
               alt="Conseillère MERCIKI accompagnant un client dans l'analyse de ses contrats"
               width={1200}
               height={1400}
