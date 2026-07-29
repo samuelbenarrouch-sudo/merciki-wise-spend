@@ -96,6 +96,130 @@ const ENR_BENEFITS: Record<string, string[]> = {
   ],
 };
 
+type PartnerRich = { name: string; note?: string; country?: string };
+
+const MYPOS_PARTNERS: PartnerRich[] = [
+  {
+    name: "myPOS",
+    country: "Europe",
+    note:
+      "Solution européenne conçue pour les professionnels. Terminaux autonomes avec carte SIM intégrée, compte de paiement inclus avec IBAN dédié, fonds disponibles instantanément après la transaction et tarification transparente sans abonnement obligatoire.",
+  },
+];
+
+const MONETIQUE_ROWS: { solution: string; usage: string; ideal: string }[] = [
+  { solution: "TPE fixe", usage: "Encaissement au comptoir", ideal: "Commerces sédentaires" },
+  { solution: "TPE mobile", usage: "Encaissement en déplacement", ideal: "Artisans, marchés, livraison" },
+  { solution: "E-commerce", usage: "Paiement en ligne", ideal: "Boutiques web" },
+  { solution: "Lien de paiement", usage: "Paiement à distance par SMS ou email", ideal: "Devis, acomptes, prestations" },
+];
+
+function MonetiqueTable() {
+  return (
+    <Section background="mist">
+      <Container>
+        <SectionHeading
+          align="center"
+          eyebrow="COMPARATIF"
+          title="Quelle solution d'encaissement pour votre activité ?"
+          className="mb-10"
+        />
+        {/* Desktop : tableau */}
+        <div className="hidden overflow-hidden rounded-2xl border border-mist bg-background shadow-soft md:block">
+          <table className="w-full border-collapse text-left">
+            <thead className="bg-primary-light text-ink">
+              <tr>
+                <th className="px-6 py-4 text-label uppercase tracking-wider">Solution</th>
+                <th className="px-6 py-4 text-label uppercase tracking-wider">Usage typique</th>
+                <th className="px-6 py-4 text-label uppercase tracking-wider">Idéal pour</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MONETIQUE_ROWS.map((row, i) => (
+                <tr key={row.solution} className={i % 2 === 1 ? "bg-mist/50" : ""}>
+                  <td className="px-6 py-4 text-body font-semibold text-ink">{row.solution}</td>
+                  <td className="px-6 py-4 text-body text-slate">{row.usage}</td>
+                  <td className="px-6 py-4 text-body text-slate">{row.ideal}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Mobile : cartes empilées */}
+        <div className="flex flex-col gap-4 md:hidden">
+          {MONETIQUE_ROWS.map((row) => (
+            <Card key={row.solution} className="flex flex-col gap-3 p-5">
+              <h3 className="text-h3 text-ink">{row.solution}</h3>
+              <div>
+                <p className="text-label uppercase tracking-wider text-slate">Usage typique</p>
+                <p className="text-body text-ink">{row.usage}</p>
+              </div>
+              <div>
+                <p className="text-label uppercase tracking-wider text-slate">Idéal pour</p>
+                <p className="text-body text-ink">{row.ideal}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+const ENERGIE_PRO_SEGMENTS: { icon: LucideIcon; title: string; desc: string }[] = [
+  {
+    icon: Store,
+    title: "TPE et commerces",
+    desc: "Un ou deux points de livraison, un contrat souvent jamais renégocié depuis l'ouverture. Un gain de temps immédiat et une facture allégée.",
+  },
+  {
+    icon: Building2,
+    title: "PME multi-sites",
+    desc: "Plusieurs compteurs, des puissances souscrites parfois mal calibrées, une gestion administrative dispersée : nous consolidons et rationalisons.",
+  },
+  {
+    icon: Landmark,
+    title: "Industrie et gros consommateurs",
+    desc: "Des volumes qui justifient une mise en concurrence structurée, avec des offres à prix fixe, indexé ou hybride selon votre exposition au marché.",
+  },
+];
+
+function EnergieProSegments() {
+  return (
+    <Section background="mist">
+      <Container>
+        <SectionHeading
+          align="center"
+          eyebrow="POUR TOUTES LES ENTREPRISES"
+          title="Nous intervenons quelle que soit votre taille"
+          subtitle="Notre méthode s'adapte au nombre de sites, au volume consommé et à votre organisation."
+          className="mb-12"
+        />
+        <div className="grid gap-6 md:grid-cols-3">
+          {ENERGIE_PRO_SEGMENTS.map((seg) => {
+            const SegIcon = seg.icon;
+            return (
+              <Card key={seg.title} className="flex h-full flex-col gap-4 p-6">
+                <IconTile icon={SegIcon} />
+                <h3 className="text-h3 text-ink">{seg.title}</h3>
+                <p className="text-body text-slate">{seg.desc}</p>
+              </Card>
+            );
+          })}
+        </div>
+        <div className="mt-10 rounded-2xl bg-background p-6 shadow-soft">
+          <p className="text-label uppercase tracking-wider text-accent">Nos leviers d'optimisation</p>
+          <p className="mt-2 text-body text-ink">
+            Mise en concurrence des fournisseurs, ajustement de la puissance souscrite, choix
+            du moment de contractualisation et regroupement des sites : autant de leviers
+            que nous actionnons pour peser sur votre budget énergie.
+          </p>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 export function VerticalPage({
   vertical,
   audience = "particuliers",
