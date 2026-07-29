@@ -40,7 +40,7 @@ export const particuliersItems: NavItem[] = [
     description: "Une couverture santé adaptée.",
   },
   {
-    label: "Mutuelle Animale",
+    label: "Santé Animaux",
     href: "/particuliers/mutuelle-animale",
     icon: PawPrint,
     description: "Protégez vos compagnons à 4 pattes.",

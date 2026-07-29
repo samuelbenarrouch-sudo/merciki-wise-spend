@@ -161,7 +161,7 @@ export const VERTICALS: Vertical[] = [
   {
     slug: "mutuelle-animale",
     audience: "particuliers",
-    name: "Mutuelle Animale",
+    name: "Santé Animaux",
     icon: "PawPrint",
     tagline: "Faites soigner votre animal sans arbitrer avec votre budget",
     shortDescription:
