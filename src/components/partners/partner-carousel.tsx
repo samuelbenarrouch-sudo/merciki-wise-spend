@@ -14,8 +14,11 @@ export interface PartnerCarouselProps {
 }
 
 export function PartnerCarousel({ partners, className, speed = 60 }: PartnerCarouselProps) {
-  if (partners.length === 0) return null;
-  const doubled = [...partners, ...partners];
+  // Partenaires exclus du carrousel faute de logo fiable disponible.
+  const EXCLUDED = new Set(["Jeety", "iAssur"]);
+  const filtered = partners.filter((p) => !EXCLUDED.has(p.name));
+  if (filtered.length === 0) return null;
+  const doubled = [...filtered, ...filtered];
 
   return (
     <div
