@@ -23,6 +23,7 @@ import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as PublicProfessionnelsMonetiqueRouteImport } from './routes/_public.professionnels.monetique'
 import { Route as PublicProfessionnelsEnergieRouteImport } from './routes/_public.professionnels.energie'
+import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -97,6 +98,11 @@ const PublicProfessionnelsEnergieRoute =
     path: '/energie',
     getParentRoute: () => PublicProfessionnelsRoute,
   } as any)
+const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PublicParticuliersRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
+  '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
+  '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
+  '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
   '/_public/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/professionnels'
     | '/recrutement'
+    | '/particuliers/$slug'
     | '/professionnels/energie'
     | '/professionnels/monetique'
     | '/particuliers/'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/recrutement'
     | '/'
+    | '/particuliers/$slug'
     | '/professionnels/energie'
     | '/professionnels/monetique'
     | '/particuliers'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/_public/professionnels'
     | '/_public/recrutement'
     | '/_public/'
+    | '/_public/particuliers/$slug'
     | '/_public/professionnels/energie'
     | '/_public/professionnels/monetique'
     | '/_public/particuliers/'
@@ -294,14 +306,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfessionnelsEnergieRouteImport
       parentRoute: typeof PublicProfessionnelsRoute
     }
+    '/_public/particuliers/$slug': {
+      id: '/_public/particuliers/$slug'
+      path: '/$slug'
+      fullPath: '/particuliers/$slug'
+      preLoaderRoute: typeof PublicParticuliersSlugRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
   }
 }
 
 interface PublicParticuliersRouteChildren {
+  PublicParticuliersSlugRoute: typeof PublicParticuliersSlugRoute
   PublicParticuliersIndexRoute: typeof PublicParticuliersIndexRoute
 }
 
 const PublicParticuliersRouteChildren: PublicParticuliersRouteChildren = {
+  PublicParticuliersSlugRoute: PublicParticuliersSlugRoute,
   PublicParticuliersIndexRoute: PublicParticuliersIndexRoute,
 }
 
@@ -356,3 +377,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
