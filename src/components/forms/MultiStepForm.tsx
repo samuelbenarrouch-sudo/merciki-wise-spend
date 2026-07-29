@@ -45,13 +45,16 @@ export function MultiStepForm({
   onSubmit,
   existingData,
 }: Props) {
-  const fullSchema = useMemo(
-    () => steps.reduce((acc, s) => acc.merge(s.schema), z.object({})),
-    [steps],
-  );
+  const fullSchema = useMemo(() => {
+    const shape = steps.reduce<Record<string, z.ZodTypeAny>>((acc, s) => {
+      Object.assign(acc, s.schema.shape);
+      return acc;
+    }, {});
+    return z.object(shape);
+  }, [steps]);
 
   const form = useForm({
-    resolver: zodResolver(fullSchema),
+    resolver: zodResolver(fullSchema as any),
     defaultValues: { ...defaultValues, ...(existingData ?? {}) },
     mode: "onTouched",
   });
