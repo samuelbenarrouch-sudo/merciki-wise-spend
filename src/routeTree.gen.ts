@@ -9,51 +9,495 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as PublicIndexRouteImport } from './routes/_public.index'
+import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
+import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
+import { Route as PublicPolitiqueConfidentialiteRouteImport } from './routes/_public.politique-confidentialite'
+import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
+import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
+import { Route as PublicCookiesRouteImport } from './routes/_public.cookies'
+import { Route as PublicContactRouteImport } from './routes/_public.contact'
+import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
+import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
+import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
+import { Route as PublicProfessionnelsMonetiqueRouteImport } from './routes/_public.professionnels.monetique'
+import { Route as PublicProfessionnelsEnergieRouteImport } from './routes/_public.professionnels.energie'
+import { Route as PublicParticuliersTelecomsRouteImport } from './routes/_public.particuliers.telecoms'
+import { Route as PublicParticuliersMutuelleSanteRouteImport } from './routes/_public.particuliers.mutuelle-sante'
+import { Route as PublicParticuliersMutuelleAnimaleRouteImport } from './routes/_public.particuliers.mutuelle-animale'
+import { Route as PublicParticuliersEnergiesRenouvelablesRouteImport } from './routes/_public.particuliers.energies-renouvelables'
+import { Route as PublicParticuliersEnergieRouteImport } from './routes/_public.particuliers.energie'
+import { Route as PublicParticuliersAssuranceEmprunteurRouteImport } from './routes/_public.particuliers.assurance-emprunteur'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicIndexRoute = PublicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
+  id: '/recrutement',
+  path: '/recrutement',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
+  id: '/professionnels',
+  path: '/professionnels',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicPolitiqueConfidentialiteRoute =
+  PublicPolitiqueConfidentialiteRouteImport.update({
+    id: '/politique-confidentialite',
+    path: '/politique-confidentialite',
+    getParentRoute: () => PublicRoute,
+  } as any)
+const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
+  id: '/particuliers',
+  path: '/particuliers',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicCookiesRoute = PublicCookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicContactRoute = PublicContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicAProposRoute = PublicAProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicProfessionnelsIndexRoute =
+  PublicProfessionnelsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => PublicProfessionnelsRoute,
+  } as any)
+const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicParticuliersRoute,
+} as any)
+const PublicProfessionnelsMonetiqueRoute =
+  PublicProfessionnelsMonetiqueRouteImport.update({
+    id: '/monetique',
+    path: '/monetique',
+    getParentRoute: () => PublicProfessionnelsRoute,
+  } as any)
+const PublicProfessionnelsEnergieRoute =
+  PublicProfessionnelsEnergieRouteImport.update({
+    id: '/energie',
+    path: '/energie',
+    getParentRoute: () => PublicProfessionnelsRoute,
+  } as any)
+const PublicParticuliersTelecomsRoute =
+  PublicParticuliersTelecomsRouteImport.update({
+    id: '/telecoms',
+    path: '/telecoms',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersMutuelleSanteRoute =
+  PublicParticuliersMutuelleSanteRouteImport.update({
+    id: '/mutuelle-sante',
+    path: '/mutuelle-sante',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersMutuelleAnimaleRoute =
+  PublicParticuliersMutuelleAnimaleRouteImport.update({
+    id: '/mutuelle-animale',
+    path: '/mutuelle-animale',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersEnergiesRenouvelablesRoute =
+  PublicParticuliersEnergiesRenouvelablesRouteImport.update({
+    id: '/energies-renouvelables',
+    path: '/energies-renouvelables',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersEnergieRoute =
+  PublicParticuliersEnergieRouteImport.update({
+    id: '/energie',
+    path: '/energie',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersAssuranceEmprunteurRoute =
+  PublicParticuliersAssuranceEmprunteurRouteImport.update({
+    id: '/assurance-emprunteur',
+    path: '/assurance-emprunteur',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof PublicIndexRoute
+  '/a-propos': typeof PublicAProposRoute
+  '/contact': typeof PublicContactRoute
+  '/cookies': typeof PublicCookiesRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/particuliers': typeof PublicParticuliersRouteWithChildren
+  '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/recrutement': typeof PublicRecrutementRoute
+  '/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
+  '/particuliers/energie': typeof PublicParticuliersEnergieRoute
+  '/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
+  '/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
+  '/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
+  '/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
+  '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
+  '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
+  '/particuliers/': typeof PublicParticuliersIndexRoute
+  '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/a-propos': typeof PublicAProposRoute
+  '/contact': typeof PublicContactRoute
+  '/cookies': typeof PublicCookiesRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/recrutement': typeof PublicRecrutementRoute
+  '/': typeof PublicIndexRoute
+  '/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
+  '/particuliers/energie': typeof PublicParticuliersEnergieRoute
+  '/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
+  '/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
+  '/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
+  '/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
+  '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
+  '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
+  '/particuliers': typeof PublicParticuliersIndexRoute
+  '/professionnels': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_public': typeof PublicRouteWithChildren
+  '/_public/a-propos': typeof PublicAProposRoute
+  '/_public/contact': typeof PublicContactRoute
+  '/_public/cookies': typeof PublicCookiesRoute
+  '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
+  '/_public/politique-confidentialite': typeof PublicPolitiqueConfidentialiteRoute
+  '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/_public/recrutement': typeof PublicRecrutementRoute
+  '/_public/': typeof PublicIndexRoute
+  '/_public/particuliers/assurance-emprunteur': typeof PublicParticuliersAssuranceEmprunteurRoute
+  '/_public/particuliers/energie': typeof PublicParticuliersEnergieRoute
+  '/_public/particuliers/energies-renouvelables': typeof PublicParticuliersEnergiesRenouvelablesRoute
+  '/_public/particuliers/mutuelle-animale': typeof PublicParticuliersMutuelleAnimaleRoute
+  '/_public/particuliers/mutuelle-sante': typeof PublicParticuliersMutuelleSanteRoute
+  '/_public/particuliers/telecoms': typeof PublicParticuliersTelecomsRoute
+  '/_public/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
+  '/_public/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
+  '/_public/particuliers/': typeof PublicParticuliersIndexRoute
+  '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/a-propos'
+    | '/contact'
+    | '/cookies'
+    | '/mentions-legales'
+    | '/particuliers'
+    | '/politique-confidentialite'
+    | '/professionnels'
+    | '/recrutement'
+    | '/particuliers/assurance-emprunteur'
+    | '/particuliers/energie'
+    | '/particuliers/energies-renouvelables'
+    | '/particuliers/mutuelle-animale'
+    | '/particuliers/mutuelle-sante'
+    | '/particuliers/telecoms'
+    | '/professionnels/energie'
+    | '/professionnels/monetique'
+    | '/particuliers/'
+    | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/a-propos'
+    | '/contact'
+    | '/cookies'
+    | '/mentions-legales'
+    | '/politique-confidentialite'
+    | '/recrutement'
+    | '/'
+    | '/particuliers/assurance-emprunteur'
+    | '/particuliers/energie'
+    | '/particuliers/energies-renouvelables'
+    | '/particuliers/mutuelle-animale'
+    | '/particuliers/mutuelle-sante'
+    | '/particuliers/telecoms'
+    | '/professionnels/energie'
+    | '/professionnels/monetique'
+    | '/particuliers'
+    | '/professionnels'
+  id:
+    | '__root__'
+    | '/_public'
+    | '/_public/a-propos'
+    | '/_public/contact'
+    | '/_public/cookies'
+    | '/_public/mentions-legales'
+    | '/_public/particuliers'
+    | '/_public/politique-confidentialite'
+    | '/_public/professionnels'
+    | '/_public/recrutement'
+    | '/_public/'
+    | '/_public/particuliers/assurance-emprunteur'
+    | '/_public/particuliers/energie'
+    | '/_public/particuliers/energies-renouvelables'
+    | '/_public/particuliers/mutuelle-animale'
+    | '/_public/particuliers/mutuelle-sante'
+    | '/_public/particuliers/telecoms'
+    | '/_public/professionnels/energie'
+    | '/_public/professionnels/monetique'
+    | '/_public/particuliers/'
+    | '/_public/professionnels/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  PublicRoute: typeof PublicRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/recrutement': {
+      id: '/_public/recrutement'
+      path: '/recrutement'
+      fullPath: '/recrutement'
+      preLoaderRoute: typeof PublicRecrutementRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/professionnels': {
+      id: '/_public/professionnels'
+      path: '/professionnels'
+      fullPath: '/professionnels'
+      preLoaderRoute: typeof PublicProfessionnelsRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/politique-confidentialite': {
+      id: '/_public/politique-confidentialite'
+      path: '/politique-confidentialite'
+      fullPath: '/politique-confidentialite'
+      preLoaderRoute: typeof PublicPolitiqueConfidentialiteRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/particuliers': {
+      id: '/_public/particuliers'
+      path: '/particuliers'
+      fullPath: '/particuliers'
+      preLoaderRoute: typeof PublicParticuliersRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/mentions-legales': {
+      id: '/_public/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof PublicMentionsLegalesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/cookies': {
+      id: '/_public/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof PublicCookiesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/contact': {
+      id: '/_public/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof PublicContactRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/a-propos': {
+      id: '/_public/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof PublicAProposRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/professionnels/': {
+      id: '/_public/professionnels/'
+      path: '/'
+      fullPath: '/professionnels/'
+      preLoaderRoute: typeof PublicProfessionnelsIndexRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
+    }
+    '/_public/particuliers/': {
+      id: '/_public/particuliers/'
+      path: '/'
+      fullPath: '/particuliers/'
+      preLoaderRoute: typeof PublicParticuliersIndexRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/professionnels/monetique': {
+      id: '/_public/professionnels/monetique'
+      path: '/monetique'
+      fullPath: '/professionnels/monetique'
+      preLoaderRoute: typeof PublicProfessionnelsMonetiqueRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
+    }
+    '/_public/professionnels/energie': {
+      id: '/_public/professionnels/energie'
+      path: '/energie'
+      fullPath: '/professionnels/energie'
+      preLoaderRoute: typeof PublicProfessionnelsEnergieRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
+    }
+    '/_public/particuliers/telecoms': {
+      id: '/_public/particuliers/telecoms'
+      path: '/telecoms'
+      fullPath: '/particuliers/telecoms'
+      preLoaderRoute: typeof PublicParticuliersTelecomsRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/mutuelle-sante': {
+      id: '/_public/particuliers/mutuelle-sante'
+      path: '/mutuelle-sante'
+      fullPath: '/particuliers/mutuelle-sante'
+      preLoaderRoute: typeof PublicParticuliersMutuelleSanteRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/mutuelle-animale': {
+      id: '/_public/particuliers/mutuelle-animale'
+      path: '/mutuelle-animale'
+      fullPath: '/particuliers/mutuelle-animale'
+      preLoaderRoute: typeof PublicParticuliersMutuelleAnimaleRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/energies-renouvelables': {
+      id: '/_public/particuliers/energies-renouvelables'
+      path: '/energies-renouvelables'
+      fullPath: '/particuliers/energies-renouvelables'
+      preLoaderRoute: typeof PublicParticuliersEnergiesRenouvelablesRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/energie': {
+      id: '/_public/particuliers/energie'
+      path: '/energie'
+      fullPath: '/particuliers/energie'
+      preLoaderRoute: typeof PublicParticuliersEnergieRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/assurance-emprunteur': {
+      id: '/_public/particuliers/assurance-emprunteur'
+      path: '/assurance-emprunteur'
+      fullPath: '/particuliers/assurance-emprunteur'
+      preLoaderRoute: typeof PublicParticuliersAssuranceEmprunteurRouteImport
+      parentRoute: typeof PublicParticuliersRoute
     }
   }
 }
 
+interface PublicParticuliersRouteChildren {
+  PublicParticuliersAssuranceEmprunteurRoute: typeof PublicParticuliersAssuranceEmprunteurRoute
+  PublicParticuliersEnergieRoute: typeof PublicParticuliersEnergieRoute
+  PublicParticuliersEnergiesRenouvelablesRoute: typeof PublicParticuliersEnergiesRenouvelablesRoute
+  PublicParticuliersMutuelleAnimaleRoute: typeof PublicParticuliersMutuelleAnimaleRoute
+  PublicParticuliersMutuelleSanteRoute: typeof PublicParticuliersMutuelleSanteRoute
+  PublicParticuliersTelecomsRoute: typeof PublicParticuliersTelecomsRoute
+  PublicParticuliersIndexRoute: typeof PublicParticuliersIndexRoute
+}
+
+const PublicParticuliersRouteChildren: PublicParticuliersRouteChildren = {
+  PublicParticuliersAssuranceEmprunteurRoute:
+    PublicParticuliersAssuranceEmprunteurRoute,
+  PublicParticuliersEnergieRoute: PublicParticuliersEnergieRoute,
+  PublicParticuliersEnergiesRenouvelablesRoute:
+    PublicParticuliersEnergiesRenouvelablesRoute,
+  PublicParticuliersMutuelleAnimaleRoute:
+    PublicParticuliersMutuelleAnimaleRoute,
+  PublicParticuliersMutuelleSanteRoute: PublicParticuliersMutuelleSanteRoute,
+  PublicParticuliersTelecomsRoute: PublicParticuliersTelecomsRoute,
+  PublicParticuliersIndexRoute: PublicParticuliersIndexRoute,
+}
+
+const PublicParticuliersRouteWithChildren =
+  PublicParticuliersRoute._addFileChildren(PublicParticuliersRouteChildren)
+
+interface PublicProfessionnelsRouteChildren {
+  PublicProfessionnelsEnergieRoute: typeof PublicProfessionnelsEnergieRoute
+  PublicProfessionnelsMonetiqueRoute: typeof PublicProfessionnelsMonetiqueRoute
+  PublicProfessionnelsIndexRoute: typeof PublicProfessionnelsIndexRoute
+}
+
+const PublicProfessionnelsRouteChildren: PublicProfessionnelsRouteChildren = {
+  PublicProfessionnelsEnergieRoute: PublicProfessionnelsEnergieRoute,
+  PublicProfessionnelsMonetiqueRoute: PublicProfessionnelsMonetiqueRoute,
+  PublicProfessionnelsIndexRoute: PublicProfessionnelsIndexRoute,
+}
+
+const PublicProfessionnelsRouteWithChildren =
+  PublicProfessionnelsRoute._addFileChildren(PublicProfessionnelsRouteChildren)
+
+interface PublicRouteChildren {
+  PublicAProposRoute: typeof PublicAProposRoute
+  PublicContactRoute: typeof PublicContactRoute
+  PublicCookiesRoute: typeof PublicCookiesRoute
+  PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
+  PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
+  PublicPolitiqueConfidentialiteRoute: typeof PublicPolitiqueConfidentialiteRoute
+  PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
+  PublicRecrutementRoute: typeof PublicRecrutementRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicAProposRoute: PublicAProposRoute,
+  PublicContactRoute: PublicContactRoute,
+  PublicCookiesRoute: PublicCookiesRoute,
+  PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
+  PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
+  PublicPolitiqueConfidentialiteRoute: PublicPolitiqueConfidentialiteRoute,
+  PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
+  PublicRecrutementRoute: PublicRecrutementRoute,
+  PublicIndexRoute: PublicIndexRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  PublicRoute: PublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
