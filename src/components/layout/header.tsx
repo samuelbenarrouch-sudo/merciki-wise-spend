@@ -121,6 +121,12 @@ export function Header() {
             >
               Contact
             </Link>
+            <Link
+              to="/recrutement"
+              className="rounded-full px-4 py-2 text-label text-ink hover:bg-mist focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Nous recrutons
+            </Link>
           </nav>
 
           {/* Desktop CTA */}
