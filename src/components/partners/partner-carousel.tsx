@@ -99,6 +99,7 @@ export function PartnerCarousel({
               <PartnerLogo
                 name={p.name}
                 domain={p.domain}
+                loading="eager"
                 imgClassName="h-8 sm:h-10"
                 className="border-0 bg-transparent px-0 py-0 shadow-none"
               />
