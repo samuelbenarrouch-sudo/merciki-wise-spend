@@ -13,6 +13,7 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
+import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
@@ -41,6 +42,12 @@ const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
   path: '/professionnels',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicPolitiqueDeConfidentialiteRoute =
+  PublicPolitiqueDeConfidentialiteRouteImport.update({
+    id: '/politique-de-confidentialite',
+    path: '/politique-de-confidentialite',
+    getParentRoute: () => PublicRoute,
+  } as any)
 const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
   id: '/particuliers',
   path: '/particuliers',
@@ -90,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/particuliers': typeof PublicParticuliersRouteWithChildren
+  '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -101,6 +109,7 @@ export interface FileRoutesByTo {
   '/a-propos': typeof PublicAProposRoute
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -115,6 +124,7 @@ export interface FileRoutesById {
   '/_public/contact': typeof PublicContactRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
+  '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/mentions-legales'
     | '/particuliers'
+    | '/politique-de-confidentialite'
     | '/professionnels'
     | '/recrutement'
     | '/particuliers/$slug'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/a-propos'
     | '/contact'
     | '/mentions-legales'
+    | '/politique-de-confidentialite'
     | '/recrutement'
     | '/'
     | '/particuliers/$slug'
@@ -155,6 +167,7 @@ export interface FileRouteTypes {
     | '/_public/contact'
     | '/_public/mentions-legales'
     | '/_public/particuliers'
+    | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
     | '/_public/recrutement'
     | '/_public/'
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/professionnels'
       fullPath: '/professionnels'
       preLoaderRoute: typeof PublicProfessionnelsRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/politique-de-confidentialite': {
+      id: '/_public/politique-de-confidentialite'
+      path: '/politique-de-confidentialite'
+      fullPath: '/politique-de-confidentialite'
+      preLoaderRoute: typeof PublicPolitiqueDeConfidentialiteRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/particuliers': {
@@ -288,6 +308,7 @@ interface PublicRouteChildren {
   PublicContactRoute: typeof PublicContactRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
+  PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
   PublicRecrutementRoute: typeof PublicRecrutementRoute
   PublicIndexRoute: typeof PublicIndexRoute
@@ -298,6 +319,7 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicContactRoute: PublicContactRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
+  PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
   PublicRecrutementRoute: PublicRecrutementRoute,
   PublicIndexRoute: PublicIndexRoute,
