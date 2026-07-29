@@ -118,7 +118,7 @@ function HeroSection() {
 
           <div className="relative">
             <img
-              src={heroImg}
+              src={heroImg.url}
               alt="Conseillère MERCIKI accompagnant un client dans l'analyse de ses contrats"
               width={1200}
               height={1400}
