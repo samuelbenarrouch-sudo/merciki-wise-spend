@@ -13,6 +13,7 @@ import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration.index'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
+import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
@@ -44,6 +45,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PublicRoute,
+} as any)
+const LeadgenerationLoginRoute = LeadgenerationLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => LeadgenerationRoute,
 } as any)
 const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
   id: '/recrutement',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
+  '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
+  '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/': typeof PublicIndexRoute
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
+  '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/_public/': typeof PublicIndexRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/politique-de-confidentialite'
     | '/professionnels'
     | '/recrutement'
+    | '/leadgeneration/login'
     | '/leadgeneration/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/mentions-legales'
     | '/politique-de-confidentialite'
     | '/recrutement'
+    | '/leadgeneration/login'
     | '/'
     | '/leadgeneration'
     | '/particuliers/$slug'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
     | '/_public/recrutement'
+    | '/leadgeneration/login'
     | '/_public/'
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
@@ -246,6 +258,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/leadgeneration/login': {
+      id: '/leadgeneration/login'
+      path: '/login'
+      fullPath: '/leadgeneration/login'
+      preLoaderRoute: typeof LeadgenerationLoginRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
     '/_public/recrutement': {
       id: '/_public/recrutement'
@@ -388,10 +407,12 @@ const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 interface LeadgenerationRouteChildren {
+  LeadgenerationLoginRoute: typeof LeadgenerationLoginRoute
   LeadgenerationIndexRoute: typeof LeadgenerationIndexRoute
 }
 
 const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
+  LeadgenerationLoginRoute: LeadgenerationLoginRoute,
   LeadgenerationIndexRoute: LeadgenerationIndexRoute,
 }
 
