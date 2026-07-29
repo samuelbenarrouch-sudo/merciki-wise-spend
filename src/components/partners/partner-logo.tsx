@@ -7,11 +7,12 @@ export interface PartnerLogoProps {
   className?: string;
   imgClassName?: string;
   loading?: "eager" | "lazy";
+  showName?: boolean;
 }
 
 const TOKEN = import.meta.env.VITE_LOVABLE_CONNECTOR_LOGO_DEV_API_KEY;
 
-export function PartnerLogo({ name, domain, className, imgClassName, loading = "lazy" }: PartnerLogoProps) {
+export function PartnerLogo({ name, domain, className, imgClassName, loading = "lazy", showName = false }: PartnerLogoProps) {
   const [failed, setFailed] = useState(false);
 
   if (domain && TOKEN && !failed) {
@@ -19,7 +20,7 @@ export function PartnerLogo({ name, domain, className, imgClassName, loading = "
     return (
       <div
         className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-xl border border-mist bg-background px-4 py-3 shadow-soft",
+          "inline-flex shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-mist bg-background px-4 py-3 shadow-soft",
           "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
           className,
         )}
@@ -32,6 +33,14 @@ export function PartnerLogo({ name, domain, className, imgClassName, loading = "
           loading={loading}
           decoding="async"
         />
+        {showName && (
+          <span
+            className="text-xs font-semibold tracking-tight text-slate sm:text-sm"
+            style={{ fontFamily: "Inter, sans-serif", fontWeight: 600 }}
+          >
+            {name}
+          </span>
+        )}
       </div>
     );
   }
