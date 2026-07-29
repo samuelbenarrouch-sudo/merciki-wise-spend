@@ -297,7 +297,8 @@ function VerticalCard({
                 key={p.name}
                 name={p.name}
                 domain={p.domain}
-                className="px-3 py-1.5 text-xs shadow-none"
+                showName
+                className="px-3 py-2 shadow-none"
               />
             ))}
             {remaining > 0 ? (
