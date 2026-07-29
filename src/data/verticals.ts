@@ -315,14 +315,16 @@ export const VERTICALS: Vertical[] = [
       { name: "Optimisation multi-sites", description: "Consolidation et négociation d'un contrat unique pour l'ensemble de vos sites." },
     ],
     partners: [
+      { name: "Octopus Energy" },
+      { name: "Ilek" },
+      { name: "Engie" },
+      { name: "Selectra" },
       { name: "TotalEnergies" },
       { name: "OHM Énergie" },
       { name: "Gazel Énergie" },
       { name: "Eneffic" },
       { name: "Jeety" },
       { name: "Vattenfall" },
-      { name: "Engie" },
-      { name: "Selectra" },
     ],
     faq: [
       { q: "Puis-je changer de fournisseur en cours d'année ?", a: "Cela dépend de votre contrat en cours et de sa date d'échéance. Nous analysons vos conditions de sortie avant toute démarche." },
