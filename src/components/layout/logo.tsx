@@ -9,9 +9,9 @@ const wordSize: Record<Size, string> = {
 };
 
 const dotSize: Record<Size, string> = {
-  sm: "h-[7px] w-[7px] -translate-y-[14px]",
-  md: "h-[9px] w-[9px] -translate-y-[18px]",
-  lg: "h-[11px] w-[11px] -translate-y-[24px]",
+  sm: "h-[7px] w-[7px] -translate-y-[8px]",
+  md: "h-[9px] w-[9px] -translate-y-[11px]",
+  lg: "h-[11px] w-[11px] -translate-y-[14px]",
 };
 
 export interface LogoProps {
