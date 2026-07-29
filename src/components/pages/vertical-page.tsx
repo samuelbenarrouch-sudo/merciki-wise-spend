@@ -299,7 +299,7 @@ export function VerticalPage({
               <span className="text-label uppercase text-slate tracking-wider">Nos partenaires</span>
               <div className="flex flex-wrap gap-2">
                 {vertical.partners.map((p) => (
-                  <PartnerLogo key={p.name} name={p.name} className="px-3 py-1.5 text-xs shadow-none" />
+                  <PartnerLogo key={p.name} name={p.name} domain={p.domain} showName className="px-3 py-2 shadow-none" />
                 ))}
               </div>
             </Card>
@@ -435,7 +435,7 @@ export function VerticalPage({
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 {vertical.partners.map((p) => (
-                  <PartnerLogo key={p.name} name={p.name} domain={p.domain} />
+                  <PartnerLogo key={p.name} name={p.name} domain={p.domain} showName />
                 ))}
               </div>
             </div>
