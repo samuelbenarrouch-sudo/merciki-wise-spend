@@ -172,3 +172,12 @@
     outline-offset: 2px;
   }
 }
+
+@keyframes merciki-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@utility animate-merciki-marquee {
+  animation: merciki-marquee 30s linear infinite;
+}
