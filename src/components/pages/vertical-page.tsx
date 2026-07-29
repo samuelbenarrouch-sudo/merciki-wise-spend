@@ -3,6 +3,7 @@ import {
   Check, Phone, Mail, ChevronRight, AlertCircle,
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
   PhoneCall, Search, Scale, PartyPopper, ArrowRight, ShieldCheck,
+  Store, Building2, Landmark,
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -17,7 +18,7 @@ import {
   Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion";
 import {
-  COMPANY, getVerticalsByAudience, type Vertical,
+  COMPANY, getVerticalsByAudience, type Audience, type Vertical,
 } from "@/data/verticals";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -63,6 +64,18 @@ const HOW_STEPS: Record<string, Step[]> = {
     { title: "Nous vous mettons en relation avec un installateur", desc: "Vous êtes mis en relation avec nos installateurs partenaires certifiés RGE, sélectionnés pour leur sérieux." },
     { title: "Vous recevez un devis clair et personnalisé", desc: "Étude technique, prix, aides mobilisables : tout est présenté sans pression pour que vous décidiez sereinement." },
   ],
+  monetique: [
+    { title: "Nous étudions vos flux d'encaissement", desc: "Volume mensuel, panier moyen, canaux utilisés : nous partons de votre activité réelle." },
+    { title: "Nous ciblons la bonne combinaison de solutions", desc: "TPE fixe, TPE mobile, e-commerce, lien de paiement : nous adaptons l'outillage à vos usages." },
+    { title: "Nous consultons nos partenaires monétique", desc: "Nous comparons les commissions, les frais fixes et les délais de versement pour votre profil." },
+    { title: "Nous vous accompagnons jusqu'à la mise en service", desc: "Ouverture du compte marchand, livraison, prise en main : votre encaissement est opérationnel rapidement." },
+  ],
+  "energie-pro": [
+    { title: "Nous auditons vos factures et vos points de livraison", desc: "Contrats en cours, puissance souscrite, historique de consommation : nous décryptons l'existant." },
+    { title: "Nous consultons les fournisseurs partenaires", desc: "Nous mettons le marché en concurrence pour obtenir des propositions comparables et à jour." },
+    { title: "Nous vous remettons un comparatif structuré", desc: "Postes d'économies, avantages, points de vigilance : la décision se prend sur des faits, pas sur un discours." },
+    { title: "Nous orchestrons la bascule sans coupure", desc: "Aucune interruption d'activité. Nous restons votre interlocuteur pour les renouvellements à venir." },
+  ],
 };
 
 const ENR_BENEFITS: Record<string, string[]> = {
@@ -83,12 +96,28 @@ const ENR_BENEFITS: Record<string, string[]> = {
   ],
 };
 
-export function VerticalPage({ vertical }: { vertical: Vertical }) {
+export function VerticalPage({
+  vertical,
+  audience = "particuliers",
+}: {
+  vertical: Vertical;
+  audience?: Audience;
+}) {
   const Icon = ICONS[vertical.icon];
-  const steps = HOW_STEPS[vertical.slug] ?? [];
-  const others = getVerticalsByAudience("particuliers").filter((v) => v.slug !== vertical.slug);
+  const stepsKey =
+    audience === "professionnels" && vertical.slug === "energie"
+      ? "energie-pro"
+      : vertical.slug;
+  const steps = HOW_STEPS[stepsKey] ?? [];
+  const others = getVerticalsByAudience(audience).filter((v) => v.slug !== vertical.slug);
   const partnersHaveNotes = vertical.partners.some((p) => p.note);
-  const isEnR = vertical.slug === "energies-renouvelables";
+  const isEnR = audience === "particuliers" && vertical.slug === "energies-renouvelables";
+  const isPro = audience === "professionnels";
+  const audiencePath = isPro ? "/professionnels" : "/particuliers";
+  const audienceLabel = isPro ? "Professionnels" : "Particuliers";
+  const audienceLabelLower = isPro ? "professionnels" : "particuliers";
+  const showMonetiqueTable = isPro && vertical.slug === "monetique";
+  const showEnergieProSegments = isPro && vertical.slug === "energie";
 
   return (
     <>
@@ -98,7 +127,11 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
           <nav aria-label="Fil d'Ariane" className="mb-6 flex flex-wrap items-center gap-1.5 text-small text-slate">
             <Link to="/" className="hover:text-primary">Accueil</Link>
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
-            <Link to="/particuliers" className="hover:text-primary">Particuliers</Link>
+            {isPro ? (
+              <Link to="/professionnels" className="hover:text-primary">Professionnels</Link>
+            ) : (
+              <Link to="/particuliers" className="hover:text-primary">Particuliers</Link>
+            )}
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
             <span className="text-ink font-medium">{vertical.name}</span>
           </nav>
@@ -106,7 +139,9 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
             <div className="flex flex-col gap-6">
               {Icon ? <IconTile icon={Icon} className="h-16 w-16 md:h-20 md:w-20" /> : null}
               <div>
-                <Badge variant="primary-light" className="mb-4 w-fit px-4 py-2 text-xs">Particuliers</Badge>
+                <Badge variant="primary-light" className="mb-4 w-fit px-4 py-2 text-xs">
+                  {audienceLabel}
+                </Badge>
                 <h1 className="text-h1 text-ink">{vertical.name}</h1>
                 <p className="mt-3 text-h3 text-primary">{vertical.tagline}</p>
               </div>
@@ -242,6 +277,9 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
         </Container>
       </Section>
 
+      {showMonetiqueTable ? <MonetiqueTable /> : null}
+      {showEnergieProSegments ? <EnergieProSegments /> : null}
+
       {/* 5. NOS PARTENAIRES */}
       <Section background="accent-soft">
         <Container>
@@ -251,12 +289,15 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
             title="Avec qui nous travaillons"
             className="mb-10"
           />
-          {partnersHaveNotes ? (
+          {partnersHaveNotes || showMonetiqueTable ? (
             <div className="grid gap-6 md:grid-cols-3">
-              {vertical.partners.map((p) => (
+              {(showMonetiqueTable ? MYPOS_PARTNERS : vertical.partners).map((p) => (
                 <Card key={p.name} className="flex h-full flex-col gap-3 p-6">
                   <div className="flex items-center gap-2">
                     <h3 className="text-h3 text-ink">{p.name}</h3>
+                    {"country" in p && p.country ? (
+                      <Badge variant="accent-soft" className="text-xs">{p.country}</Badge>
+                    ) : null}
                   </div>
                   {p.note ? <p className="text-body text-slate">{p.note}</p> : null}
                 </Card>
@@ -343,7 +384,7 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
       <section className="py-12 md:py-16 bg-background">
         <Container>
           <p className="mb-5 text-label uppercase tracking-wider text-slate">
-            Nos autres solutions pour les particuliers
+            Nos autres solutions pour les {audienceLabelLower}
           </p>
           <div className="flex flex-wrap gap-3">
             {others.map((v) => {
@@ -351,7 +392,7 @@ export function VerticalPage({ vertical }: { vertical: Vertical }) {
               return (
                 <Link
                   key={v.slug}
-                  to="/particuliers/$slug"
+                  to={isPro ? "/professionnels/$slug" : "/particuliers/$slug"}
                   params={{ slug: v.slug }}
                   className="inline-flex items-center gap-2 rounded-full border border-mist bg-background px-4 py-2 text-small text-ink shadow-soft transition hover:border-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >

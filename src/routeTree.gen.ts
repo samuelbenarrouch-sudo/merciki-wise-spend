@@ -21,8 +21,6 @@ import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
-import { Route as PublicProfessionnelsMonetiqueRouteImport } from './routes/_public.professionnels.monetique'
-import { Route as PublicProfessionnelsEnergieRouteImport } from './routes/_public.professionnels.energie'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
 const PublicRoute = PublicRouteImport.update({
@@ -86,18 +84,6 @@ const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicParticuliersRoute,
 } as any)
-const PublicProfessionnelsMonetiqueRoute =
-  PublicProfessionnelsMonetiqueRouteImport.update({
-    id: '/monetique',
-    path: '/monetique',
-    getParentRoute: () => PublicProfessionnelsRoute,
-  } as any)
-const PublicProfessionnelsEnergieRoute =
-  PublicProfessionnelsEnergieRouteImport.update({
-    id: '/energie',
-    path: '/energie',
-    getParentRoute: () => PublicProfessionnelsRoute,
-  } as any)
 const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -115,8 +101,6 @@ export interface FileRoutesByFullPath {
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
-  '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -129,8 +113,6 @@ export interface FileRoutesByTo {
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
-  '/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
 }
@@ -147,8 +129,6 @@ export interface FileRoutesById {
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/_public/professionnels/energie': typeof PublicProfessionnelsEnergieRoute
-  '/_public/professionnels/monetique': typeof PublicProfessionnelsMonetiqueRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
@@ -165,8 +145,6 @@ export interface FileRouteTypes {
     | '/professionnels'
     | '/recrutement'
     | '/particuliers/$slug'
-    | '/professionnels/energie'
-    | '/professionnels/monetique'
     | '/particuliers/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
@@ -179,8 +157,6 @@ export interface FileRouteTypes {
     | '/recrutement'
     | '/'
     | '/particuliers/$slug'
-    | '/professionnels/energie'
-    | '/professionnels/monetique'
     | '/particuliers'
     | '/professionnels'
   id:
@@ -196,8 +172,6 @@ export interface FileRouteTypes {
     | '/_public/recrutement'
     | '/_public/'
     | '/_public/particuliers/$slug'
-    | '/_public/professionnels/energie'
-    | '/_public/professionnels/monetique'
     | '/_public/particuliers/'
     | '/_public/professionnels/'
   fileRoutesById: FileRoutesById
@@ -292,20 +266,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicParticuliersIndexRouteImport
       parentRoute: typeof PublicParticuliersRoute
     }
-    '/_public/professionnels/monetique': {
-      id: '/_public/professionnels/monetique'
-      path: '/monetique'
-      fullPath: '/professionnels/monetique'
-      preLoaderRoute: typeof PublicProfessionnelsMonetiqueRouteImport
-      parentRoute: typeof PublicProfessionnelsRoute
-    }
-    '/_public/professionnels/energie': {
-      id: '/_public/professionnels/energie'
-      path: '/energie'
-      fullPath: '/professionnels/energie'
-      preLoaderRoute: typeof PublicProfessionnelsEnergieRouteImport
-      parentRoute: typeof PublicProfessionnelsRoute
-    }
     '/_public/particuliers/$slug': {
       id: '/_public/particuliers/$slug'
       path: '/$slug'
@@ -330,14 +290,10 @@ const PublicParticuliersRouteWithChildren =
   PublicParticuliersRoute._addFileChildren(PublicParticuliersRouteChildren)
 
 interface PublicProfessionnelsRouteChildren {
-  PublicProfessionnelsEnergieRoute: typeof PublicProfessionnelsEnergieRoute
-  PublicProfessionnelsMonetiqueRoute: typeof PublicProfessionnelsMonetiqueRoute
   PublicProfessionnelsIndexRoute: typeof PublicProfessionnelsIndexRoute
 }
 
 const PublicProfessionnelsRouteChildren: PublicProfessionnelsRouteChildren = {
-  PublicProfessionnelsEnergieRoute: PublicProfessionnelsEnergieRoute,
-  PublicProfessionnelsMonetiqueRoute: PublicProfessionnelsMonetiqueRoute,
   PublicProfessionnelsIndexRoute: PublicProfessionnelsIndexRoute,
 }
 
