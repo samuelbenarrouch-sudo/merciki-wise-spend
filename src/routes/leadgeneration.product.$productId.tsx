@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { getProduct } from "@/data/products";
+import { EnergyForm } from "@/components/forms/EnergyForm";
+import { TelecomsForm } from "@/components/forms/TelecomsForm";
 
 export const Route = createFileRoute("/leadgeneration/product/$productId")({
   head: ({ params }) => {
@@ -48,8 +50,16 @@ function ProductPage() {
           </div>
         </div>
 
-        <div className="mt-10 rounded-2xl bg-mist p-8 text-center text-slate">
-          Le formulaire de qualification de lead sera disponible prochainement.
+        <div className="mt-10 max-w-3xl">
+          {product.id === "energie" ? (
+            <EnergyForm />
+          ) : product.id === "telecoms" ? (
+            <TelecomsForm />
+          ) : (
+            <div className="rounded-2xl bg-mist p-8 text-center text-slate">
+              Le formulaire de qualification de lead sera disponible prochainement.
+            </div>
+          )}
         </div>
       </Container>
     </div>
