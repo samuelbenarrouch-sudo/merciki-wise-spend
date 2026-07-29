@@ -15,8 +15,8 @@ const SIZE_RULES = [
   { query: "(min-width: 1280px)", perPage: 6 },
   { query: "(min-width: 1024px)", perPage: 5 },
   { query: "(min-width: 768px)", perPage: 4 },
-  { query: "(min-width: 480px)", perPage: 2 },
-  { query: "all", perPage: 1 },
+  { query: "(min-width: 480px)", perPage: 3 },
+  { query: "all", perPage: 2 },
 ];
 
 function usePerPage() {
