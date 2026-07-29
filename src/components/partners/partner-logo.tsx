@@ -6,11 +6,12 @@ export interface PartnerLogoProps {
   domain?: string;
   className?: string;
   imgClassName?: string;
+  loading?: "eager" | "lazy";
 }
 
 const TOKEN = import.meta.env.VITE_LOVABLE_CONNECTOR_LOGO_DEV_API_KEY;
 
-export function PartnerLogo({ name, domain, className, imgClassName }: PartnerLogoProps) {
+export function PartnerLogo({ name, domain, className, imgClassName, loading = "lazy" }: PartnerLogoProps) {
   const [failed, setFailed] = useState(false);
 
   if (domain && TOKEN && !failed) {
