@@ -13,12 +13,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { PartnerLogo } from "@/components/partners/partner-logo";
-import { PartnerStrip } from "@/components/partners/partner-strip";
+import { PartnerCarousel } from "@/components/partners/partner-carousel";
 import {
   VERTICALS, COMPANY, TRUST,
-  getVerticalsByAudience, getAllPartnerNames,
-  type Vertical,
+  getVerticalsByAudience, getAllPartners,
+  type Vertical, type Partner,
 } from "@/data/verticals";
 import heroImg from "@/assets/hero-conseil.jpg.asset.json";
 
