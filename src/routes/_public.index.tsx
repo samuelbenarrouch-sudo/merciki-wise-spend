@@ -81,7 +81,7 @@ function HeroSection() {
               Service 100 % gratuit et sans engagement
             </Badge>
             <h1 className="text-h1 text-ink">
-              Payez moins, sans y passer vos journées.
+              Payez moins, c'est tout.
             </h1>
             <p className="text-body text-slate max-w-xl">
               Énergie, télécoms, mutuelle, assurance de prêt, pompes à chaleur, encaissement…
@@ -230,7 +230,7 @@ function AllVerticalsSection({
         <SectionHeading
           align="center"
           eyebrow="NOS EXPERTISES"
-          title="8 domaines, une seule interlocutrice"
+          title="8 domaines, un seul interlocuteur"
           subtitle="Un accompagnement complet et transparent, pour chaque dépense du foyer comme de l'entreprise."
           className="mb-12"
         />
