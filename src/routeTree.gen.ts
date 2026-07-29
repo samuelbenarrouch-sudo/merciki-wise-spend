@@ -14,6 +14,7 @@ import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
+import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
@@ -43,6 +44,11 @@ const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
 const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
   id: '/particuliers',
   path: '/particuliers',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicContactRoute = PublicContactRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/a-propos': typeof PublicAProposRoute
   '/contact': typeof PublicContactRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/a-propos': typeof PublicAProposRoute
   '/contact': typeof PublicContactRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/_public/a-propos': typeof PublicAProposRoute
   '/_public/contact': typeof PublicContactRoute
+  '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/mentions-legales'
     | '/particuliers'
     | '/professionnels'
     | '/recrutement'
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
   to:
     | '/a-propos'
     | '/contact'
+    | '/mentions-legales'
     | '/recrutement'
     | '/'
     | '/particuliers/$slug'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/_public'
     | '/_public/a-propos'
     | '/_public/contact'
+    | '/_public/mentions-legales'
     | '/_public/particuliers'
     | '/_public/professionnels'
     | '/_public/recrutement'
@@ -191,6 +203,13 @@ declare module '@tanstack/react-router' {
       path: '/particuliers'
       fullPath: '/particuliers'
       preLoaderRoute: typeof PublicParticuliersRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/mentions-legales': {
+      id: '/_public/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof PublicMentionsLegalesRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/contact': {
@@ -267,6 +286,7 @@ const PublicProfessionnelsRouteWithChildren =
 interface PublicRouteChildren {
   PublicAProposRoute: typeof PublicAProposRoute
   PublicContactRoute: typeof PublicContactRoute
+  PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
   PublicRecrutementRoute: typeof PublicRecrutementRoute
@@ -276,6 +296,7 @@ interface PublicRouteChildren {
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAProposRoute: PublicAProposRoute,
   PublicContactRoute: PublicContactRoute,
+  PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
   PublicRecrutementRoute: PublicRecrutementRoute,
