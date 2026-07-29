@@ -415,11 +415,11 @@ export function VerticalPage({
           />
           {partnersHaveNotes || showMonetiqueTable ? (
             <div className="grid gap-6 md:grid-cols-3">
-              {(showMonetiqueTable ? MYPOS_PARTNERS : vertical.partners).map((p) => (
+              {((showMonetiqueTable ? MYPOS_PARTNERS : vertical.partners) as PartnerRich[]).map((p) => (
                 <Card key={p.name} className="flex h-full flex-col gap-3 p-6">
                   <div className="flex items-center gap-2">
                     <h3 className="text-h3 text-ink">{p.name}</h3>
-                    {"country" in p && p.country ? (
+                    {p.country ? (
                       <Badge variant="accent-soft" className="text-xs">{p.country}</Badge>
                     ) : null}
                   </div>
