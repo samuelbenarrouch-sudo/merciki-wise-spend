@@ -69,7 +69,6 @@ export const VERTICALS: Vertical[] = [
       { name: "OHM Énergie", domain: "ohm-energie.com" },
       { name: "Gazel Énergie", domain: "gazel-energie.com" },
       { name: "Eneffic", domain: "eneffic.com" },
-      { name: "Jeety", domain: "jeety.fr" },
       { name: "Vattenfall", domain: "vattenfall.com" },
     ],
     faq: [
@@ -217,7 +216,6 @@ export const VERTICALS: Vertical[] = [
     ],
     partners: [
       { name: "Zenioo", domain: "zenioo.com" },
-      { name: "iAssur", domain: "iassur.fr" },
       { name: "AFI ESCA", domain: "afiesca.com" },
     ],
     faq: [
@@ -335,7 +333,6 @@ export const VERTICALS: Vertical[] = [
       { name: "OHM Énergie", domain: "ohm-energie.com" },
       { name: "Gazel Énergie", domain: "gazel-energie.com" },
       { name: "Eneffic", domain: "eneffic.com" },
-      { name: "Jeety", domain: "jeety.fr" },
       { name: "Vattenfall", domain: "vattenfall.com" },
     ],
     faq: [
