@@ -11,14 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
-import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
-import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
-import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
@@ -31,11 +28,6 @@ const PublicRoute = PublicRouteImport.update({
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
-  id: '/recrutement',
-  path: '/recrutement',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
@@ -59,22 +51,12 @@ const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
   path: '/mentions-legales',
   getParentRoute: () => PublicRoute,
 } as any)
-const PublicContactRoute = PublicContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => PublicRoute,
-} as any)
 const PublicConditionsGeneralesRoute =
   PublicConditionsGeneralesRouteImport.update({
     id: '/conditions-generales',
     path: '/conditions-generales',
     getParentRoute: () => PublicRoute,
   } as any)
-const PublicAProposRoute = PublicAProposRouteImport.update({
-  id: '/a-propos',
-  path: '/a-propos',
-  getParentRoute: () => PublicRoute,
-} as any)
 const PublicProfessionnelsIndexRoute =
   PublicProfessionnelsIndexRouteImport.update({
     id: '/',
@@ -100,26 +82,20 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
-  '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
-  '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
-  '/recrutement': typeof PublicRecrutementRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
-  '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
-  '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
@@ -129,14 +105,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
-  '/_public/a-propos': typeof PublicAProposRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
-  '/_public/contact': typeof PublicContactRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
-  '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
@@ -147,26 +120,20 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/a-propos'
     | '/conditions-generales'
-    | '/contact'
     | '/mentions-legales'
     | '/particuliers'
     | '/politique-de-confidentialite'
     | '/professionnels'
-    | '/recrutement'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
     | '/particuliers/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/a-propos'
     | '/conditions-generales'
-    | '/contact'
     | '/mentions-legales'
     | '/politique-de-confidentialite'
-    | '/recrutement'
     | '/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
@@ -175,14 +142,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_public'
-    | '/_public/a-propos'
     | '/_public/conditions-generales'
-    | '/_public/contact'
     | '/_public/mentions-legales'
     | '/_public/particuliers'
     | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
-    | '/_public/recrutement'
     | '/_public/'
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
@@ -208,13 +172,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/recrutement': {
-      id: '/_public/recrutement'
-      path: '/recrutement'
-      fullPath: '/recrutement'
-      preLoaderRoute: typeof PublicRecrutementRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/professionnels': {
@@ -245,25 +202,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicMentionsLegalesRouteImport
       parentRoute: typeof PublicRoute
     }
-    '/_public/contact': {
-      id: '/_public/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof PublicContactRouteImport
-      parentRoute: typeof PublicRoute
-    }
     '/_public/conditions-generales': {
       id: '/_public/conditions-generales'
       path: '/conditions-generales'
       fullPath: '/conditions-generales'
       preLoaderRoute: typeof PublicConditionsGeneralesRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/a-propos': {
-      id: '/_public/a-propos'
-      path: '/a-propos'
-      fullPath: '/a-propos'
-      preLoaderRoute: typeof PublicAProposRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/professionnels/': {
@@ -324,26 +267,20 @@ const PublicProfessionnelsRouteWithChildren =
   PublicProfessionnelsRoute._addFileChildren(PublicProfessionnelsRouteChildren)
 
 interface PublicRouteChildren {
-  PublicAProposRoute: typeof PublicAProposRoute
   PublicConditionsGeneralesRoute: typeof PublicConditionsGeneralesRoute
-  PublicContactRoute: typeof PublicContactRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
   PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
-  PublicRecrutementRoute: typeof PublicRecrutementRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
-  PublicAProposRoute: PublicAProposRoute,
   PublicConditionsGeneralesRoute: PublicConditionsGeneralesRoute,
-  PublicContactRoute: PublicContactRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
   PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
-  PublicRecrutementRoute: PublicRecrutementRoute,
   PublicIndexRoute: PublicIndexRoute,
 }
 
@@ -356,3 +293,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
