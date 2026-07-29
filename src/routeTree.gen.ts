@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
@@ -24,6 +25,11 @@ import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.pa
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
+const LeadgenerationRoute = LeadgenerationRouteImport.update({
+  id: '/leadgeneration',
+  path: '/leadgeneration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
@@ -100,6 +106,7 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/leadgeneration': typeof LeadgenerationRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/leadgeneration': typeof LeadgenerationRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -129,6 +137,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
+  '/leadgeneration': typeof LeadgenerationRoute
   '/_public/a-propos': typeof PublicAProposRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/leadgeneration'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/leadgeneration'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_public'
+    | '/leadgeneration'
     | '/_public/a-propos'
     | '/_public/conditions-generales'
     | '/_public/contact'
@@ -192,10 +204,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
+  LeadgenerationRoute: typeof LeadgenerationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/leadgeneration': {
+      id: '/leadgeneration'
+      path: '/leadgeneration'
+      fullPath: '/leadgeneration'
+      preLoaderRoute: typeof LeadgenerationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_public': {
       id: '/_public'
       path: ''
@@ -352,6 +372,7 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
+  LeadgenerationRoute: LeadgenerationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
