@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as PublicRouteImport } from './routes/_public'
+import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration.index'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
@@ -33,6 +34,11 @@ const LeadgenerationRoute = LeadgenerationRouteImport.update({
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LeadgenerationIndexRoute = LeadgenerationIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LeadgenerationRoute,
 } as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
@@ -106,7 +112,7 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
-  '/leadgeneration': typeof LeadgenerationRoute
+  '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -115,13 +121,13 @@ export interface FileRoutesByFullPath {
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/recrutement': typeof PublicRecrutementRoute
+  '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/leadgeneration': typeof LeadgenerationRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -129,6 +135,7 @@ export interface FileRoutesByTo {
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/recrutement': typeof PublicRecrutementRoute
   '/': typeof PublicIndexRoute
+  '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
@@ -137,7 +144,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
-  '/leadgeneration': typeof LeadgenerationRoute
+  '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/_public/a-propos': typeof PublicAProposRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
@@ -147,6 +154,7 @@ export interface FileRoutesById {
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
   '/_public/recrutement': typeof PublicRecrutementRoute
   '/_public/': typeof PublicIndexRoute
+  '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
@@ -165,13 +173,13 @@ export interface FileRouteTypes {
     | '/politique-de-confidentialite'
     | '/professionnels'
     | '/recrutement'
+    | '/leadgeneration/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
     | '/particuliers/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/leadgeneration'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -179,6 +187,7 @@ export interface FileRouteTypes {
     | '/politique-de-confidentialite'
     | '/recrutement'
     | '/'
+    | '/leadgeneration'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
     | '/particuliers'
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/_public/professionnels'
     | '/_public/recrutement'
     | '/_public/'
+    | '/leadgeneration/'
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
     | '/_public/particuliers/'
@@ -204,7 +214,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
-  LeadgenerationRoute: typeof LeadgenerationRoute
+  LeadgenerationRoute: typeof LeadgenerationRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -222,6 +232,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/leadgeneration/': {
+      id: '/leadgeneration/'
+      path: '/'
+      fullPath: '/leadgeneration/'
+      preLoaderRoute: typeof LeadgenerationIndexRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
     '/_public/': {
       id: '/_public/'
@@ -370,9 +387,21 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface LeadgenerationRouteChildren {
+  LeadgenerationIndexRoute: typeof LeadgenerationIndexRoute
+}
+
+const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
+  LeadgenerationIndexRoute: LeadgenerationIndexRoute,
+}
+
+const LeadgenerationRouteWithChildren = LeadgenerationRoute._addFileChildren(
+  LeadgenerationRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
-  LeadgenerationRoute: LeadgenerationRoute,
+  LeadgenerationRoute: LeadgenerationRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
