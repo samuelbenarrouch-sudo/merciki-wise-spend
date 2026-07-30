@@ -119,11 +119,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
-  }),
-  scripts: [
-    {
-      type: "application/ld+json",
-      children: JSON.stringify({
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
         name: "MERCIKI",
@@ -137,9 +136,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           areaServed: "FR",
           availableLanguage: "French",
         },
-      }),
-    },
-  ],
+        }),
+      },
+    ],
+  }),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
