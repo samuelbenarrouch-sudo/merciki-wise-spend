@@ -23,13 +23,11 @@ export const Route = createFileRoute("/sitemap.xml")({
         ];
 
         for (const v of VERTICALS) {
-          for (const audience of v.audiences) {
-            entries.push({
-              path: `/${audience}/${v.slug}`,
-              changefreq: "monthly",
-              priority: "0.7",
-            });
-          }
+          entries.push({
+            path: `/${v.audience}/${v.slug}`,
+            changefreq: "monthly",
+            priority: "0.7",
+          });
         }
 
         const urls = entries.map((e) =>
