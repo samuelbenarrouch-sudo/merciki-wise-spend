@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { VerticalPage } from "@/components/pages/vertical-page";
 import { getVerticalBySlug } from "@/data/verticals";
+import { absoluteUrl } from "@/lib/seo";
 
 const SEO_TITLE: Record<string, string> = {
   monetique: "Monétique et encaissement pour professionnels | MERCIKI",
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
     const v = loaderData.vertical;
     const title = SEO_TITLE[v.slug] ?? `${v.name} pour professionnels | MERCIKI`;
     const description = v.shortDescription;
-    const url = `/professionnels/${params.slug}`;
+    const url = absoluteUrl(`/professionnels/${params.slug}`);
     return {
       meta: [
         { title },

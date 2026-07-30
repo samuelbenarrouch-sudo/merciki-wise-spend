@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { VerticalPage } from "@/components/pages/vertical-page";
 import { getVerticalBySlug } from "@/data/verticals";
+import { absoluteUrl } from "@/lib/seo";
 
 const SEO_BENEFIT: Record<string, string> = {
   energie: "faites baisser vos factures d'électricité et de gaz",
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/_public/particuliers/$slug")({
     const benefit = SEO_BENEFIT[v.slug] ?? v.tagline;
     const title = `${v.name} — ${benefit} | MERCIKI`;
     const description = v.shortDescription;
-    const url = `/particuliers/${params.slug}`;
+    const url = absoluteUrl(`/particuliers/${params.slug}`);
     return {
       meta: [
         { title },
