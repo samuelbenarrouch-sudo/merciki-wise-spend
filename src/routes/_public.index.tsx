@@ -21,6 +21,7 @@ import {
   type Vertical, type Partner,
 } from "@/data/verticals";
 import heroImg from "@/assets/hero-conseil.jpg.asset.json";
+import { canonical } from "@/lib/seo";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,

@@ -16,6 +16,7 @@ import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { particuliersItems, professionnelsItems } from "@/lib/navigation";
+import { canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/_public/recrutement")({
   head: () => ({
@@ -32,7 +33,9 @@ export const Route = createFileRoute("/_public/recrutement")({
         content:
           "Une offre large, des partenaires établis, des outils simples et un accompagnement de proximité.",
       },
+      ...canonical("/recrutement").meta,
     ],
+    links: canonical("/recrutement").links,
   }),
   component: RecruitmentPage,
 });

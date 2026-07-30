@@ -31,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/navigation";
 import { submitContactForm } from "@/lib/submitContactForm";
+import { canonical } from "@/lib/seo";
 
 type SubjectShort = "produit" | "reseau" | "autre";
 
@@ -99,7 +100,9 @@ export const Route = createFileRoute("/_public/contact")({
         content:
           "Une question, un projet ? Un conseiller MERCIKI vous répond sous 24 heures ouvrées.",
       },
+      ...canonical("/contact").meta,
     ],
+    links: canonical("/contact").links,
   }),
   component: ContactPage,
 });
