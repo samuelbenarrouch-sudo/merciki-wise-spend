@@ -13,11 +13,14 @@ import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
 export const Route = createFileRoute("/leadgeneration/product/$productId")({
   head: ({ params }) => {
     const product = params ? getProduct(params.productId) : undefined;
+    const label = product?.label ?? "Produit";
     return {
       meta: [
         { name: "robots", content: "noindex, nofollow" },
+        { title: `${label} — Espace commercial MERCIKI` },
         {
-          title: `${product?.label ?? "Produit"} — Espace commercial MERCIKI`,
+          name: "description",
+          content: `Optimisez vos dépenses en ${label.toLowerCase()}. Qualification de lead MERCIKI.`,
         },
       ],
     };

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { VERTICALS, type Partner } from "@/data/verticals";
+import { canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/_public/a-propos")({
   head: () => ({
@@ -23,7 +24,9 @@ export const Route = createFileRoute("/_public/a-propos")({
         content:
           "Notre mission : clarifier, optimiser et accompagner. Découvrez la démarche MERCIKI et nos partenaires.",
       },
+      ...canonical("/a-propos").meta,
     ],
+    links: canonical("/a-propos").links,
   }),
   component: AboutPage,
 });

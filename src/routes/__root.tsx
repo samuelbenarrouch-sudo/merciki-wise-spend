@@ -85,6 +85,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurances, énergies renouvelables et monétique.",
       },
       { name: "author", content: "MERCIKI" },
+      {
+        name: "keywords",
+        content:
+          "énergie, télécoms, assurances, énergies renouvelables, monétique, économies, comparateur",
+      },
+      { property: "og:site_name", content: "MERCIKI" },
+      { property: "og:locale", content: "fr_FR" },
       { property: "og:title", content: "MERCIKI — Optimisez vos dépenses" },
       {
         property: "og:description",
@@ -104,11 +111,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/favicon.ico" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "MERCIKI",
+        url: "https://merciki.fr",
+        description:
+          "MERCIKI aide les particuliers et professionnels à optimiser leurs dépenses contraintes : énergie, télécoms, assurances, énergies renouvelables et monétique.",
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+33-7-56-90-63-70",
+          contactType: "Customer Service",
+          areaServed: "FR",
+          availableLanguage: "French",
+        },
+        }),
       },
     ],
   }),
@@ -120,7 +148,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <HeadContent />
       </head>

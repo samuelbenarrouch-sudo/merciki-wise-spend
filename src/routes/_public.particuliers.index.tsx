@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AudienceHubPage } from "@/components/pages/audience-hub-page";
+import { canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/_public/particuliers/")({
   component: () => <AudienceHubPage audience="particuliers" />,
@@ -18,8 +19,8 @@ export const Route = createFileRoute("/_public/particuliers/")({
           "Vos dépenses du quotidien, enfin sous contrôle. Nous comparons et négocions pour vous, gratuitement.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/particuliers" },
+      ...canonical("/particuliers").meta,
     ],
-    links: [{ rel: "canonical", href: "/particuliers" }],
+    links: canonical("/particuliers").links,
   }),
 });

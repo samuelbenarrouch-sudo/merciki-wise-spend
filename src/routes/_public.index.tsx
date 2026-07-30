@@ -21,6 +21,7 @@ import {
   type Vertical, type Partner,
 } from "@/data/verticals";
 import heroImg from "@/assets/hero-conseil.jpg.asset.json";
+import { canonical } from "@/lib/seo";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
@@ -43,9 +44,14 @@ export const Route = createFileRoute("/_public/")({
           "Nous comparons, négocions et sélectionnons les meilleures offres du marché pour vous. Gratuitement.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      {
+        name: "keywords",
+        content:
+          "énergie, télécoms, assurances, économies, comparateur, lead generation",
+      },
+      ...canonical("/").meta,
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: canonical("/").links,
   }),
 });
 

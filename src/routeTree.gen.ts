@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration.index'
@@ -29,6 +30,11 @@ import { Route as LeadgenerationProductProductIdRouteImport } from './routes/lea
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LeadgenerationRoute = LeadgenerationRouteImport.update({
   id: '/leadgeneration',
   path: '/leadgeneration',
@@ -132,6 +138,7 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_public/a-propos': typeof PublicAProposRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/leadgeneration'
+    | '/sitemap.xml'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/sitemap.xml'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_public'
     | '/leadgeneration'
+    | '/sitemap.xml'
     | '/_public/a-propos'
     | '/_public/conditions-generales'
     | '/_public/contact'
@@ -252,10 +264,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
   LeadgenerationRoute: typeof LeadgenerationRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/leadgeneration': {
       id: '/leadgeneration'
       path: '/leadgeneration'
@@ -466,6 +486,7 @@ const LeadgenerationRouteWithChildren = LeadgenerationRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
   LeadgenerationRoute: LeadgenerationRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

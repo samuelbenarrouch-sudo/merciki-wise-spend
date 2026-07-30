@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AudienceHubPage } from "@/components/pages/audience-hub-page";
+import { canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/_public/professionnels/")({
   component: () => <AudienceHubPage audience="professionnels" />,
@@ -18,8 +19,8 @@ export const Route = createFileRoute("/_public/professionnels/")({
           "Moins de charges, un meilleur encaissement. Un interlocuteur unique pour vos contrats d'entreprise.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/professionnels" },
+      ...canonical("/professionnels").meta,
     ],
-    links: [{ rel: "canonical", href: "/professionnels" }],
+    links: canonical("/professionnels").links,
   }),
 });
