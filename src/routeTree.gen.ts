@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SsrtestRouteImport } from './routes/ssrtest'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as PublicRouteImport } from './routes/_public'
@@ -31,11 +30,6 @@ import { Route as LeadgenerationProductProductIdRouteImport } from './routes/lea
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
-const SsrtestRoute = SsrtestRouteImport.update({
-  id: '/ssrtest',
-  path: '/ssrtest',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -145,7 +139,6 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/ssrtest': typeof SsrtestRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -165,7 +158,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/ssrtest': typeof SsrtestRoute
   '/a-propos': typeof PublicAProposRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
@@ -187,7 +179,6 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/ssrtest': typeof SsrtestRoute
   '/_public/a-propos': typeof PublicAProposRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
@@ -212,7 +203,6 @@ export interface FileRouteTypes {
     | '/'
     | '/leadgeneration'
     | '/sitemap.xml'
-    | '/ssrtest'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -232,7 +222,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
-    | '/ssrtest'
     | '/a-propos'
     | '/conditions-generales'
     | '/contact'
@@ -253,7 +242,6 @@ export interface FileRouteTypes {
     | '/_public'
     | '/leadgeneration'
     | '/sitemap.xml'
-    | '/ssrtest'
     | '/_public/a-propos'
     | '/_public/conditions-generales'
     | '/_public/contact'
@@ -277,18 +265,10 @@ export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
   LeadgenerationRoute: typeof LeadgenerationRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SsrtestRoute: typeof SsrtestRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/ssrtest': {
-      id: '/ssrtest'
-      path: '/ssrtest'
-      fullPath: '/ssrtest'
-      preLoaderRoute: typeof SsrtestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -507,18 +487,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
   LeadgenerationRoute: LeadgenerationRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SsrtestRoute: SsrtestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
