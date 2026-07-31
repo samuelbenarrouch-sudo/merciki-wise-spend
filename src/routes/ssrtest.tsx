@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { energySteps } from "@/data/formConfig/energySteps";
+import { EnergyForm } from "@/components/forms/EnergyForm";
 
 export const Route = createFileRoute("/ssrtest")({
-  component: () => <h1>ssrtest {energySteps.length}</h1>,
+  component: () => <div><h1>ssrtest</h1><EnergyForm /></div>,
 });
