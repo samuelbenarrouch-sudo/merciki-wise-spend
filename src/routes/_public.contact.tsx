@@ -78,11 +78,11 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export const Route = createFileRoute("/_public/contact")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search?: Record<string, unknown>): { subject?: SubjectShort } => ({
     subject:
-      search.subject === "produit" ||
-      search.subject === "reseau" ||
-      search.subject === "autre"
+      search?.subject === "produit" ||
+      search?.subject === "reseau" ||
+      search?.subject === "autre"
         ? (search.subject as SubjectShort)
         : undefined,
   }),

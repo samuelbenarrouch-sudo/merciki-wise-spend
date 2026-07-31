@@ -25,16 +25,15 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
       ],
     };
   },
-  loader: ({ params }) => {
-    const product = getProduct(params.productId);
-    if (!product) throw notFound();
-    return { product };
+  beforeLoad: ({ params }) => {
+    if (!getProduct(params.productId)) throw notFound();
   },
   component: ProductPage,
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const { productId } = Route.useParams();
+  const product = getProduct(productId)!;
   const Icon = product.icon;
 
   return (
