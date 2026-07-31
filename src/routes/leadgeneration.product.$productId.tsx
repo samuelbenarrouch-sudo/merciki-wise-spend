@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { getProduct } from "@/data/products";
-// import { EnergyForm } from "@/components/forms/EnergyForm";
+import { EnergyForm } from "@/components/forms/EnergyForm";
 // import { TelecomsForm } from "@/components/forms/TelecomsForm";
 // import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
 // import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
@@ -59,7 +59,7 @@ function ProductPage() {
 
         <div className="mt-10 max-w-3xl">
           {product.id === "energie" ? (
-            <div>form</div>
+            <EnergyForm />
           ) : product.id === "telecoms" ? (
             <div>form</div>
           ) : product.id === "mutuelle-sante" ? (
