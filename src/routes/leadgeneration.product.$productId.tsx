@@ -3,12 +3,12 @@ import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { getProduct } from "@/data/products";
 import { EnergyForm } from "@/components/forms/EnergyForm";
-// import { TelecomsForm } from "@/components/forms/TelecomsForm";
-// import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
-// import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
-// import { EmprunteurForm } from "@/components/forms/EmprunteurForm";
-// import { ENRForm } from "@/components/forms/ENRForm";
-// import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
+import { TelecomsForm } from "@/components/forms/TelecomsForm";
+import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
+import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
+import { EmprunteurForm } from "@/components/forms/EmprunteurForm";
+import { ENRForm } from "@/components/forms/ENRForm";
+import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
 
 export const Route = createFileRoute("/leadgeneration/product/$productId")({
   head: ({ params }) => {
@@ -61,17 +61,17 @@ function ProductPage() {
           {product.id === "energie" ? (
             <EnergyForm />
           ) : product.id === "telecoms" ? (
-            <div>form</div>
+            <TelecomsForm />
           ) : product.id === "mutuelle-sante" ? (
-            <div>form</div>
+            <MutuelleSanteForm />
           ) : product.id === "sante-animale" ? (
-            <div>form</div>
+            <SanteAnimaleForm />
           ) : product.id === "emprunteur" ? (
-            <div>form</div>
+            <EmprunteurForm />
           ) : product.id === "enr" ? (
-            <div>form</div>
+            <ENRForm />
           ) : product.id === "monetique" ? (
-            <div>form</div>
+            <MonetiqueForm />
           ) : (
             <div className="rounded-2xl bg-mist p-8 text-center text-slate">
               Le formulaire de qualification de lead sera disponible prochainement.
