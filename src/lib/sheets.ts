@@ -1,6 +1,8 @@
-// ⚠️ Remplacer par l'URL de déploiement du Web App Apps Script après déploiement.
+// URL du Web App Apps Script.
+// Renseigner VITE_GOOGLE_APPS_SCRIPT_URL dans les variables d'environnement,
+// ou remplacer la valeur de repli ci-dessous par l'URL de déploiement.
 const GOOGLE_APPS_SCRIPT_URL =
-  "https://script.google.com/macros/d/REMPLACER_PAR_TON_ID/usercontent";
+  import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL ?? "";
 
 export async function submitToSheet(
   sheetName: string,
@@ -15,6 +17,13 @@ export async function submitToSheet(
   };
 
   try {
+    if (!GOOGLE_APPS_SCRIPT_URL) {
+      console.warn(
+        "[sheets] VITE_GOOGLE_APPS_SCRIPT_URL non configurée — lead non envoyé vers Google Sheets.",
+        payload,
+      );
+      return { success: false };
+    }
     await fetch(GOOGLE_APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
