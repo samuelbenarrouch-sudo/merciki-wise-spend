@@ -22,7 +22,7 @@ export const Route = createFileRoute("/leadgeneration")({
   beforeLoad: ({ location }) => {
     if (typeof window === "undefined") return;
     const isAuthed =
-      window.localStorage.getItem(LEADGEN_AUTH_KEY) === "true";
+      window.sessionStorage.getItem(LEADGEN_AUTH_KEY) === "true";
     if (!isAuthed && !location.pathname.startsWith("/leadgeneration/login")) {
       throw redirect({ to: "/leadgeneration/login" });
     }
@@ -37,7 +37,7 @@ function LeadGenerationLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const ok = localStorage.getItem(LEADGEN_AUTH_KEY) === "true";
+    const ok = sessionStorage.getItem(LEADGEN_AUTH_KEY) === "true";
     setAuthed(ok);
     if (!ok && !pathname.startsWith("/leadgeneration/login")) {
       navigate({ to: "/leadgeneration/login" });
@@ -56,8 +56,8 @@ function LeadGenerationLayout() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem(LEADGEN_AUTH_KEY);
-    navigate({ to: "/" });
+    sessionStorage.removeItem(LEADGEN_AUTH_KEY);
+    navigate({ to: "/leadgeneration/login" });
   };
 
   return (

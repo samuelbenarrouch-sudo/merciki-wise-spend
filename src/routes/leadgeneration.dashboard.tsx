@@ -18,7 +18,7 @@ function CommercialDashboard() {
     <div className="py-12 lg:py-16">
       <Container>
         <div className="max-w-3xl">
-          <h2 className="text-h2 text-ink">Bienvenue dans votre espace commercial.</h2>
+          <h1 className="text-h2 text-ink">Bienvenue dans votre espace commercial.</h1>
           <p className="mt-4 text-body text-slate">
             Sélectionnez une verticale pour commencer à qualifier un lead.
             Les données seront automatiquement enregistrées dans votre feuille de suivi.

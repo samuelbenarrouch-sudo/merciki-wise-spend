@@ -2,13 +2,13 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { getProduct } from "@/data/products";
-import { EnergyForm } from "@/components/forms/EnergyForm";
-import { TelecomsForm } from "@/components/forms/TelecomsForm";
-import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
-import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
-import { EmprunteurForm } from "@/components/forms/EmprunteurForm";
-import { ENRForm } from "@/components/forms/ENRForm";
-import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
+// import { EnergyForm } from "@/components/forms/EnergyForm";
+// import { TelecomsForm } from "@/components/forms/TelecomsForm";
+// import { MutuelleSanteForm } from "@/components/forms/MutuelleSanteForm";
+// import { SanteAnimaleForm } from "@/components/forms/SanteAnimaleForm";
+// import { EmprunteurForm } from "@/components/forms/EmprunteurForm";
+// import { ENRForm } from "@/components/forms/ENRForm";
+// import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
 
 export const Route = createFileRoute("/leadgeneration/product/$productId")({
   head: ({ params }) => {
@@ -25,16 +25,15 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
       ],
     };
   },
-  loader: ({ params }) => {
-    const product = getProduct(params.productId);
-    if (!product) throw notFound();
-    return { product };
+  beforeLoad: ({ params }) => {
+    if (!getProduct(params.productId)) throw notFound();
   },
   component: ProductPage,
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const { productId } = Route.useParams();
+  const product = getProduct(productId)!;
   const Icon = product.icon;
 
   return (
@@ -60,19 +59,19 @@ function ProductPage() {
 
         <div className="mt-10 max-w-3xl">
           {product.id === "energie" ? (
-            <EnergyForm />
+            <div>form</div>
           ) : product.id === "telecoms" ? (
-            <TelecomsForm />
+            <div>form</div>
           ) : product.id === "mutuelle-sante" ? (
-            <MutuelleSanteForm />
+            <div>form</div>
           ) : product.id === "sante-animale" ? (
-            <SanteAnimaleForm />
+            <div>form</div>
           ) : product.id === "emprunteur" ? (
-            <EmprunteurForm />
+            <div>form</div>
           ) : product.id === "enr" ? (
-            <ENRForm />
+            <div>form</div>
           ) : product.id === "monetique" ? (
-            <MonetiqueForm />
+            <div>form</div>
           ) : (
             <div className="rounded-2xl bg-mist p-8 text-center text-slate">
               Le formulaire de qualification de lead sera disponible prochainement.

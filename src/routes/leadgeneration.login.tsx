@@ -29,7 +29,7 @@ function LoginPage() {
     e.preventDefault();
     setSubmitting(true);
     if (password === LEADGEN_PASSWORD) {
-      localStorage.setItem(LEADGEN_AUTH_KEY, "true");
+      sessionStorage.setItem(LEADGEN_AUTH_KEY, "true");
       toast.success("Connexion réussie");
       navigate({ to: "/leadgeneration/dashboard" });
     } else {
