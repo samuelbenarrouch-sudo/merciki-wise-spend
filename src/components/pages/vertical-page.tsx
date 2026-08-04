@@ -20,6 +20,8 @@ import {
 import {
   COMPANY, getVerticalsByAudience, type Audience, type Vertical,
 } from "@/data/verticals";
+import myposSolutionAsset from "@/assets/mypos-solution.webp.asset.json";
+
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
@@ -165,6 +167,73 @@ function MonetiqueTable() {
     </Section>
   );
 }
+
+function MonetiqueSolutionShowcase() {
+  return (
+    <Section background="white">
+      <Container>
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="order-1">
+            <SectionHeading
+              align="left"
+              eyebrow="SOLUTION PARTENAIRE"
+              title="myPOS : la solution TPE simple, rapide et sécurisée"
+              subtitle="Terminaux de paiement, encaissement en ligne et liens de paiement à distance pour professionnels."
+              className="mb-8"
+            />
+            <ul className="flex flex-col gap-4">
+              {[
+                "Tous les moyens de paiement : carte, sans contact, Apple Pay, Google Pay",
+                "Transactions rapides en quelques secondes",
+                "TPE autonome et mobile avec batterie longue durée",
+                "Normes de sécurité les plus strictes et données protégées",
+                "Livraison en moins de 48 heures et installation simple",
+                "Suivi des transactions, tableau de bord en temps réel et service client dédié",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-light text-primary">
+                    <Check className="h-4 w-4" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-body text-ink">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
+                <a href={COMPANY.phone.href}>
+                  <Phone className="h-5 w-5" strokeWidth={1.75} />
+                  Appeler le {COMPANY.phone.display}
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                <Link to="/contact">
+                  <Mail className="h-5 w-5" strokeWidth={1.75} />
+                  Être rappelé
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <div className="order-2">
+            <div className="overflow-hidden rounded-3xl bg-accent-soft shadow-soft">
+              <img
+                src={myposSolutionAsset.url}
+                alt="Présentation de la solution myPOS : terminal de paiement, moyens de paiement, livraison rapide et tableau de bord"
+                className="h-auto w-full object-cover"
+                width={800}
+                height={1200}
+              />
+            </div>
+            <p className="mt-3 text-center text-small text-slate">
+              Solution myPOS proposée par MERCIKI : encaissez partout, tout le temps.
+            </p>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+
 
 const ENERGIE_PRO_SEGMENTS: { icon: LucideIcon; title: string; desc: string }[] = [
   {
@@ -405,8 +474,10 @@ export function VerticalPage({
         </Container>
       </Section>
 
+      {showMonetiqueTable ? <MonetiqueSolutionShowcase /> : null}
       {showMonetiqueTable ? <MonetiqueTable /> : null}
       {showEnergieProSegments ? <EnergieProSegments /> : null}
+
 
       {/* 5. NOS PARTENAIRES */}
       <Section background="accent-soft">
