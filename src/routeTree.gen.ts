@@ -22,6 +22,7 @@ import { Route as PublicParticuliersRouteImport } from './routes/_public.particu
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
+import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicProduitsIndexRouteImport } from './routes/_public.produits.index'
@@ -97,6 +98,12 @@ const PublicConditionsGeneralesRoute =
     path: '/conditions-generales',
     getParentRoute: () => PublicRoute,
   } as any)
+const PublicAssurancesProfessionnellesRoute =
+  PublicAssurancesProfessionnellesRouteImport.update({
+    id: '/assurances-professionnelles',
+    path: '/assurances-professionnelles',
+    getParentRoute: () => PublicRoute,
+  } as any)
 const PublicAProposRoute = PublicAProposRouteImport.update({
   id: '/a-propos',
   path: '/a-propos',
@@ -147,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/a-propos': typeof PublicAProposRoute
+  '/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
@@ -167,6 +175,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/a-propos': typeof PublicAProposRoute
+  '/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
@@ -189,6 +198,7 @@ export interface FileRoutesById {
   '/leadgeneration': typeof LeadgenerationRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_public/a-propos': typeof PublicAProposRoute
+  '/_public/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/leadgeneration'
     | '/sitemap.xml'
     | '/a-propos'
+    | '/assurances-professionnelles'
     | '/conditions-generales'
     | '/contact'
     | '/mentions-legales'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/sitemap.xml'
     | '/a-propos'
+    | '/assurances-professionnelles'
     | '/conditions-generales'
     | '/contact'
     | '/mentions-legales'
@@ -255,6 +267,7 @@ export interface FileRouteTypes {
     | '/leadgeneration'
     | '/sitemap.xml'
     | '/_public/a-propos'
+    | '/_public/assurances-professionnelles'
     | '/_public/conditions-generales'
     | '/_public/contact'
     | '/_public/mentions-legales'
@@ -373,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicConditionsGeneralesRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/assurances-professionnelles': {
+      id: '/_public/assurances-professionnelles'
+      path: '/assurances-professionnelles'
+      fullPath: '/assurances-professionnelles'
+      preLoaderRoute: typeof PublicAssurancesProfessionnellesRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/a-propos': {
       id: '/_public/a-propos'
       path: '/a-propos'
@@ -460,6 +480,7 @@ const PublicProfessionnelsRouteWithChildren =
 
 interface PublicRouteChildren {
   PublicAProposRoute: typeof PublicAProposRoute
+  PublicAssurancesProfessionnellesRoute: typeof PublicAssurancesProfessionnellesRoute
   PublicConditionsGeneralesRoute: typeof PublicConditionsGeneralesRoute
   PublicContactRoute: typeof PublicContactRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
@@ -473,6 +494,7 @@ interface PublicRouteChildren {
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAProposRoute: PublicAProposRoute,
+  PublicAssurancesProfessionnellesRoute: PublicAssurancesProfessionnellesRoute,
   PublicConditionsGeneralesRoute: PublicConditionsGeneralesRoute,
   PublicContactRoute: PublicContactRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
@@ -513,3 +535,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
