@@ -16,7 +16,6 @@ import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
 import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
-import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
@@ -63,11 +62,6 @@ const LeadgenerationDashboardRoute = LeadgenerationDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => LeadgenerationRoute,
-} as any)
-const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
-  id: '/recrutement',
-  path: '/recrutement',
-  getParentRoute: () => PublicRoute,
 } as any)
 const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
   id: '/professionnels',
@@ -146,7 +140,6 @@ export interface FileRoutesByFullPath {
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
-  '/recrutement': typeof PublicRecrutementRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
@@ -163,7 +156,6 @@ export interface FileRoutesByTo {
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
-  '/recrutement': typeof PublicRecrutementRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/': typeof PublicIndexRoute
@@ -186,7 +178,6 @@ export interface FileRoutesById {
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
-  '/_public/recrutement': typeof PublicRecrutementRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/_public/': typeof PublicIndexRoute
@@ -210,7 +201,6 @@ export interface FileRouteTypes {
     | '/particuliers'
     | '/politique-de-confidentialite'
     | '/professionnels'
-    | '/recrutement'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
     | '/leadgeneration/'
@@ -227,7 +217,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/mentions-legales'
     | '/politique-de-confidentialite'
-    | '/recrutement'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
     | '/'
@@ -249,7 +238,6 @@ export interface FileRouteTypes {
     | '/_public/particuliers'
     | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
-    | '/_public/recrutement'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
     | '/_public/'
@@ -317,13 +305,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/leadgeneration/dashboard'
       preLoaderRoute: typeof LeadgenerationDashboardRouteImport
       parentRoute: typeof LeadgenerationRoute
-    }
-    '/_public/recrutement': {
-      id: '/_public/recrutement'
-      path: '/recrutement'
-      fullPath: '/recrutement'
-      preLoaderRoute: typeof PublicRecrutementRouteImport
-      parentRoute: typeof PublicRoute
     }
     '/_public/professionnels': {
       id: '/_public/professionnels'
@@ -446,7 +427,6 @@ interface PublicRouteChildren {
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
   PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
-  PublicRecrutementRoute: typeof PublicRecrutementRoute
   PublicIndexRoute: typeof PublicIndexRoute
 }
 
@@ -458,7 +438,6 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
   PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
-  PublicRecrutementRoute: PublicRecrutementRoute,
   PublicIndexRoute: PublicIndexRoute,
 }
 
