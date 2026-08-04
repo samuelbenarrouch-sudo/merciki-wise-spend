@@ -35,13 +35,8 @@ interface Props {
   productLabel: string;
   steps: StepConfig[];
   defaultValues: Record<string, unknown>;
-  onSubmit?: (payload: SubmissionPayload) => void | Promise<void>;
   existingData?: Record<string, unknown>;
   submitLabel?: string;
-  renderSuccess?: (ctx: {
-    data: Record<string, unknown>;
-    reset: () => void;
-  }) => ReactNode;
 }
 
 export function MultiStepForm({

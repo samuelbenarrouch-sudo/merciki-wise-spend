@@ -1,13 +1,8 @@
-import { MultiStepForm, type SubmissionPayload } from "./MultiStepForm";
+import { MultiStepForm } from "./MultiStepForm";
 import {
   emprunteurSteps,
   emprunteurDefaultValues,
 } from "@/data/formConfig/emprunteurSteps";
-
-// ℹ️ Le branchement vers Google Sheets sera fait au prompt 13.
-async function handleSubmit(payload: SubmissionPayload) {
-  console.log("[EmprunteurForm] submission", payload);
-}
 
 export function EmprunteurForm() {
   return (
@@ -16,7 +11,6 @@ export function EmprunteurForm() {
       productLabel="Assurance Emprunteur"
       steps={emprunteurSteps}
       defaultValues={emprunteurDefaultValues}
-      onSubmit={handleSubmit}
     />
   );
 }
