@@ -49,10 +49,8 @@ export function MultiStepForm({
   productLabel,
   steps,
   defaultValues,
-  onSubmit,
   existingData,
   submitLabel,
-  renderSuccess,
 }: Props) {
   const fullSchema = useMemo(() => {
     const shape = steps.reduce<Record<string, z.ZodTypeAny>>((acc, s) => {
