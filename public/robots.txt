@@ -15,4 +15,4 @@ Allow: /
 Disallow: /leadgeneration
 Disallow: /admin
 
-Sitemap: https://merciki.fr/sitemap.xml
+Sitemap: https://merciki.online/sitemap.xml
