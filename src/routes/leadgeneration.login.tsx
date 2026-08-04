@@ -42,9 +42,9 @@ function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-mist px-5 py-16">
       <div className="w-full max-w-md">
         <div className="mb-8 flex justify-center">
-          <Link to="/" aria-label="Retour à l'accueil">
+          <a href="/" aria-label="Retour à l'accueil" className="inline-flex">
             <Logo size="md" />
-          </Link>
+          </a>
         </div>
         <div className="rounded-2xl bg-background p-8 shadow-soft">
           <h1 className="text-h2 text-ink">Espace commercial MERCIKI</h1>
