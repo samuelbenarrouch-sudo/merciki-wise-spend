@@ -145,13 +145,13 @@ export function Header() {
 
           {/* Mobile actions */}
           <div className="flex items-center gap-2 lg:hidden">
-            <a
-              href={PHONE_HREF}
-              aria-label={`Appeler le ${PHONE_DISPLAY}`}
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-soft hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            <Link
+              to="/leadgeneration"
+              aria-label="Espace commercial"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-primary bg-background text-accent shadow-soft hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              <Phone className="h-5 w-5" strokeWidth={1.75} />
-            </a>
+              <Euro className="h-5 w-5" strokeWidth={1.75} />
+            </Link>
             <button
               type="button"
               aria-label="Ouvrir le menu"
