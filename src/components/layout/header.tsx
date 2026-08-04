@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Phone, ChevronDown } from "lucide-react";
+import { Menu, Phone, ChevronDown, Euro } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Logo } from "./logo";
 import { MegaMenu } from "./mega-menu";
