@@ -31,13 +31,13 @@ export const Route = createFileRoute("/_public/a-propos")({
   component: HomePage,
   head: () => ({
     meta: [
-      { title: "MERCIKI — Économisez sur l'énergie, les télécoms, la mutuelle et l'assurance" },
+      { title: "À propos — MERCIKI, économies sur énergie, télécoms et assurances" },
       {
         name: "description",
         content:
           "MERCIKI compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé et assurance de prêt. Service 100 % gratuit pour les particuliers et les professionnels.",
       },
-      { property: "og:title", content: "MERCIKI — Optimisation & économies" },
+      { property: "og:title", content: "À propos de MERCIKI — Optimisation & économies" },
       {
         property: "og:description",
         content:

@@ -77,5 +77,5 @@ export const professionnelsItems: NavItem[] = [
 export const entrepriseLinks = [
   { label: "À propos", href: "/a-propos" },
   { label: "Contact", href: "/contact" },
-  { label: "Nous recrutons", href: "/recrutement" },
+  { label: "Nous recrutons", href: "/" },
 ];

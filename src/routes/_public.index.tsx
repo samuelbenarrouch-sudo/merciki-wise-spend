@@ -24,7 +24,7 @@ import formationAsset from "@/assets/formation-equipe.webp.asset.json";
 export const Route = createFileRoute("/_public/")({
   head: () => ({
     meta: [
-      { title: "Rejoignez le réseau MERCIKI — Recrutement" },
+      { title: "Rejoignez le réseau MERCIKI — Recrutement commercial" },
       {
         name: "description",
         content:
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/_public/")({
         content:
           "Une offre large, des partenaires établis, des outils simples et un accompagnement de proximité.",
       },
+      { property: "og:type", content: "website" },
       ...canonical("/").meta,
     ],
     links: canonical("/").links,
