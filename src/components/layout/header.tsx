@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Phone, ChevronDown } from "lucide-react";
+import { Menu, Phone, ChevronDown, Euro } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Logo } from "./logo";
 import { MegaMenu } from "./mega-menu";
@@ -52,8 +52,10 @@ export function Header() {
     <>
       <header
         className={cn(
-          "sticky top-0 z-50 bg-background transition-shadow duration-200",
-          scrolled ? "shadow-soft" : "shadow-none",
+          "sticky top-0 z-50 transition-all duration-200",
+          scrolled
+            ? "border-b border-border bg-background/90 backdrop-blur-md shadow-medium"
+            : "bg-background shadow-none",
         )}
       >
         <Container className="flex h-16 items-center justify-between lg:h-20">
@@ -124,13 +126,22 @@ export function Header() {
           </nav>
 
           {/* Desktop CTA */}
-          <a
-            href={PHONE_HREF}
-            className="hidden lg:inline-flex h-12 items-center gap-2 rounded-full bg-primary px-5 text-base font-semibold text-primary-foreground shadow-soft hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <Phone className="h-5 w-5" strokeWidth={1.75} />
-            {PHONE_DISPLAY}
-          </a>
+          <div className="hidden lg:flex items-center gap-2">
+            <a
+              href={PHONE_HREF}
+              className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-5 text-base font-semibold text-primary-foreground shadow-soft hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Phone className="h-5 w-5" strokeWidth={1.75} />
+              {PHONE_DISPLAY}
+            </a>
+            <Link
+              to="/leadgeneration"
+              aria-label="Espace commercial"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-primary bg-background text-accent shadow-soft hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Euro className="h-5 w-5" strokeWidth={1.75} />
+            </Link>
+          </div>
 
           {/* Mobile actions */}
           <div className="flex items-center gap-2 lg:hidden">
