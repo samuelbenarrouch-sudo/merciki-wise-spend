@@ -14,6 +14,7 @@ import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerStrip } from "@/components/partners/partner-strip";
+import { ResponsablesB2B } from "@/components/pages/responsables-b2b";
 import {
   COMPANY, getVerticalsByAudience,
   type Audience, type Vertical, type Partner,
@@ -92,6 +93,7 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
     <>
       <HubHero copy={copy} />
       <VerticalsSection copy={copy} verticals={verticals} audience={audience} audiencePath={audiencePath} />
+      {audience === "professionnels" ? <ResponsablesB2B /> : null}
       <HowSection copy={copy} />
       <ReassuranceSection copy={copy} />
       <PartnersSection partners={partners} />

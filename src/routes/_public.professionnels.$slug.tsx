@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { VerticalPage } from "@/components/pages/vertical-page";
+import { ResponsablesB2B } from "@/components/pages/responsables-b2b";
 import { getVerticalBySlug } from "@/data/verticals";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -43,7 +44,12 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
 
 function ProVerticalRouteComponent() {
   const { vertical } = Route.useLoaderData();
-  return <VerticalPage vertical={vertical} audience="professionnels" />;
+  return (
+    <>
+      <VerticalPage vertical={vertical} audience="professionnels" />
+      <ResponsablesB2B />
+    </>
+  );
 }
 
 function ProVerticalNotFound() {
