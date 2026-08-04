@@ -2,18 +2,11 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useForm, type Control, type UseFormWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { submitToSheet } from "@/lib/sheets";
-import { SHEET_MAPPING } from "@/data/sheetMapping";
 import {
-  clearDraftFromLocalStorage,
   loadDraftFromLocalStorage,
   saveDraftToLocalStorage,
 } from "@/lib/localStorage";
@@ -77,8 +70,7 @@ export function MultiStepForm({
 
   const [stepIndex, setStepIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
-  const [submitted, setSubmitted] = useState<Record<string, unknown>>({});
+  const [unavailable, setUnavailable] = useState(false);
 
   const current = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
@@ -123,7 +115,6 @@ export function MultiStepForm({
 
     setSubmitting(true);
     const data = form.getValues();
-    setSubmitted(data);
     // Sauvegarde locale avant envoi (protection contre les pertes).
     saveDraftToLocalStorage(productId, data);
     const payload: SubmissionPayload = {
@@ -133,23 +124,11 @@ export function MultiStepForm({
       timestamp: new Date().toISOString(),
       data,
     };
-    try {
-      const sheetName = SHEET_MAPPING[productId] ?? productId;
-      const result = await submitToSheet(sheetName, {
-        commercialName: payload.commercialName,
-        commercialPhone: payload.commercialPhone,
-        ...data,
-      });
-      if (result.success) clearDraftFromLocalStorage(productId);
-      await onSubmit?.(payload);
-    } catch (error) {
-      console.error("[MultiStepForm] submission error", error);
-    } finally {
-      // L'utilisateur voit toujours l'écran de confirmation.
-      setDone(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setSubmitting(false);
-    }
+    // TODO(lot-5) : branchement Supabase — voir src/lib/leads.ts
+    console.warn("Soumission désactivée : backend en cours de reconstruction", payload);
+    setUnavailable(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSubmitting(false);
   };
 
   const goPrev = () => {
@@ -159,37 +138,33 @@ export function MultiStepForm({
     }
   };
 
-  if (done) {
-    if (renderSuccess) {
-      return (
-        <>
-          {renderSuccess({
-            data: submitted,
-            reset: () => {
-              form.reset(defaultValues);
-              setStepIndex(0);
-              setDone(false);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            },
-          })}
-        </>
-      );
-    }
+  if (unavailable) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="w-full rounded-2xl bg-background p-8 text-center shadow-soft sm:p-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-light text-success">
-            <CheckCircle2 className="h-8 w-8" strokeWidth={1.75} />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent-light text-accent">
+            <AlertTriangle className="h-8 w-8" strokeWidth={1.75} />
           </div>
-          <h2 className="mt-6 text-h2 text-ink">Merci !</h2>
+          <h2 className="mt-6 text-h2 text-ink">Soumission indisponible</h2>
           <p className="mt-3 text-body font-medium text-ink">
-            Votre demande a été enregistrée.
+            L'envoi des leads est temporairement désactivé.
           </p>
           <p className="mx-auto mt-4 max-w-md text-body text-slate">
-            Nos partenaires vont vous contacter pour affiner votre besoin et
-            vous proposer les meilleures solutions.
+            Le backend est en cours de reconstruction : vos réponses ont été
+            conservées localement sur cet appareil, mais rien n'a été transmis.
           </p>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              onClick={() => {
+                setUnavailable(false);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              Revenir au formulaire
+            </Button>
             <Button asChild variant="primary" size="lg">
               <Link to="/leadgeneration/dashboard">Retour à l'accueil</Link>
             </Button>
