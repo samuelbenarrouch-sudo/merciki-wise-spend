@@ -1,512 +1,273 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ShieldCheck, User, Building2, Check, Phone, Users, ArrowRight,
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
-  PhoneCall, Search, Scale, PartyPopper,
-  BadgeEuro, LayoutGrid, Handshake, HeartHandshake,
-  type LucideIcon,
+  Package,
+  Handshake,
+  Smartphone,
+  Users,
+  Briefcase,
+  Zap,
+  MapPin,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { PartnerLogo } from "@/components/partners/partner-logo";
-import { PartnerCarousel } from "@/components/partners/partner-carousel";
-import {
-  VERTICALS, COMPANY, TRUST,
-  getVerticalsByAudience, getAllPartners,
-  type Vertical, type Partner,
-} from "@/data/verticals";
-import heroImg from "@/assets/hero-conseil.webp.asset.json";
+import { Button } from "@/components/ui/button";
+import { particuliersItems, professionnelsItems } from "@/lib/navigation";
 import { canonical } from "@/lib/seo";
-
-const ICONS: Record<string, LucideIcon> = {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
-};
+import soireeAsset from "@/assets/soiree-challenge.webp.asset.json";
+import teamSudAsset from "@/assets/team-sud.webp.asset.json";
+import formationAsset from "@/assets/formation-equipe.webp.asset.json";
 
 export const Route = createFileRoute("/_public/")({
-  component: HomePage,
   head: () => ({
     meta: [
-      { title: "MERCIKI — Économisez sur l'énergie, les télécoms, la mutuelle et l'assurance" },
+      { title: "Rejoignez le réseau MERCIKI — Recrutement" },
       {
         name: "description",
         content:
-          "MERCIKI compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé et assurance de prêt. Service 100 % gratuit pour les particuliers et les professionnels.",
+          "Nous cherchons des profils commerciaux qui aiment le contact et veulent porter une offre large et utile. Rejoignez le réseau MERCIKI.",
       },
-      { property: "og:title", content: "MERCIKI — Optimisation & économies" },
+      { property: "og:title", content: "Rejoignez le réseau MERCIKI" },
       {
         property: "og:description",
         content:
-          "Nous comparons, négocions et sélectionnons les meilleures offres du marché pour vous. Gratuitement.",
-      },
-      { property: "og:type", content: "website" },
-      {
-        name: "keywords",
-        content:
-          "énergie, télécoms, assurances, économies, comparateur, lead generation",
+          "Une offre large, des partenaires établis, des outils simples et un accompagnement de proximité.",
       },
       ...canonical("/").meta,
     ],
     links: canonical("/").links,
   }),
+  component: RecruitmentPage,
 });
 
-function HomePage() {
-  const particuliers = getVerticalsByAudience("particuliers");
-  const professionnels = getVerticalsByAudience("professionnels");
-  const allPartners = getAllPartners();
+const supportCards = [
+  {
+    icon: Package,
+    title: "Une offre large et déjà structurée",
+    body:
+      "Pas besoin de réinventer la roue. Les 8 verticales sont documentées, les partenaires sont sélectionnés, les outils commerciaux existent.",
+  },
+  {
+    icon: Handshake,
+    title: "Des partenaires établis",
+    body:
+      "Tu ne négocies pas seul avec les fournisseurs. MERCIKI a déjà construit ces relations.",
+  },
+  {
+    icon: Smartphone,
+    title: "Des outils de saisie simples et mobiles",
+    body:
+      "Un formulaire par produit, pensé pour être rempli en trois minutes, directement sur le terrain.",
+  },
+  {
+    icon: Users,
+    title: "Un accompagnement de proximité",
+    body:
+      "Un référent dédié qui connaît le réseau, qui répond vite et qui t'aide vraiment.",
+  },
+];
+
+const profileCards = [
+  {
+    icon: Briefcase,
+    title: "Vous êtes indépendant ou en micro-entreprise",
+    body:
+      "Vous travaillez en B2C, vous avez un portefeuille clients, vous cherchez à le monétiser autrement ou à l'enrichir. MERCIKI vous offre une offre complémentaire immédiate.",
+  },
+  {
+    icon: Zap,
+    title: "Vous êtes commercial pur-sang",
+    body:
+      "Vous aimez vendre, vous êtes doué pour créer du rapport, et vous cherchez une offre sérieuse et rémunératrice. Ici, vous portez quelque chose qui a du sens.",
+  },
+  {
+    icon: MapPin,
+    title: "Vous êtes enraciné dans un territoire",
+    body:
+      "Vous connaissez les gens dans une région, une ville, ou un quartier. Vous avez de la crédibilité auprès d'eux. Vous pouvez les aider.",
+  },
+];
+
+function RecruitmentPage() {
+  const allVerticals = [...particuliersItems, ...professionnelsItems];
 
   return (
     <>
-      <HeroSection />
-      <TwoDoorsSection particuliers={particuliers} professionnels={professionnels} />
-      <AllVerticalsSection particuliers={particuliers} professionnels={professionnels} />
-      <HowItWorksSection />
-      <WhySection />
-      <StatsSection />
-      <PartnersSection partners={allPartners} />
-      <FinalCtaSection />
-    </>
-  );
-}
-
-/* ---------------- HERO ---------------- */
-
-function HeroSection() {
-  return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary-light">
-      <Container className="py-16 md:py-24">
-        <div className="grid gap-12 lg:grid-cols-[55fr_45fr] lg:items-center lg:gap-16">
-          <div className="flex flex-col gap-6">
-            <Badge variant="accent-soft" className="w-fit gap-2 px-4 py-2 text-xs">
-              <ShieldCheck className="h-4 w-4" strokeWidth={1.75} />
-              Service 100 % gratuit et sans engagement
+      {/* Hero */}
+      <section className="bg-primary text-primary-foreground">
+        <Container className="py-16 md:py-24">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge variant="primary-light" className="mb-6">
+              Nous recrutons
             </Badge>
-            <h1 className="text-h1 text-ink">
-              Payez moins, c'est tout.
-            </h1>
-            <p className="text-body text-slate max-w-xl">
-              Énergie, télécoms, mutuelle, assurance de prêt, pompes à chaleur, encaissement…
-              Nous comparons le marché, négocions à votre place et vous orientons vers l'offre
-              la plus juste. Vous n'avez rien à gérer.
+            <h1 className="text-h1">Rejoignez le réseau MERCIKI.</h1>
+            <p className="mt-6 text-body text-primary-foreground/85">
+              Nous cherchons des profils commerciaux qui aiment le contact, qui savent écouter et
+              qui veulent porter une offre large et utile. Si c'est vous, parlons-nous.
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
-                <Link to="/particuliers">
-                  <User className="h-5 w-5" strokeWidth={1.75} />
-                  Je suis un particulier
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
-                <Link to="/professionnels">
-                  <Building2 className="h-5 w-5" strokeWidth={1.75} />
-                  Je suis un professionnel
-                </Link>
-              </Button>
-            </div>
-            <ul className="flex flex-col gap-2 pt-2 text-small text-slate sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
-              {[
-                `Plus de ${TRUST.yearsOfExperience} ans d'expérience`,
-                `${TRUST.expertiseAreas} domaines d'expertise`,
-                "Sans aucun frais pour vous",
-              ].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <Check className="h-4 w-4 shrink-0 text-primary" strokeWidth={2.25} />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
           </div>
+        </Container>
+      </section>
 
-          <div className="relative">
-            <img
-              src={heroImg.url}
-              alt="Conseiller MERCIKI échangeant avec des clients autour de leurs contrats"
-              width={1200}
-              height={1400}
-              className="w-full rounded-3xl object-cover shadow-medium aspect-[4/5]"
-            />
-            <div className="absolute -bottom-4 -left-2 sm:-left-6 flex items-center gap-3 rounded-2xl bg-background p-4 shadow-medium max-w-[calc(100%-1rem)]">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                <Phone className="h-5 w-5" strokeWidth={1.75} />
-              </div>
-              <div className="min-w-0">
-                <div className="text-small text-slate">Un conseiller vous rappelle</div>
-                <div className="text-ink font-bold" style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
-                  {COMPANY.phone.display}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/* ---------------- TWO DOORS ---------------- */
-
-function TwoDoorsSection({
-  particuliers, professionnels,
-}: { particuliers: Vertical[]; professionnels: Vertical[] }) {
-  return (
-    <Section background="white">
-      <Container>
-        <SectionHeading
-          align="center"
-          title="Par où souhaitez-vous commencer ?"
-          subtitle="Choisissez votre profil, nous vous montrons les solutions adaptées."
-          className="mb-12"
-        />
-        <div className="grid gap-6 md:grid-cols-2">
-          <DoorCard
-            to="/particuliers"
-            icon={Users}
-            title="Particuliers"
-            description="Vos dépenses du quotidien, optimisées une bonne fois pour toutes."
-            verticals={particuliers}
-            linkLabel="Découvrir nos solutions particuliers"
+      {/* Ce que vous portez */}
+      {/* Vie d'équipe */}
+      <Section background="white">
+        <Container>
+          <SectionHeading
+            eyebrow="La vie du réseau"
+            title="Challenges commerciaux, soirées, afterworks… rejoignez l'équipe !"
+            align="center"
           />
-          <DoorCard
-            to="/professionnels"
-            icon={Building2}
-            title="Professionnels"
-            description="Réduisez vos charges et encaissez au meilleur tarif."
-            verticals={professionnels}
-            linkLabel="Découvrir nos solutions professionnels"
-          />
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-function DoorCard({
-  to, icon: Icon, title, description, verticals, linkLabel,
-}: {
-  to: string; icon: LucideIcon; title: string; description: string;
-  verticals: Vertical[]; linkLabel: string;
-}) {
-  return (
-    <Link
-      to={to}
-      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-    >
-      <Card className="flex h-full flex-col gap-6 p-8 transition-transform duration-200 group-hover:-translate-y-1">
-        <IconTile icon={Icon} className="h-16 w-16 md:h-20 md:w-20" />
-        <div>
-          <h3 className="text-h3 text-ink">{title}</h3>
-          <p className="text-body text-slate mt-2">{description}</p>
-        </div>
-        <ul className="flex flex-wrap gap-2">
-          {verticals.map((v) => {
-            const VIcon = ICONS[v.icon];
-            return (
-              <li
-                key={`${v.audience}-${v.slug}`}
-                className="inline-flex items-center gap-2 rounded-full bg-mist px-3 py-2 text-small text-ink"
-              >
-                {VIcon ? <VIcon className="h-4 w-4 text-primary" strokeWidth={1.75} /> : null}
-                {v.name}
-              </li>
-            );
-          })}
-        </ul>
-        <span className="mt-auto inline-flex items-center gap-2 text-primary font-semibold">
-          {linkLabel}
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
-        </span>
-      </Card>
-    </Link>
-  );
-}
-
-/* ---------------- ALL VERTICALS ---------------- */
-
-function AllVerticalsSection({
-  particuliers, professionnels,
-}: { particuliers: Vertical[]; professionnels: Vertical[] }) {
-  return (
-    <Section background="mist">
-      <Container>
-        <SectionHeading
-          align="center"
-          eyebrow="NOS EXPERTISES"
-          title="8 domaines, un seul interlocuteur"
-          subtitle="Un accompagnement complet et transparent, pour chaque dépense du foyer comme de l'entreprise."
-          className="mb-12"
-        />
-
-        <div className="mb-4">
-          <span className="text-label uppercase text-slate tracking-wider">Pour les particuliers</span>
-        </div>
-        <VerticalGrid verticals={particuliers} audiencePath="/particuliers" />
-
-        <div className="mt-16 mb-4">
-          <span className="text-label uppercase text-slate tracking-wider">Pour les professionnels</span>
-        </div>
-        <VerticalGrid verticals={professionnels} audiencePath="/professionnels" />
-      </Container>
-    </Section>
-  );
-}
-
-function VerticalGrid({
-  verticals, audiencePath,
-}: { verticals: Vertical[]; audiencePath: "/particuliers" | "/professionnels" }) {
-  return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {verticals.map((v) => (
-        <VerticalCard key={`${v.audience}-${v.slug}`} v={v} audiencePath={audiencePath} />
-      ))}
-    </div>
-  );
-}
-
-function VerticalCard({
-  v, audiencePath,
-}: { v: Vertical; audiencePath: "/particuliers" | "/professionnels" }) {
-  const Icon = ICONS[v.icon];
-  const visiblePartners = v.partners.slice(0, 5);
-  const remaining = v.partners.length - visiblePartners.length;
-  const href = `${audiencePath}/${v.slug}`;
-
-  return (
-    <Link
-      to={href}
-      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-    >
-      <Card className="flex h-full flex-col gap-4 p-6 transition-transform duration-200 group-hover:-translate-y-1">
-        {Icon ? <IconTile icon={Icon} /> : null}
-        <h3 className="text-h3 text-ink">{v.name}</h3>
-        <p className="text-body text-slate">{v.shortDescription}</p>
-        <ul className="flex flex-col gap-2">
-          {v.products.map((p) => (
-            <li key={p.name} className="flex items-start gap-2 text-small text-ink">
-              <Check className="h-4 w-4 shrink-0 text-primary mt-1" strokeWidth={2.25} />
-              <span>{p.name}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="border-t border-mist my-2" />
-        <div className="flex flex-col gap-2">
-          <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
-            NOS PARTENAIRES
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {visiblePartners.map((p) => (
-              <PartnerLogo
-                key={p.name}
-                name={p.name}
-                domain={p.domain}
-                showName
-                className="px-3 py-2 shadow-none"
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={soireeAsset.url}
+                alt="Équipe commerciale MERCIKI réunie lors d'une soirée challenge"
+                width={1200}
+                height={900}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80"
               />
-            ))}
-            {remaining > 0 ? (
-              <span className="inline-flex items-center rounded-xl border border-mist bg-background px-3 py-1.5 text-xs font-semibold text-slate">
-                +{remaining} autres
-              </span>
-            ) : null}
+              <figcaption className="bg-mist px-5 py-4 text-small text-slate">
+                Soirée challenge : on célèbre les résultats tous ensemble.
+              </figcaption>
+            </figure>
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={teamSudAsset.url}
+                alt="Équipe MERCIKI du Sud réunie en bord de mer"
+                width={1200}
+                height={900}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80"
+              />
+              <figcaption className="bg-mist px-5 py-4 text-small text-slate">
+                L'équipe Sud, entre deux rendez-vous terrain.
+              </figcaption>
+            </figure>
           </div>
-        </div>
-        <span className="mt-auto inline-flex items-center gap-2 pt-2 text-primary font-semibold">
-          En savoir plus
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
-        </span>
-      </Card>
-    </Link>
-  );
-}
+        </Container>
+      </Section>
 
-/* ---------------- HOW IT WORKS ---------------- */
-
-const STEPS = [
-  { n: "01", icon: PhoneCall, title: "Vous nous contactez", desc: "Un appel, un formulaire, et c'est parti. Vous nous dites ce que vous payez aujourd'hui." },
-  { n: "02", icon: Search, title: "Nous analysons", desc: "Nous étudions vos contrats en cours et identifions précisément ce qui peut être amélioré." },
-  { n: "03", icon: Scale, title: "Nous comparons", desc: "Nous consultons nos partenaires et mettons les offres en concurrence pour vous." },
-  { n: "04", icon: PartyPopper, title: "Vous décidez", desc: "Nous vous présentons la meilleure solution. Vous restez libre de dire oui ou non." },
-];
-
-function HowItWorksSection() {
-  return (
-    <Section background="white">
-      <Container>
-        <SectionHeading
-          align="center"
-          eyebrow="SIMPLE ET RAPIDE"
-          title="Comment ça se passe ?"
-          className="mb-12"
-        />
-        <div className="relative">
-          {/* Connecteur horizontal desktop */}
-          <div
-            className="absolute left-0 right-0 top-8 hidden lg:block border-t-2 border-dashed border-primary-light"
-            aria-hidden="true"
-          />
-          <ol className="relative grid gap-8 lg:grid-cols-4 lg:gap-6">
-            {STEPS.map((s) => {
-              const Icon = s.icon;
-              return (
-                <li key={s.n} className="relative flex gap-4 lg:flex-col lg:gap-3">
-                  {/* Connecteur vertical mobile */}
-                  <div className="flex flex-col items-center lg:items-start">
-                    <div
-                      className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-background shadow-soft"
-                      style={{ fontFamily: "Bricolage Grotesque, sans-serif", fontWeight: 700 }}
-                    >
-                      <span className="text-2xl text-accent">{s.n}</span>
-                    </div>
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary">
-                      <Icon className="h-5 w-5" strokeWidth={1.75} />
-                    </div>
-                    <h3 className="text-h3 text-ink">{s.title}</h3>
-                    <p className="text-body text-slate mt-2">{s.desc}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-/* ---------------- WHY ---------------- */
-
-const WHY = [
-  { icon: BadgeEuro, title: "Gratuit, vraiment", desc: "Nous sommes rémunérés par nos partenaires, jamais par vous. Pas de frais de dossier, pas d'honoraires." },
-  { icon: LayoutGrid, title: "Tout au même endroit", desc: "Une seule interlocutrice pour l'énergie, les télécoms, la mutuelle, l'assurance de prêt et vos travaux de rénovation." },
-  { icon: Handshake, title: "Des partenaires reconnus", desc: "Nous travaillons uniquement avec des acteurs établis du marché français." },
-  { icon: HeartHandshake, title: "Un accompagnement humain", desc: "Quelqu'un vous répond, vous explique et vous suit. Pas un robot, pas un formulaire perdu." },
-];
-
-function WhySection() {
-  return (
-    <Section background="accent-soft">
-      <Container>
-        <SectionHeading
-          align="center"
-          title="Pourquoi passer par nous ?"
-          className="mb-12"
-        />
-        <div className="grid gap-6 md:grid-cols-2">
-          {WHY.map((w) => {
-            const Icon = w.icon;
-            return (
-              <Card key={w.title} className="flex gap-4 p-6">
-                <IconTile icon={Icon} className="shrink-0" />
-                <div>
-                  <h3 className="text-h3 text-ink">{w.title}</h3>
-                  <p className="text-body text-slate mt-2">{w.desc}</p>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-/* ---------------- STATS ---------------- */
-
-function StatsSection() {
-  const stats = [
-    { value: `${TRUST.yearsOfExperience}+`, label: "ans d'expérience" },
-    { value: `${TRUST.expertiseAreas}`, label: "domaines d'expertise" },
-    { value: `${Math.floor(TRUST.partnersCount / 5) * 5}+`, label: "partenaires référencés" },
-    { value: "100 %", label: "gratuit pour vous" },
-  ];
-  return (
-    <section className="bg-primary py-16 md:py-24">
-      <Container>
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div
-                className="text-accent"
-                style={{
-                  fontFamily: "Bricolage Grotesque, sans-serif",
-                  fontWeight: 700,
-                  fontSize: "clamp(2.75rem, 8vw, 4.5rem)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.02em",
-                }}
+      {/* Ce que vous portez */}
+      <Section background="mist">
+        <Container>
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="text-h3 text-ink">
+              Un portefeuille complet, sur des besoins que tout le monde a.
+            </h3>
+          </div>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            {allVerticals.map((v) => (
+              <span
+                key={v.href}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-small font-semibold text-primary-foreground shadow-soft"
               >
-                {s.value}
-              </div>
-              <div className="mt-3 text-small text-primary-foreground/80">{s.label}</div>
+                <v.icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+                {v.label}
+              </span>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* Ce que nous apportons */}
+      <Section background="white">
+        <Container>
+          <SectionHeading
+            eyebrow="Ce que nous apportons"
+            title="Voici ce que nous mettons en place pour vous."
+            align="center"
+          />
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
+            {supportCards.map((c) => (
+              <Card key={c.title} className="p-6 md:p-8">
+                <IconTile icon={c.icon} className="bg-accent-soft text-accent" />
+                <h4 className="mt-5 text-h3 text-ink">{c.title}</h4>
+                <p className="mt-3 text-body text-slate">{c.body}</p>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* Les profils */}
+      <Section background="accent-soft">
+        <Container>
+          <SectionHeading
+            eyebrow="Les profils que nous cherchons"
+            title="On ne cherche pas un profil unique. On cherche des gens qui reconnaissent une de ces trois situations."
+            align="center"
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {profileCards.map((c) => (
+              <Card key={c.title} className="bg-background p-6 md:p-8">
+                <IconTile icon={c.icon} />
+                <h4 className="mt-5 text-h3 text-ink">{c.title}</h4>
+                <p className="mt-3 text-body text-slate">{c.body}</p>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* Formations produit */}
+      <Section background="white">
+        <Container>
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={formationAsset.url}
+                alt="Équipe commerciale MERCIKI en formation produit dans une salle de réunion"
+                width={1200}
+                height={800}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+              />
+            </figure>
+            <div>
+              <SectionHeading
+                eyebrow="Formations produit"
+                title="Développez votre portefeuille selon vos affinités"
+                align="left"
+              />
+              <p className="mt-6 text-body text-slate">
+                Des formations produit sont régulièrement organisées pour que chaque commercial puisse
+                développer son portefeuille produit selon ses affinités. Que vous soyez à l'aise avec
+                l'énergie, les télécoms, la santé ou la monétique, vous trouvez ici le soutien pour
+                devenir autonome sur les verticales qui vous motivent.
+              </p>
             </div>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-}
+          </div>
+        </Container>
+      </Section>
 
-/* ---------------- PARTNERS ---------------- */
-
-function PartnersSection({ partners }: { partners: Partner[] }) {
-  return (
-    <Section background="white">
-      <Container>
-        <SectionHeading
-          align="center"
-          title="Ils nous font confiance"
-          subtitle="Nous travaillons avec les principaux acteurs du marché français."
-          className="mb-12"
-        />
-        <PartnerCarousel partners={partners} autoPlay />
-      </Container>
-    </Section>
-  );
-}
-
-/* ---------------- FINAL CTA ---------------- */
-
-function FinalCtaSection() {
-  return (
-    <section className="py-16 md:py-24">
-      <Container>
-        <div className="rounded-3xl bg-ink px-6 py-12 text-primary-foreground sm:px-12 md:py-16">
-          <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-            <h2 className="text-h2 text-primary-foreground">
-              Et si on regardait vos contrats ensemble ?
-            </h2>
-            <p className="text-body text-primary-foreground/80">
-              Un échange de quelques minutes suffit pour savoir ce que vous pourriez économiser.
-              C'est gratuit et sans engagement.
+      {/* CTA finale */}
+      <section className="bg-primary text-primary-foreground">
+        <Container className="py-16 md:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-h2">Intéressé ?</h2>
+            <p className="mt-4 text-body text-primary-foreground/85">
+              Écrivez-nous une première fois pour qu'on se connaisse. Pas de CV, pas de format
+              imposé. Dites-nous simplement qui vous êtes.
             </p>
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
-                <a href={COMPANY.phone.href}>
-                  <Phone className="h-5 w-5" strokeWidth={1.75} />
-                  Appeler le {COMPANY.phone.display}
-                </a>
-              </Button>
+            <div className="mt-8 flex justify-center">
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="w-full border-2 border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 sm:w-auto"
+                className="bg-background text-primary hover:bg-background/90"
               >
-                <Link to="/contact">Être rappelé</Link>
+                <Link to="/contact" search={{ subject: "reseau" } as never}>
+                  Envoyer mon profil
+                </Link>
               </Button>
             </div>
           </div>
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   );
 }
-
-// Ensure VERTICALS import isn't tree-shaken accidentally
-void VERTICALS;
