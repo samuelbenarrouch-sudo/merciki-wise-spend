@@ -1,10 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
-import { PRODUCTS } from "@/data/products";
+import { PRODUCTS, LEADGEN_AUTH_KEY } from "@/data/products";
 
 export const Route = createFileRoute("/_public/produits/")({
+  beforeLoad: () => {
+    if (typeof window === "undefined") return;
+    if (window.sessionStorage.getItem(LEADGEN_AUTH_KEY) !== "true") {
+      throw redirect({ to: "/leadgeneration/login" });
+    }
+  },
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },

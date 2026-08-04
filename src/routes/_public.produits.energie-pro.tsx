@@ -1,9 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { EnergieProForm } from "@/components/forms/EnergieProForm";
+import { LEADGEN_AUTH_KEY } from "@/data/products";
 
 export const Route = createFileRoute("/_public/produits/energie-pro")({
+  beforeLoad: () => {
+    if (typeof window === "undefined") return;
+    if (window.sessionStorage.getItem(LEADGEN_AUTH_KEY) !== "true") {
+      throw redirect({ to: "/leadgeneration/login" });
+    }
+  },
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
