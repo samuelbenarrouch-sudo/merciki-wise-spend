@@ -5,6 +5,7 @@ import {
   Home,
   Leaf,
   PawPrint,
+  ShieldCheck,
   Wifi,
   Zap,
   type LucideIcon,
@@ -66,6 +67,12 @@ export const PRODUCTS: Product[] = [
     label: "Énergie Pro",
     icon: Building2,
     description: "Énergie professionnelle — optimisez vos dépenses",
+  },
+  {
+    id: "assurances-pro",
+    label: "Assurances Pro",
+    icon: ShieldCheck,
+    description: "RC Pro, RC Exploitation, Garantie Décennale",
   },
 ];
 
