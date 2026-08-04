@@ -30,6 +30,29 @@ function CommercialDashboard() {
           {PRODUCTS.map((p) => {
             const Icon = p.icon;
             const isPro = p.id === "energie-pro";
+            if (p.id === "assurances-pro") {
+              return (
+                <Link
+                  key={p.id}
+                  to="/leadgeneration/assurances-pro"
+                  className="group flex flex-col items-center rounded-2xl bg-background p-6 text-center shadow-soft transition-shadow hover:shadow-medium"
+                >
+                  <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-accent">
+                    <Icon className="h-8 w-8" strokeWidth={1.75} />
+                  </span>
+                  <h3 className="mt-5 text-h3 text-ink">Assurances Pro</h3>
+                  <Badge variant="accent-soft" className="mt-2">
+                    Interne / Commerciaux
+                  </Badge>
+                  <p className="mt-2 flex-1 text-small text-slate">
+                    RC Pro, RC Exploitation, Garantie Décennale
+                  </p>
+                  <Button variant="primary" size="sm" className="mt-5">
+                    Soumettre un dossier
+                  </Button>
+                </Link>
+              );
+            }
             if (isPro) {
               return (
                 <Link

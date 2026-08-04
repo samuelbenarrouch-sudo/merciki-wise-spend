@@ -24,6 +24,8 @@ export interface StepConfig {
   title: string;
   schema: z.ZodObject<any>;
   fields: string[];
+  /** Validation conditionnelle optionnelle (dépendances entre champs). */
+  validate?: (values: Record<string, any>) => Record<string, string> | null;
   render: (ctx: { control: Control<any>; watch: UseFormWatch<any> }) => ReactNode;
 }
 
@@ -102,6 +104,16 @@ export function MultiStepForm({
       shouldFocus: true,
     });
     if (!valid) return;
+
+    if (current.validate) {
+      const errors = current.validate(form.getValues() as Record<string, any>);
+      if (errors && Object.keys(errors).length > 0) {
+        for (const [name, message] of Object.entries(errors)) {
+          form.setError(name as any, { type: "manual", message });
+        }
+        return;
+      }
+    }
 
     if (!isLast) {
       setStepIndex((i) => i + 1);
