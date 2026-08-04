@@ -17,6 +17,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { particuliersItems, professionnelsItems } from "@/lib/navigation";
 import { canonical } from "@/lib/seo";
+import soireeAsset from "@/assets/soiree-challenge.webp.asset.json";
+import teamSudAsset from "@/assets/team-sud.webp.asset.json";
 
 export const Route = createFileRoute("/_public/recrutement")({
   head: () => ({
@@ -172,6 +174,45 @@ function RecruitmentPage() {
       </Section>
 
       {/* CTA finale */}
+      {/* Vie d'équipe */}
+      <Section background="white">
+        <Container>
+          <SectionHeading
+            eyebrow="La vie du réseau"
+            title="Challenges commerciaux, soirées, afterworks… rejoignez l'équipe !"
+            align="center"
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={soireeAsset.url}
+                alt="Équipe commerciale MERCIKI réunie lors d'une soirée challenge"
+                width={1200}
+                height={900}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80"
+              />
+              <figcaption className="bg-mist px-5 py-4 text-small text-slate">
+                Soirée challenge : on célèbre les résultats tous ensemble.
+              </figcaption>
+            </figure>
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={teamSudAsset.url}
+                alt="Équipe MERCIKI du Sud réunie en bord de mer"
+                width={1200}
+                height={900}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80"
+              />
+              <figcaption className="bg-mist px-5 py-4 text-small text-slate">
+                L'équipe Sud, entre deux rendez-vous terrain.
+              </figcaption>
+            </figure>
+          </div>
+        </Container>
+      </Section>
+
       <section className="bg-primary text-primary-foreground">
         <Container className="py-16 md:py-24">
           <div className="mx-auto max-w-2xl text-center">
