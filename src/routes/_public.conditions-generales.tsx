@@ -19,7 +19,7 @@ function TermsPage() {
     <LegalPage title="Conditions générales">
       <h2>Champ d'application</h2>
       <p>
-        Ces conditions régissent l'utilisation du site merciki.fr par tout visiteur, particulier
+        Ces conditions régissent l'utilisation du site merciki.online par tout visiteur, particulier
         ou professionnel.
       </p>
 
