@@ -19,6 +19,7 @@ import { particuliersItems, professionnelsItems } from "@/lib/navigation";
 import { canonical } from "@/lib/seo";
 import soireeAsset from "@/assets/soiree-challenge.webp.asset.json";
 import teamSudAsset from "@/assets/team-sud.webp.asset.json";
+import formationAsset from "@/assets/formation-equipe.webp.asset.json";
 
 export const Route = createFileRoute("/_public/recrutement")({
   head: () => ({
@@ -209,6 +210,37 @@ function RecruitmentPage() {
                 <p className="mt-3 text-body text-slate">{c.body}</p>
               </Card>
             ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* Formations produit */}
+      <Section background="white">
+        <Container>
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <figure className="overflow-hidden rounded-3xl shadow-soft">
+              <img
+                src={formationAsset.url}
+                alt="Équipe commerciale MERCIKI en formation produit dans une salle de réunion"
+                width={1200}
+                height={800}
+                loading="lazy"
+                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+              />
+            </figure>
+            <div>
+              <SectionHeading
+                eyebrow="Formations produit"
+                title="Développez votre portefeuille selon vos affinités"
+                align="left"
+              />
+              <p className="mt-6 text-body text-slate">
+                Des formations produit sont régulièrement organisées pour que chaque commercial puisse
+                développer son portefeuille produit selon ses affinités. Que vous soyez à l'aise avec
+                l'énergie, les télécoms, la santé ou la monétique, vous trouvez ici le soutien pour
+                devenir autonome sur les verticales qui vous motivent.
+              </p>
+            </div>
           </div>
         </Container>
       </Section>
