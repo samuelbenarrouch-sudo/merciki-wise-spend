@@ -47,7 +47,7 @@ function PrivacyPolicyPage() {
       <p>
         Vous disposez d'un droit d'accès, de rectification, de suppression, de limitation et de
         portabilité. Contactez-nous pour exercer ces droits :{" "}
-        <a href="mailto:contact@merciki.fr">contact@merciki.fr</a>.
+        <a href="mailto:contact@merciki.online">contact@merciki.online</a>.
       </p>
 
       <h2>DPO</h2>
