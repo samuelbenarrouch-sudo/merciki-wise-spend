@@ -7,4 +7,5 @@ export const SHEET_MAPPING: Record<string, string> = {
   enr: "ENR",
   monetique: "Monétique",
   "energie-pro": "ENERGIE_PRO",
+  "assurances-pro": "ASSURANCES_PRO",
 };
