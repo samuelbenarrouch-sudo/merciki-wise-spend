@@ -7,6 +7,7 @@ import {
   Leaf,
   CreditCard,
   Building2,
+  ShieldCheck as ShieldCheckIcon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -71,6 +72,12 @@ export const professionnelsItems: NavItem[] = [
     href: "/professionnels/energie",
     icon: Building2,
     description: "Contrats énergie pour votre entreprise.",
+  },
+  {
+    label: "Assurances Professionnelles",
+    href: "/assurances-professionnelles",
+    icon: ShieldCheckIcon,
+    description: "RC Pro, RC Exploitation et garantie décennale.",
   },
 ];
 

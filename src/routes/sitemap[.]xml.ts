@@ -19,6 +19,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/professionnels", changefreq: "weekly", priority: "0.9" },
           { path: "/a-propos", changefreq: "monthly", priority: "0.8" },
           { path: "/contact", changefreq: "monthly", priority: "0.8" },
+          { path: "/assurances-professionnelles", changefreq: "monthly", priority: "0.8" },
         ];
 
         for (const v of VERTICALS) {
