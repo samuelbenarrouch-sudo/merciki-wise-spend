@@ -44,12 +44,7 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
 
 function ProVerticalRouteComponent() {
   const { vertical } = Route.useLoaderData();
-  return (
-    <>
-      <VerticalPage vertical={vertical} audience="professionnels" />
-      <ResponsablesB2B />
-    </>
-  );
+  return <VerticalPage vertical={vertical} audience="professionnels" afterHero={<ResponsablesB2B />} />;
 }
 
 function ProVerticalNotFound() {

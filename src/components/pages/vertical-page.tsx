@@ -223,9 +223,11 @@ function EnergieProSegments() {
 export function VerticalPage({
   vertical,
   audience = "particuliers",
+  afterHero,
 }: {
   vertical: Vertical;
   audience?: Audience;
+  afterHero?: React.ReactNode;
 }) {
   const Icon = ICONS[vertical.icon];
   const stepsKey =
@@ -306,6 +308,8 @@ export function VerticalPage({
           </div>
         </Container>
       </section>
+
+      {afterHero}
 
       {/* 2. LE CONSTAT */}
       <Section background="white">

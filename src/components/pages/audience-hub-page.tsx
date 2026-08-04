@@ -92,8 +92,8 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
   return (
     <>
       <HubHero copy={copy} />
-      <VerticalsSection copy={copy} verticals={verticals} audience={audience} audiencePath={audiencePath} />
       {audience === "professionnels" ? <ResponsablesB2B /> : null}
+      <VerticalsSection copy={copy} verticals={verticals} audience={audience} audiencePath={audiencePath} />
       <HowSection copy={copy} />
       <ReassuranceSection copy={copy} />
       <PartnersSection partners={partners} />
