@@ -142,7 +142,7 @@ export function MultiStepForm({
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="w-full rounded-2xl bg-background p-8 text-center shadow-soft sm:p-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent-light text-accent">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-mist text-accent">
             <AlertTriangle className="h-8 w-8" strokeWidth={1.75} />
           </div>
           <h2 className="mt-6 text-h2 text-ink">Soumission indisponible</h2>
