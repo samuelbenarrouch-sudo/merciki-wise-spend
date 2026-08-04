@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SITE_URL } from "@/config/site";
 import {
   Outlet,
   Link,
@@ -126,7 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         "@context": "https://schema.org",
         "@type": "Organization",
         name: "MERCIKI",
-        url: "https://merciki.fr",
+        url: SITE_URL,
         description:
           "MERCIKI aide les particuliers et professionnels à optimiser leurs dépenses contraintes : énergie, télécoms, assurances, énergies renouvelables et monétique.",
         contactPoint: {
