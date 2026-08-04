@@ -19,6 +19,7 @@ import { particuliersItems, professionnelsItems } from "@/lib/navigation";
 import { canonical } from "@/lib/seo";
 import soireeAsset from "@/assets/soiree-challenge.webp.asset.json";
 import teamSudAsset from "@/assets/team-sud.webp.asset.json";
+import formationAsset from "@/assets/formation-equipe.webp.asset.json";
 
 export const Route = createFileRoute("/_public/recrutement")({
   head: () => ({
