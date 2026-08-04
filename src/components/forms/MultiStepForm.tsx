@@ -42,6 +42,11 @@ interface Props {
   defaultValues: Record<string, unknown>;
   onSubmit?: (payload: SubmissionPayload) => void | Promise<void>;
   existingData?: Record<string, unknown>;
+  submitLabel?: string;
+  renderSuccess?: (ctx: {
+    data: Record<string, unknown>;
+    reset: () => void;
+  }) => ReactNode;
 }
 
 export function MultiStepForm({
@@ -51,6 +56,8 @@ export function MultiStepForm({
   defaultValues,
   onSubmit,
   existingData,
+  submitLabel,
+  renderSuccess,
 }: Props) {
   const fullSchema = useMemo(() => {
     const shape = steps.reduce<Record<string, z.ZodTypeAny>>((acc, s) => {
@@ -69,6 +76,7 @@ export function MultiStepForm({
   const [stepIndex, setStepIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [submitted, setSubmitted] = useState<Record<string, unknown>>({});
 
   const current = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
@@ -103,6 +111,7 @@ export function MultiStepForm({
 
     setSubmitting(true);
     const data = form.getValues();
+    setSubmitted(data);
     // Sauvegarde locale avant envoi (protection contre les pertes).
     saveDraftToLocalStorage(productId, data);
     const payload: SubmissionPayload = {
@@ -139,6 +148,21 @@ export function MultiStepForm({
   };
 
   if (done) {
+    if (renderSuccess) {
+      return (
+        <>
+          {renderSuccess({
+            data: submitted,
+            reset: () => {
+              form.reset(defaultValues);
+              setStepIndex(0);
+              setDone(false);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            },
+          })}
+        </>
+      );
+    }
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="w-full rounded-2xl bg-background p-8 text-center shadow-soft sm:p-12">
@@ -213,7 +237,7 @@ export function MultiStepForm({
             size="md"
             disabled={submitting}
           >
-            {isLast ? "Valider mon lead" : "Suivant"}
+            {isLast ? (submitLabel ?? "Valider mon lead") : "Suivant"}
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
           </Button>
         </div>
