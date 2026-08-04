@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,9 @@ function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-mist px-5 py-16">
       <div className="w-full max-w-md">
         <div className="mb-8 flex justify-center">
-          <Logo size="md" />
+          <Link to="/" aria-label="Retour à l'accueil">
+            <Logo size="md" />
+          </Link>
         </div>
         <div className="rounded-2xl bg-background p-8 shadow-soft">
           <h1 className="text-h2 text-ink">Espace commercial MERCIKI</h1>
