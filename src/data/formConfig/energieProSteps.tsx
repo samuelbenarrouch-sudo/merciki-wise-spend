@@ -15,6 +15,7 @@ export const ACD_URL =
 const requiredMsg = "Ce champ est requis";
 
 export const energieProDefaultValues = {
+  produit: "ENERGIE_PRO",
   enseigneName: "",
   enseigneAddress: "",
   enseigneZip: "",
