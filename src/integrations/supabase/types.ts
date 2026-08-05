@@ -104,6 +104,13 @@ export type Database = {
             foreignKeyName: "contracts_lead_id_fkey"
             columns: ["lead_id"]
             isOneToOne: false
+            referencedRelation: "v_mandates_pending"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
             referencedRelation: "v_potential_duplicates"
             referencedColumns: ["earlier_lead_id"]
           },
@@ -160,6 +167,13 @@ export type Database = {
             columns: ["lead_id"]
             isOneToOne: false
             referencedRelation: "v_leads_admin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_attachments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_mandates_pending"
             referencedColumns: ["id"]
           },
           {
@@ -242,6 +256,13 @@ export type Database = {
             foreignKeyName: "lead_events_lead_id_fkey"
             columns: ["lead_id"]
             isOneToOne: false
+            referencedRelation: "v_mandates_pending"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
             referencedRelation: "v_potential_duplicates"
             referencedColumns: ["earlier_lead_id"]
           },
@@ -269,6 +290,10 @@ export type Database = {
           id: string
           loss_comment: string | null
           loss_reason: Database["public"]["Enums"]["loss_reason"] | null
+          mandate_comment: string | null
+          mandate_sent_at: string | null
+          mandate_signed_at: string | null
+          mandate_status: Database["public"]["Enums"]["mandate_status"]
           notes: string | null
           phone_digits: string | null
           postal_code: string
@@ -296,6 +321,10 @@ export type Database = {
           id?: string
           loss_comment?: string | null
           loss_reason?: Database["public"]["Enums"]["loss_reason"] | null
+          mandate_comment?: string | null
+          mandate_sent_at?: string | null
+          mandate_signed_at?: string | null
+          mandate_status?: Database["public"]["Enums"]["mandate_status"]
           notes?: string | null
           phone_digits?: string | null
           postal_code: string
@@ -323,6 +352,10 @@ export type Database = {
           id?: string
           loss_comment?: string | null
           loss_reason?: Database["public"]["Enums"]["loss_reason"] | null
+          mandate_comment?: string | null
+          mandate_sent_at?: string | null
+          mandate_signed_at?: string | null
+          mandate_status?: Database["public"]["Enums"]["mandate_status"]
           notes?: string | null
           phone_digits?: string | null
           postal_code?: string
@@ -356,6 +389,13 @@ export type Database = {
             columns: ["duplicate_of"]
             isOneToOne: false
             referencedRelation: "v_leads_admin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_duplicate_of_fkey"
+            columns: ["duplicate_of"]
+            isOneToOne: false
+            referencedRelation: "v_mandates_pending"
             referencedColumns: ["id"]
           },
           {
@@ -404,6 +444,7 @@ export type Database = {
           is_active: boolean
           label: string
           redirect_url: string | null
+          requires_mandate: boolean
           sort_order: number
           tunnel: Database["public"]["Enums"]["tunnel_type"]
           vertical: string
@@ -416,6 +457,7 @@ export type Database = {
           is_active?: boolean
           label: string
           redirect_url?: string | null
+          requires_mandate?: boolean
           sort_order?: number
           tunnel: Database["public"]["Enums"]["tunnel_type"]
           vertical: string
@@ -428,6 +470,7 @@ export type Database = {
           is_active?: boolean
           label?: string
           redirect_url?: string | null
+          requires_mandate?: boolean
           sort_order?: number
           tunnel?: Database["public"]["Enums"]["tunnel_type"]
           vertical?: string
@@ -520,6 +563,9 @@ export type Database = {
           details: Json | null
           id: string | null
           loss_reason: Database["public"]["Enums"]["loss_reason"] | null
+          mandate_sent_at: string | null
+          mandate_signed_at: string | null
+          mandate_status: Database["public"]["Enums"]["mandate_status"] | null
           postal_code: string | null
           product_label: string | null
           prospect_email: string | null
@@ -530,6 +576,22 @@ export type Database = {
           status: Database["public"]["Enums"]["lead_status"] | null
           tunnel: Database["public"]["Enums"]["tunnel_type"] | null
           vertical: string | null
+        }
+        Relationships: []
+      }
+      v_mandates_pending: {
+        Row: {
+          commercial_name: string | null
+          company_name: string | null
+          created_at: string | null
+          id: string | null
+          jours_en_attente: number | null
+          mandate_sent_at: string | null
+          mandate_status: Database["public"]["Enums"]["mandate_status"] | null
+          prospect_first_name: string | null
+          prospect_last_name: string | null
+          prospect_phone: string | null
+          reference: string | null
         }
         Relationships: []
       }
@@ -570,13 +632,9 @@ export type Database = {
       }
     }
     Functions: {
-      can_see_lead: { Args: { p_lead_id: string }; Returns: boolean }
-      is_admin: { Args: never; Returns: boolean }
-      is_manager: { Args: never; Returns: boolean }
       jsonb_num: { Args: { p_data: Json; p_key: string }; Returns: number }
       purge_stale_leads: { Args: { p_years?: number }; Returns: number }
       storage_lead_id: { Args: { p_name: string }; Returns: string }
-      visible_commercial_ids: { Args: never; Returns: string[] }
     }
     Enums: {
       commission_status: "estimee" | "confirmee" | "payee" | "annulee"
@@ -605,6 +663,7 @@ export type Database = {
         | "refus_fournisseur"
         | "non_eligible"
         | "autre"
+      mandate_status: "non_requis" | "a_envoyer" | "envoye" | "signe" | "refuse"
       tunnel_type: "particuliers" | "professionnels"
       user_role: "admin" | "manager" | "commercial"
     }
@@ -757,6 +816,7 @@ export const Constants = {
         "non_eligible",
         "autre",
       ],
+      mandate_status: ["non_requis", "a_envoyer", "envoye", "signe", "refuse"],
       tunnel_type: ["particuliers", "professionnels"],
       user_role: ["admin", "manager", "commercial"],
     },

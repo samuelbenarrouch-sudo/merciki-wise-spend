@@ -78,5 +78,3 @@ export const PRODUCTS: Product[] = [
 
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
-
-export const LEADGEN_AUTH_KEY = "merciki_leadgen_auth";
