@@ -5,11 +5,11 @@ import {
   Outlet,
   useNavigate,
   useRouterState,
-  redirect,
 } from "@tanstack/react-router";
-import { LogOut, Menu, X } from "lucide-react";
+import { Loader2, LogOut, Menu, X } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
-import { PRODUCTS, LEADGEN_AUTH_KEY } from "@/data/products";
+import { PRODUCTS } from "@/data/products";
+import { AuthProvider, useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 const NOINDEX_META = [
@@ -19,45 +19,52 @@ const NOINDEX_META = [
 
 export const Route = createFileRoute("/leadgeneration")({
   head: () => ({ meta: NOINDEX_META }),
-  beforeLoad: ({ location }) => {
-    if (typeof window === "undefined") return;
-    const isAuthed =
-      window.sessionStorage.getItem(LEADGEN_AUTH_KEY) === "true";
-    if (!isAuthed && !location.pathname.startsWith("/leadgeneration/login")) {
-      throw redirect({ to: "/leadgeneration/login" });
-    }
-  },
-  component: LeadGenerationLayout,
+  component: LeadGenerationRoot,
 });
+
+function LeadGenerationRoot() {
+  return (
+    <AuthProvider>
+      <LeadGenerationLayout />
+    </AuthProvider>
+  );
+}
 
 function LeadGenerationLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
-  const [authed, setAuthed] = useState<boolean | null>(null);
+  const { status, profile, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const isLoginPage = pathname.startsWith("/leadgeneration/login");
+
   useEffect(() => {
-    const ok = sessionStorage.getItem(LEADGEN_AUTH_KEY) === "true";
-    setAuthed(ok);
-    if (!ok && !pathname.startsWith("/leadgeneration/login")) {
-      navigate({ to: "/leadgeneration/login" });
+    if (!isLoginPage && (status === "unauthenticated" || status === "disabled")) {
+      navigate({ to: "/leadgeneration/login", replace: true });
     }
-  }, [pathname, navigate]);
+  }, [status, isLoginPage, navigate]);
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
   // Login page = no chrome
-  if (pathname.startsWith("/leadgeneration/login")) {
+  if (isLoginPage) {
     return <Outlet />;
   }
 
-  if (authed === null || authed === false) {
-    return null;
+  if (status !== "authenticated") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-mist">
+        <div className="flex flex-col items-center gap-3 text-slate">
+          <Loader2 className="h-8 w-8 animate-spin" strokeWidth={1.75} />
+          <p className="text-small">Chargement de votre espace…</p>
+        </div>
+      </div>
+    );
   }
 
-  const handleLogout = () => {
-    sessionStorage.removeItem(LEADGEN_AUTH_KEY);
-    navigate({ to: "/leadgeneration/login" });
+  const handleLogout = async () => {
+    await signOut();
+    navigate({ to: "/leadgeneration/login", replace: true });
   };
 
   return (
@@ -76,6 +83,11 @@ function LeadGenerationLayout() {
             <Link to="/leadgeneration/dashboard" className="flex items-center">
               <Logo variant="light" size="sm" />
             </Link>
+            {profile?.full_name ? (
+              <span className="hidden text-sm font-medium text-primary-foreground/90 sm:inline">
+                {profile.full_name}
+              </span>
+            ) : null}
           </div>
           <button
             type="button"
