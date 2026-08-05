@@ -2,12 +2,13 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { EnergieProForm } from "@/components/forms/EnergieProForm";
-import { LEADGEN_AUTH_KEY } from "@/data/products";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_public/produits/energie-pro")({
-  beforeLoad: () => {
+  beforeLoad: async () => {
     if (typeof window === "undefined") return;
-    if (window.sessionStorage.getItem(LEADGEN_AUTH_KEY) !== "true") {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
       throw redirect({ to: "/leadgeneration/login" });
     }
   },
