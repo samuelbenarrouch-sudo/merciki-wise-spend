@@ -19,7 +19,7 @@ export interface Product {
   isNew?: boolean;
 }
 
-export const PRODUCTS: Product[] = [
+export const PRODUCTS = [
   {
     id: "energie",
     label: "Énergie",
@@ -74,7 +74,10 @@ export const PRODUCTS: Product[] = [
     icon: ShieldCheck,
     description: "RC Pro, RC Exploitation, Garantie Décennale",
   },
-];
+] as const satisfies readonly Product[];
+
+/** Union des identifiants produits, dérivée de PRODUCTS. */
+export type ProductId = (typeof PRODUCTS)[number]["id"];
 
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
