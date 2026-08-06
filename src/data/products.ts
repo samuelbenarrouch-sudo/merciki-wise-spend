@@ -11,15 +11,31 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+/** Liste exhaustive des identifiants produits. */
+export const PRODUCT_IDS = [
+  "energie",
+  "telecoms",
+  "mutuelle-sante",
+  "sante-animale",
+  "emprunteur",
+  "enr",
+  "monetique",
+  "energie-pro",
+  "assurances-pro",
+] as const;
+
+/** Union des identifiants produits, dérivée de PRODUCT_IDS. */
+export type ProductId = (typeof PRODUCT_IDS)[number];
+
 export interface Product {
-  id: string;
+  id: ProductId;
   label: string;
   icon: LucideIcon;
   description: string;
   isNew?: boolean;
 }
 
-export const PRODUCTS = [
+export const PRODUCTS: Product[] = [
   {
     id: "energie",
     label: "Énergie",
@@ -74,10 +90,7 @@ export const PRODUCTS = [
     icon: ShieldCheck,
     description: "RC Pro, RC Exploitation, Garantie Décennale",
   },
-] as const satisfies readonly Product[];
-
-/** Union des identifiants produits, dérivée de PRODUCTS. */
-export type ProductId = (typeof PRODUCTS)[number]["id"];
+];
 
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
