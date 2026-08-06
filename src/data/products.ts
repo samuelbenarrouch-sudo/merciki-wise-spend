@@ -11,8 +11,24 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+/** Liste exhaustive des identifiants produits. */
+export const PRODUCT_IDS = [
+  "energie",
+  "telecoms",
+  "mutuelle-sante",
+  "sante-animale",
+  "emprunteur",
+  "enr",
+  "monetique",
+  "energie-pro",
+  "assurances-pro",
+] as const;
+
+/** Union des identifiants produits, dérivée de PRODUCT_IDS. */
+export type ProductId = (typeof PRODUCT_IDS)[number];
+
 export interface Product {
-  id: string;
+  id: ProductId;
   label: string;
   icon: LucideIcon;
   description: string;

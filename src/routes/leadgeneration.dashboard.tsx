@@ -57,7 +57,8 @@ function CommercialDashboard() {
               return (
                 <Link
                   key={p.id}
-                  to="/produits/energie-pro"
+                  to="/leadgeneration/product/$productId"
+                  params={{ productId: p.id }}
                   className="group flex flex-col items-center rounded-2xl bg-background p-6 text-center shadow-soft transition-shadow hover:shadow-medium"
                 >
                   <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-accent">

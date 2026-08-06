@@ -26,11 +26,9 @@ import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.
 import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
-import { Route as PublicProduitsIndexRouteImport } from './routes/_public.produits.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
-import { Route as PublicProduitsEnergieProRouteImport } from './routes/_public.produits.energie-pro'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -122,11 +120,6 @@ const PublicProfessionnelsIndexRoute =
     path: '/',
     getParentRoute: () => PublicProfessionnelsRoute,
   } as any)
-const PublicProduitsIndexRoute = PublicProduitsIndexRouteImport.update({
-  id: '/produits/',
-  path: '/produits/',
-  getParentRoute: () => PublicRoute,
-} as any)
 const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -143,12 +136,6 @@ const PublicProfessionnelsSlugRoute =
     id: '/$slug',
     path: '/$slug',
     getParentRoute: () => PublicProfessionnelsRoute,
-  } as any)
-const PublicProduitsEnergieProRoute =
-  PublicProduitsEnergieProRouteImport.update({
-    id: '/produits/energie-pro',
-    path: '/produits/energie-pro',
-    getParentRoute: () => PublicRoute,
   } as any)
 const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   id: '/$slug',
@@ -173,11 +160,9 @@ export interface FileRoutesByFullPath {
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/produits/energie-pro': typeof PublicProduitsEnergieProRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
-  '/produits/': typeof PublicProduitsIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -194,11 +179,9 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/produits/energie-pro': typeof PublicProduitsEnergieProRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
-  '/produits': typeof PublicProduitsIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRoutesById {
@@ -220,11 +203,9 @@ export interface FileRoutesById {
   '/_public/': typeof PublicIndexRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
-  '/_public/produits/energie-pro': typeof PublicProduitsEnergieProRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
-  '/_public/produits/': typeof PublicProduitsIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
 }
 export interface FileRouteTypes {
@@ -246,11 +227,9 @@ export interface FileRouteTypes {
     | '/leadgeneration/login'
     | '/leadgeneration/'
     | '/particuliers/$slug'
-    | '/produits/energie-pro'
     | '/professionnels/$slug'
     | '/leadgeneration/product/$productId'
     | '/particuliers/'
-    | '/produits/'
     | '/professionnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -267,11 +246,9 @@ export interface FileRouteTypes {
     | '/'
     | '/leadgeneration'
     | '/particuliers/$slug'
-    | '/produits/energie-pro'
     | '/professionnels/$slug'
     | '/leadgeneration/product/$productId'
     | '/particuliers'
-    | '/produits'
     | '/professionnels'
   id:
     | '__root__'
@@ -292,11 +269,9 @@ export interface FileRouteTypes {
     | '/_public/'
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
-    | '/_public/produits/energie-pro'
     | '/_public/professionnels/$slug'
     | '/leadgeneration/product/$productId'
     | '/_public/particuliers/'
-    | '/_public/produits/'
     | '/_public/professionnels/'
   fileRoutesById: FileRoutesById
 }
@@ -427,13 +402,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfessionnelsIndexRouteImport
       parentRoute: typeof PublicProfessionnelsRoute
     }
-    '/_public/produits/': {
-      id: '/_public/produits/'
-      path: '/produits'
-      fullPath: '/produits/'
-      preLoaderRoute: typeof PublicProduitsIndexRouteImport
-      parentRoute: typeof PublicRoute
-    }
     '/_public/particuliers/': {
       id: '/_public/particuliers/'
       path: '/'
@@ -454,13 +422,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/professionnels/$slug'
       preLoaderRoute: typeof PublicProfessionnelsSlugRouteImport
       parentRoute: typeof PublicProfessionnelsRoute
-    }
-    '/_public/produits/energie-pro': {
-      id: '/_public/produits/energie-pro'
-      path: '/produits/energie-pro'
-      fullPath: '/produits/energie-pro'
-      preLoaderRoute: typeof PublicProduitsEnergieProRouteImport
-      parentRoute: typeof PublicRoute
     }
     '/_public/particuliers/$slug': {
       id: '/_public/particuliers/$slug'
@@ -508,8 +469,6 @@ interface PublicRouteChildren {
   PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
   PublicProfessionnelsRoute: typeof PublicProfessionnelsRouteWithChildren
   PublicIndexRoute: typeof PublicIndexRoute
-  PublicProduitsEnergieProRoute: typeof PublicProduitsEnergieProRoute
-  PublicProduitsIndexRoute: typeof PublicProduitsIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
@@ -522,8 +481,6 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
   PublicProfessionnelsRoute: PublicProfessionnelsRouteWithChildren,
   PublicIndexRoute: PublicIndexRoute,
-  PublicProduitsEnergieProRoute: PublicProduitsEnergieProRoute,
-  PublicProduitsIndexRoute: PublicProduitsIndexRoute,
 }
 
 const PublicRouteWithChildren =
