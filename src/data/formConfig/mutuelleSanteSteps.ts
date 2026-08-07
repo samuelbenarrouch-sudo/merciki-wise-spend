@@ -209,14 +209,9 @@ export const mutuelleSanteSteps: StepConfig[] = [
     id: "commercial",
     label: "Coordonnées",
     title: "Finalisons votre demande.",
-    fields: ["effectiveDate", "commercialName", "commercialPhone", "rgpd"],
+    fields: ["effectiveDate"],
     schema: z.object({
       effectiveDate: z.string().min(1, requiredMsg),
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
     }),
     render: ({ control }) =>
       createElement(
@@ -230,29 +225,7 @@ export const mutuelleSanteSteps: StepConfig[] = [
           required: true,
           type: "date",
         }),
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
       ),
   },
+  consentStep,
 ];
