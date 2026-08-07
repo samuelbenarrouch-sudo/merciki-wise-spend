@@ -32,6 +32,7 @@ import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.pa
 import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
+import { Route as LeadgenerationAdminLeadLeadIdRouteImport } from './routes/leadgeneration.admin.lead.$leadId'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -155,6 +156,12 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PublicParticuliersRoute,
 } as any)
+const LeadgenerationAdminLeadLeadIdRoute =
+  LeadgenerationAdminLeadLeadIdRouteImport.update({
+    id: '/lead/$leadId',
+    path: '/lead/$leadId',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
   '/leadgeneration/admin/': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -199,6 +207,7 @@ export interface FileRoutesByTo {
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
   '/leadgeneration/admin': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -225,6 +234,7 @@ export interface FileRoutesById {
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
   '/leadgeneration/admin/': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/particuliers/'
     | '/professionnels/'
     | '/leadgeneration/admin/'
+    | '/leadgeneration/admin/lead/$leadId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/particuliers'
     | '/professionnels'
     | '/leadgeneration/admin'
+    | '/leadgeneration/admin/lead/$leadId'
   id:
     | '__root__'
     | '/_public'
@@ -296,6 +308,7 @@ export interface FileRouteTypes {
     | '/_public/particuliers/'
     | '/_public/professionnels/'
     | '/leadgeneration/admin/'
+    | '/leadgeneration/admin/lead/$leadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -467,6 +480,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicParticuliersSlugRouteImport
       parentRoute: typeof PublicParticuliersRoute
     }
+    '/leadgeneration/admin/lead/$leadId': {
+      id: '/leadgeneration/admin/lead/$leadId'
+      path: '/lead/$leadId'
+      fullPath: '/leadgeneration/admin/lead/$leadId'
+      preLoaderRoute: typeof LeadgenerationAdminLeadLeadIdRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
   }
 }
 
@@ -525,10 +545,12 @@ const PublicRouteWithChildren =
 
 interface LeadgenerationAdminRouteChildren {
   LeadgenerationAdminIndexRoute: typeof LeadgenerationAdminIndexRoute
+  LeadgenerationAdminLeadLeadIdRoute: typeof LeadgenerationAdminLeadLeadIdRoute
 }
 
 const LeadgenerationAdminRouteChildren: LeadgenerationAdminRouteChildren = {
   LeadgenerationAdminIndexRoute: LeadgenerationAdminIndexRoute,
+  LeadgenerationAdminLeadLeadIdRoute: LeadgenerationAdminLeadLeadIdRoute,
 }
 
 const LeadgenerationAdminRouteWithChildren =
