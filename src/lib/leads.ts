@@ -190,6 +190,9 @@ export async function uploadLeadFiles(
     return { ok: false, error: "Votre session a expiré. Reconnectez-vous.", uploaded: 0 };
   }
 
+  // NOTE: Cette garde est inerte tant que uploadLeadFiles est appelée
+  // fichier par fichier. La limite de 5 fichiers est actuellement portée
+  // par la validation du champ invoiceFiles (maxFiles = MAX_FILES).
   if (files.length > MAX_FILES) {
     return { ok: false, error: `${MAX_FILES} fichiers maximum.`, uploaded: 0 };
   }

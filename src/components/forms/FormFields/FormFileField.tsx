@@ -85,7 +85,6 @@ export function FormFileField({
               id={name}
               type="file"
               multiple
-              capture="environment"
               accept={ACCEPTED_MIME_TYPES.join(",")}
               className="sr-only"
               onChange={(e) => addFiles(e.target.files)}
