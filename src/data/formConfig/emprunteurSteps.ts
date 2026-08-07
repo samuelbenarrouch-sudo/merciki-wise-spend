@@ -1,16 +1,20 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
-  FormCheckbox,
   FormNumberField,
-  FormRadioGroup,
   FormSelectField,
   FormTextField,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const emprunteurDefaultValues = {
+  ...prospectDefaultValues,
   projectType: "",
   loanAmount: "",
   remainingCapital: "",
@@ -19,18 +23,14 @@ export const emprunteurDefaultValues = {
   currentInsurer: "",
   currentPremium: "",
   dob: "",
-  smoker: "",
   profession: "",
-  riskySport: "",
-  riskySportDetail: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
 
 export const emprunteurSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "project",
     label: "Projet",
@@ -142,17 +142,13 @@ export const emprunteurSteps: StepConfig[] = [
     id: "risk",
     label: "Profil de risque",
     title: "Quelques questions importantes.",
-    fields: ["dob", "smoker", "profession", "riskySport", "riskySportDetail"],
+    fields: ["dob", "profession"],
     schema: z.object({
       dob: z.string().min(1, requiredMsg),
-      smoker: z.string().min(1, requiredMsg),
       profession: z.string().trim().min(1, requiredMsg).max(100),
-      riskySport: z.string().min(1, requiredMsg),
-      riskySportDetail: z.string().trim().max(120).optional().or(z.literal("")),
     }),
-    render: ({ control, watch }) => {
-      const hasRisky = watch("riskySport") === "oui";
-      return createElement(
+    render: ({ control }) =>
+      createElement(
         Fragment,
         null,
         createElement(FormTextField, {
@@ -163,18 +159,6 @@ export const emprunteurSteps: StepConfig[] = [
           required: true,
           type: "date",
         }),
-        createElement(FormRadioGroup, {
-          key: "smoker",
-          control,
-          name: "smoker",
-          label: "Êtes-vous fumeur ?",
-          required: true,
-          options: [
-            { value: "oui", label: "Oui" },
-            { value: "non", label: "Non" },
-            { value: "ancien", label: "Ancien fumeur" },
-          ],
-        }),
         createElement(FormTextField, {
           key: "profession",
           control,
@@ -183,67 +167,7 @@ export const emprunteurSteps: StepConfig[] = [
           required: true,
           placeholder: "ex: Infirmière, Mécanicien, CDI, etc.",
         }),
-        createElement(FormRadioGroup, {
-          key: "riskySport",
-          control,
-          name: "riskySport",
-          label: "Pratiquez-vous un sport à risque ?",
-          required: true,
-          options: [
-            { value: "oui", label: "Oui" },
-            { value: "non", label: "Non" },
-          ],
-        }),
-        hasRisky &&
-          createElement(FormTextField, {
-            key: "riskySportDetail",
-            control,
-            name: "riskySportDetail",
-            label: "Si oui, lequel ?",
-            placeholder: "ex: Parapente, Alpinisme, etc.",
-          }),
-      );
-    },
-  },
-  {
-    id: "commercial",
-    label: "Coordonnées",
-    title: "Vos informations.",
-    fields: ["commercialName", "commercialPhone", "rgpd"],
-    schema: z.object({
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
-    }),
-    render: ({ control }) =>
-      createElement(
-        Fragment,
-        null,
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
       ),
   },
+  consentStep,
 ];
