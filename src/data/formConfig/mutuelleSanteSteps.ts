@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
-  FormCheckbox,
   FormNumberField,
   FormRadioGroup,
   FormScaleField,
@@ -10,9 +9,15 @@ import {
   FormTextarea,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const mutuelleSanteDefaultValues = {
+  ...prospectDefaultValues,
   coverageType: "",
   mainDob: "",
   extraBeneficiaries: "",
@@ -25,9 +30,7 @@ export const mutuelleSanteDefaultValues = {
   needOptique: "",
   needDentaire: "",
   effectiveDate: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
@@ -38,6 +41,7 @@ const scaleSchema = z.coerce
   .max(4);
 
 export const mutuelleSanteSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "coverage-type",
     label: "Type de couverture",
