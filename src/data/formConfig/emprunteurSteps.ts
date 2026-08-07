@@ -11,6 +11,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 export const emprunteurDefaultValues = {
@@ -31,6 +32,7 @@ const requiredMsg = "Ce champ est requis";
 
 export const emprunteurSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "project",
     label: "Projet",

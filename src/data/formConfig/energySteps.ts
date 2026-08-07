@@ -12,6 +12,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 export const energyDefaultValues = {
@@ -34,6 +35,7 @@ const requiredMsg = "Ce champ est requis";
 
 export const energySteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "energy-type",
     label: "Type d'énergie",

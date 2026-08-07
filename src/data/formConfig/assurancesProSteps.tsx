@@ -13,6 +13,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 const requiredMsg = "Ce champ est requis";
@@ -27,8 +28,6 @@ const optionalNumber = z
   .optional();
 
 export const assurancesProDefaultValues = {
-  produit: "ASSURANCES_PRO",
-  verticale: "ASSURANCE",
   ...prospectDefaultValues,
   companyName: "",
   siren: "",
@@ -60,6 +59,7 @@ export const assurancesProDefaultValues = {
 
 export const assurancesProSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "entreprise",
     label: "Entreprise",

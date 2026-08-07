@@ -10,6 +10,7 @@ import {
 import {
   consentDefaultValues,
   consentStep,
+  createProspectContactStep,
   prospectDefaultValues,
   prospectStep,
 } from "./sharedSteps";
@@ -20,7 +21,6 @@ export const ACD_URL =
 const requiredMsg = "Ce champ est requis";
 
 export const energieProDefaultValues = {
-  produit: "ENERGIE_PRO",
   ...prospectDefaultValues,
   companyName: "",
   enseigneAddress: "",
@@ -60,6 +60,8 @@ function AcdCallout() {
 
 export const energieProSteps: StepConfig[] = [
   prospectStep,
+  // Énergie Pro : l'email sert à la signature électronique du mandat ACD.
+  createProspectContactStep({ emailRequired: true }),
   {
     id: "enseigne",
     label: "Enseigne",

@@ -12,6 +12,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 export const santeAnimaleDefaultValues = {
@@ -33,6 +34,7 @@ const requiredMsg = "Ce champ est requis";
 
 export const santeAnimaleSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "animal-type",
     label: "Type d'animal",

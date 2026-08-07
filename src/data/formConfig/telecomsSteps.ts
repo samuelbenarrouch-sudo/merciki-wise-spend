@@ -13,6 +13,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 const requiredMsg = "Ce champ est requis";
@@ -31,6 +32,7 @@ export const telecomsDefaultValues = {
 
 export const telecomsSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "needs",
     label: "Besoins",

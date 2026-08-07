@@ -1,10 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
 import { PRODUCT_IDS, type ProductId } from "@/data/products";
+import type { Database } from "@/integrations/supabase/types";
 
 /**
  * Point d'accès unique en écriture sur la table leads.
  * Aucun composant ne doit appeler supabase.from("leads") directement.
  */
+
+type LeadInsert = Database["public"]["Tables"]["leads"]["Insert"];
 
 /** Champs reconnus comme colonnes. Tout le reste part dans details. */
 export const COMMON_FIELD_KEYS = [
@@ -50,6 +53,11 @@ function text(value: unknown): string | null {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
   return trimmed === "" ? null : trimmed;
+}
+
+/** Comparaison insensible à la casse et aux espaces. */
+function isYes(value: unknown): boolean {
+  return typeof value === "string" && value.trim().toLowerCase() === "oui";
 }
 
 function frenchError(code: string | undefined, message: string): string {
@@ -103,24 +111,24 @@ export async function createLead(
     if (raw) details.montant_mensuel_actuel = raw.replace(",", ".");
   }
 
-  const payload: Record<string, unknown> = {
+  const payload: LeadInsert = {
     product_code: productCode,
     commercial_id: userId,
-    prospect_first_name: text(values.prospectFirstName),
-    prospect_last_name: text(values.prospectLastName),
-    prospect_phone: text(values.prospectPhone),
+    prospect_first_name: text(values.prospectFirstName) ?? "",
+    prospect_last_name: text(values.prospectLastName) ?? "",
+    prospect_phone: text(values.prospectPhone) ?? "",
     prospect_email: text(values.prospectEmail),
-    postal_code: text(values.prospectPostalCode),
+    postal_code: text(values.prospectPostalCode) ?? "",
     company_name: text(values.companyName),
     siren: text(values.siren),
     consent_given: true,
     consent_at: new Date().toISOString(),
     consent_version: CONSENT_VERSION,
-    details,
+    details: details as LeadInsert["details"],
   };
 
   // Énergie Pro : l'ACD déclaré comme envoyé alimente le suivi du mandat.
-  if (productCode === "energie-pro" && values.acdDone === "Oui") {
+  if (productCode === "energie-pro" && isYes(values.acdDone)) {
     payload.mandate_status = "envoye";
   }
 

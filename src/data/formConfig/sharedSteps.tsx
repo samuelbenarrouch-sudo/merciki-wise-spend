@@ -14,35 +14,18 @@ export const prospectDefaultValues = {
   prospectPostalCode: "",
 };
 
-export const prospectSchema = z.object({
+export const prospectIdentitySchema = z.object({
   prospectFirstName: z.string().trim().min(1, requiredMsg).max(80),
   prospectLastName: z.string().trim().min(1, requiredMsg).max(80),
-  prospectPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-  prospectEmail: z
-    .string()
-    .trim()
-    .email("Adresse e-mail invalide")
-    .optional()
-    .or(z.literal("")),
-  prospectPostalCode: z
-    .string()
-    .trim()
-    .regex(/^\d{5}$/, "Code postal invalide (5 chiffres)"),
 });
 
-/** Étape 1 partagée : identité du prospect. */
+/** Écran 1 partagé : identité du prospect. */
 export const prospectStep: StepConfig = {
   id: "prospect",
-  label: "Prospect",
+  label: "Le prospect",
   title: "Qui est le prospect ?",
-  fields: [
-    "prospectFirstName",
-    "prospectLastName",
-    "prospectPhone",
-    "prospectEmail",
-    "prospectPostalCode",
-  ],
-  schema: prospectSchema,
+  fields: ["prospectFirstName", "prospectLastName"],
+  schema: prospectIdentitySchema,
   render: ({ control }) => (
     <>
       <FormTextField
@@ -57,34 +40,79 @@ export const prospectStep: StepConfig = {
         label="Nom du prospect"
         required
       />
-      <FormTextField
-        control={control}
-        name="prospectPhone"
-        label="Téléphone"
-        required
-        type="tel"
-        inputMode="tel"
-        placeholder="06 12 34 56 78"
-      />
-      <FormTextField
-        control={control}
-        name="prospectEmail"
-        label="Email"
-        type="email"
-        inputMode="email"
-        placeholder="prenom.nom@email.fr"
-      />
-      <FormTextField
-        control={control}
-        name="prospectPostalCode"
-        label="Code postal"
-        required
-        inputMode="numeric"
-        placeholder="13008"
-      />
     </>
   ),
 };
+
+/**
+ * Écran 2 partagé : coordonnées du prospect.
+ * `emailRequired` rend l'email obligatoire (Énergie Pro : signature ACD).
+ */
+export function createProspectContactStep(
+  options: { emailRequired?: boolean } = {},
+): StepConfig {
+  const emailRequired = options.emailRequired ?? false;
+  return {
+    id: "prospect-contact",
+    label: "Ses coordonnées",
+    title: "Ses coordonnées",
+    fields: ["prospectPhone", "prospectEmail", "prospectPostalCode"],
+    schema: z.object({
+      prospectPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
+      prospectEmail: emailRequired
+        ? z.string().trim().min(1, requiredMsg).email("Adresse e-mail invalide")
+        : z
+            .string()
+            .trim()
+            .email("Adresse e-mail invalide")
+            .optional()
+            .or(z.literal("")),
+      prospectPostalCode: z
+        .string()
+        .trim()
+        .regex(/^\d{5}$/, "Code postal invalide (5 chiffres)"),
+    }),
+    render: ({ control }) => (
+      <>
+        <FormTextField
+          control={control}
+          name="prospectPhone"
+          label="Téléphone"
+          required
+          type="tel"
+          inputMode="tel"
+          placeholder="06 12 34 56 78"
+        />
+        <FormTextField
+          control={control}
+          name="prospectEmail"
+          label="Email"
+          required={emailRequired}
+          type="email"
+          inputMode="email"
+          placeholder="prenom.nom@email.fr"
+          {...(emailRequired
+            ? {
+                description:
+                  "Nécessaire à la signature électronique du mandat ACD",
+              }
+            : {})}
+        />
+        <FormTextField
+          control={control}
+          name="prospectPostalCode"
+          label="Code postal"
+          required
+          inputMode="numeric"
+          placeholder="13008"
+        />
+      </>
+    ),
+  };
+}
+
+/** Écran 2 partagé, email facultatif (cas par défaut). */
+export const prospectContactStep: StepConfig = createProspectContactStep();
 
 /** Valeurs par défaut du bloc consentement. */
 export const consentDefaultValues = {

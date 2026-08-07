@@ -24,8 +24,6 @@ export interface StepConfig {
 
 export interface SubmissionPayload {
   productId: string;
-  commercialName: string;
-  commercialPhone: string;
   timestamp: string;
   data: Record<string, unknown>;
 }
@@ -112,8 +110,6 @@ export function MultiStepForm({
     saveDraftToLocalStorage(productId, data);
     const payload: SubmissionPayload = {
       productId,
-      commercialName: String(data.commercialName ?? ""),
-      commercialPhone: String(data.commercialPhone ?? ""),
       timestamp: new Date().toISOString(),
       data,
     };

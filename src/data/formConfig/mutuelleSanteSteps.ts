@@ -14,6 +14,7 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 export const mutuelleSanteDefaultValues = {
@@ -42,6 +43,7 @@ const scaleSchema = z.coerce
 
 export const mutuelleSanteSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "coverage-type",
     label: "Type de couverture",
