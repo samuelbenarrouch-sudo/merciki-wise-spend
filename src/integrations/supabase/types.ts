@@ -126,6 +126,7 @@ export type Database = {
       lead_attachments: {
         Row: {
           created_at: string
+          document_type: string
           file_name: string
           id: string
           lead_id: string
@@ -136,6 +137,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          document_type?: string
           file_name: string
           id?: string
           lead_id: string
@@ -146,6 +148,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          document_type?: string
           file_name?: string
           id?: string
           lead_id?: string
