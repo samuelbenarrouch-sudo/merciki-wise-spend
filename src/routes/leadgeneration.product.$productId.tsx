@@ -19,11 +19,30 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
       ],
     };
   },
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     if (!getProduct(params.productId)) throw notFound();
   },
   component: ProductPage,
+  errorComponent: ProductNotFound,
+  notFoundComponent: ProductNotFound,
 });
+
+function ProductNotFound() {
+  return (
+    <div className="py-12 lg:py-16">
+      <Container>
+        <h1 className="text-h2 text-ink">Produit introuvable</h1>
+        <Link
+          to="/leadgeneration/dashboard"
+          className="mt-4 inline-flex items-center gap-2 text-small font-medium text-primary hover:underline"
+        >
+          <ArrowLeft className="h-4 w-4" strokeWidth={1.75} />
+          Retour au tableau de bord
+        </Link>
+      </Container>
+    </div>
+  );
+}
 
 function ProductPage() {
   const { productId } = Route.useParams();

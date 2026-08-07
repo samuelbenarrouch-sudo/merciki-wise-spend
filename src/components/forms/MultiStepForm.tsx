@@ -31,14 +31,8 @@ export interface StepConfig {
   render: (ctx: { control: Control<any>; watch: UseFormWatch<any> }) => ReactNode;
 }
 
-export interface SubmissionPayload {
-  productId: string;
-  timestamp: string;
-  data: Record<string, unknown>;
-}
-
 interface Props {
-  productId: string;
+  productId: ProductId;
   productLabel: string;
   steps: StepConfig[];
   defaultValues: Record<string, unknown>;
@@ -109,7 +103,7 @@ export function MultiStepForm({
     saveDraftToLocalStorage(productId, data);
 
     try {
-      const result = await createLead(productId as ProductId, data);
+      const result = await createLead(productId, data);
       if (result.ok) {
         clearDraftFromLocalStorage(productId);
         setSuccess({
