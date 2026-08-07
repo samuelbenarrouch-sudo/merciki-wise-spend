@@ -6,7 +6,7 @@ import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
-import { Loader2, LogOut, Menu, X } from "lucide-react";
+import { Loader2, LogOut, Menu, Shield, X } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 import { PRODUCTS } from "@/data/products";
 import { AuthProvider, useAuth } from "@/lib/auth";
@@ -89,14 +89,25 @@ function LeadGenerationLayout() {
               </span>
             ) : null}
           </div>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
-          >
-            <LogOut className="h-4 w-4" strokeWidth={1.75} />
-            Déconnexion
-          </button>
+          <div className="flex items-center gap-1">
+            {profile?.role === "admin" && profile.is_active ? (
+              <Link
+                to="/leadgeneration/admin"
+                className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
+              >
+                <Shield className="h-4 w-4" strokeWidth={1.75} />
+                <span className="hidden sm:inline">Administration</span>
+              </Link>
+            ) : null}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
+            >
+              <LogOut className="h-4 w-4" strokeWidth={1.75} />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </button>
+          </div>
         </div>
       </header>
 

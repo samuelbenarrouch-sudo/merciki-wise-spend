@@ -17,6 +17,7 @@ import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
 import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
 import { Route as LeadgenerationAssurancesProRouteImport } from './routes/leadgeneration.assurances-pro'
+import { Route as LeadgenerationAdminRouteImport } from './routes/leadgeneration.admin'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
@@ -25,11 +26,15 @@ import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
 import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
+import { Route as LeadgenerationAdminIndexRouteImport } from './routes/leadgeneration.admin.index'
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
+import { Route as LeadgenerationAdminEquipeRouteImport } from './routes/leadgeneration.admin.equipe'
+import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadgeneration.admin.doublons'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
+import { Route as LeadgenerationAdminLeadLeadIdRouteImport } from './routes/leadgeneration.admin.lead.$leadId'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -71,6 +76,11 @@ const LeadgenerationAssurancesProRoute =
     path: '/assurances-pro',
     getParentRoute: () => LeadgenerationRoute,
   } as any)
+const LeadgenerationAdminRoute = LeadgenerationAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => LeadgenerationRoute,
+} as any)
 const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
   id: '/professionnels',
   path: '/professionnels',
@@ -114,6 +124,12 @@ const PublicAProposRoute = PublicAProposRouteImport.update({
   path: '/a-propos',
   getParentRoute: () => PublicRoute,
 } as any)
+const LeadgenerationAdminIndexRoute =
+  LeadgenerationAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 const PublicProfessionnelsIndexRoute =
   PublicProfessionnelsIndexRouteImport.update({
     id: '/',
@@ -131,6 +147,18 @@ const LeadgenerationProductProductIdRoute =
     path: '/product/$productId',
     getParentRoute: () => LeadgenerationRoute,
   } as any)
+const LeadgenerationAdminEquipeRoute =
+  LeadgenerationAdminEquipeRouteImport.update({
+    id: '/equipe',
+    path: '/equipe',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
+const LeadgenerationAdminDoublonsRoute =
+  LeadgenerationAdminDoublonsRouteImport.update({
+    id: '/doublons',
+    path: '/doublons',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 const PublicProfessionnelsSlugRoute =
   PublicProfessionnelsSlugRouteImport.update({
     id: '/$slug',
@@ -142,6 +170,12 @@ const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PublicParticuliersRoute,
 } as any)
+const LeadgenerationAdminLeadLeadIdRoute =
+  LeadgenerationAdminLeadLeadIdRouteImport.update({
+    id: '/lead/$leadId',
+    path: '/lead/$leadId',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -155,15 +189,20 @@ export interface FileRoutesByFullPath {
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/leadgeneration/admin': typeof LeadgenerationAdminRouteWithChildren
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
+  '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
+  '/leadgeneration/admin/': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -180,9 +219,13 @@ export interface FileRoutesByTo {
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
+  '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
+  '/leadgeneration/admin': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -197,6 +240,7 @@ export interface FileRoutesById {
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/leadgeneration/admin': typeof LeadgenerationAdminRouteWithChildren
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
@@ -204,9 +248,13 @@ export interface FileRoutesById {
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
+  '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
+  '/leadgeneration/admin/': typeof LeadgenerationAdminIndexRoute
+  '/leadgeneration/admin/lead/$leadId': typeof LeadgenerationAdminLeadLeadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -222,15 +270,20 @@ export interface FileRouteTypes {
     | '/particuliers'
     | '/politique-de-confidentialite'
     | '/professionnels'
+    | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
     | '/leadgeneration/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
+    | '/leadgeneration/admin/equipe'
     | '/leadgeneration/product/$productId'
     | '/particuliers/'
     | '/professionnels/'
+    | '/leadgeneration/admin/'
+    | '/leadgeneration/admin/lead/$leadId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
@@ -247,9 +300,13 @@ export interface FileRouteTypes {
     | '/leadgeneration'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
+    | '/leadgeneration/admin/equipe'
     | '/leadgeneration/product/$productId'
     | '/particuliers'
     | '/professionnels'
+    | '/leadgeneration/admin'
+    | '/leadgeneration/admin/lead/$leadId'
   id:
     | '__root__'
     | '/_public'
@@ -263,6 +320,7 @@ export interface FileRouteTypes {
     | '/_public/particuliers'
     | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
+    | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
@@ -270,9 +328,13 @@ export interface FileRouteTypes {
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
+    | '/leadgeneration/admin/equipe'
     | '/leadgeneration/product/$productId'
     | '/_public/particuliers/'
     | '/_public/professionnels/'
+    | '/leadgeneration/admin/'
+    | '/leadgeneration/admin/lead/$leadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -339,6 +401,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationAssurancesProRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
+    '/leadgeneration/admin': {
+      id: '/leadgeneration/admin'
+      path: '/admin'
+      fullPath: '/leadgeneration/admin'
+      preLoaderRoute: typeof LeadgenerationAdminRouteImport
+      parentRoute: typeof LeadgenerationRoute
+    }
     '/_public/professionnels': {
       id: '/_public/professionnels'
       path: '/professionnels'
@@ -395,6 +464,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAProposRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/leadgeneration/admin/': {
+      id: '/leadgeneration/admin/'
+      path: '/'
+      fullPath: '/leadgeneration/admin/'
+      preLoaderRoute: typeof LeadgenerationAdminIndexRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
     '/_public/professionnels/': {
       id: '/_public/professionnels/'
       path: '/'
@@ -416,6 +492,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationProductProductIdRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
+    '/leadgeneration/admin/equipe': {
+      id: '/leadgeneration/admin/equipe'
+      path: '/equipe'
+      fullPath: '/leadgeneration/admin/equipe'
+      preLoaderRoute: typeof LeadgenerationAdminEquipeRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
+    '/leadgeneration/admin/doublons': {
+      id: '/leadgeneration/admin/doublons'
+      path: '/doublons'
+      fullPath: '/leadgeneration/admin/doublons'
+      preLoaderRoute: typeof LeadgenerationAdminDoublonsRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
     '/_public/professionnels/$slug': {
       id: '/_public/professionnels/$slug'
       path: '/$slug'
@@ -429,6 +519,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/particuliers/$slug'
       preLoaderRoute: typeof PublicParticuliersSlugRouteImport
       parentRoute: typeof PublicParticuliersRoute
+    }
+    '/leadgeneration/admin/lead/$leadId': {
+      id: '/leadgeneration/admin/lead/$leadId'
+      path: '/lead/$leadId'
+      fullPath: '/leadgeneration/admin/lead/$leadId'
+      preLoaderRoute: typeof LeadgenerationAdminLeadLeadIdRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
     }
   }
 }
@@ -486,7 +583,25 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface LeadgenerationAdminRouteChildren {
+  LeadgenerationAdminDoublonsRoute: typeof LeadgenerationAdminDoublonsRoute
+  LeadgenerationAdminEquipeRoute: typeof LeadgenerationAdminEquipeRoute
+  LeadgenerationAdminIndexRoute: typeof LeadgenerationAdminIndexRoute
+  LeadgenerationAdminLeadLeadIdRoute: typeof LeadgenerationAdminLeadLeadIdRoute
+}
+
+const LeadgenerationAdminRouteChildren: LeadgenerationAdminRouteChildren = {
+  LeadgenerationAdminDoublonsRoute: LeadgenerationAdminDoublonsRoute,
+  LeadgenerationAdminEquipeRoute: LeadgenerationAdminEquipeRoute,
+  LeadgenerationAdminIndexRoute: LeadgenerationAdminIndexRoute,
+  LeadgenerationAdminLeadLeadIdRoute: LeadgenerationAdminLeadLeadIdRoute,
+}
+
+const LeadgenerationAdminRouteWithChildren =
+  LeadgenerationAdminRoute._addFileChildren(LeadgenerationAdminRouteChildren)
+
 interface LeadgenerationRouteChildren {
+  LeadgenerationAdminRoute: typeof LeadgenerationAdminRouteWithChildren
   LeadgenerationAssurancesProRoute: typeof LeadgenerationAssurancesProRoute
   LeadgenerationDashboardRoute: typeof LeadgenerationDashboardRoute
   LeadgenerationLoginRoute: typeof LeadgenerationLoginRoute
@@ -495,6 +610,7 @@ interface LeadgenerationRouteChildren {
 }
 
 const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
+  LeadgenerationAdminRoute: LeadgenerationAdminRouteWithChildren,
   LeadgenerationAssurancesProRoute: LeadgenerationAssurancesProRoute,
   LeadgenerationDashboardRoute: LeadgenerationDashboardRoute,
   LeadgenerationLoginRoute: LeadgenerationLoginRoute,

@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          from_email: string
+          id: boolean
+          notifications_enabled: boolean
+          recipient_override: string | null
+          site_url: string
+          updated_at: string
+        }
+        Insert: {
+          from_email?: string
+          id?: boolean
+          notifications_enabled?: boolean
+          recipient_override?: string | null
+          site_url?: string
+          updated_at?: string
+        }
+        Update: {
+          from_email?: string
+          id?: boolean
+          notifications_enabled?: boolean
+          recipient_override?: string | null
+          site_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contracts: {
         Row: {
           amount_annual_ht: number | null
