@@ -5,12 +5,17 @@ import {
   FormNumberField,
   FormSelectField,
   FormTextField,
-  FormCheckbox,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const energyDefaultValues = {
+  ...prospectDefaultValues,
   energyType: [] as string[],
   housingType: "",
   occupants: "",
@@ -22,14 +27,13 @@ export const energyDefaultValues = {
   pdl: "",
   pce: "",
   contractEnd: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
 
 export const energySteps: StepConfig[] = [
+  prospectStep,
   {
     id: "energy-type",
     label: "Type d'énergie",
