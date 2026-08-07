@@ -8,6 +8,12 @@ import {
   FormTextField,
   FormTextarea,
 } from "@/components/forms/FormFields";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 const requiredMsg = "Ce champ est requis";
 const ouiNon = [
@@ -23,13 +29,11 @@ const optionalNumber = z
 export const assurancesProDefaultValues = {
   produit: "ASSURANCES_PRO",
   verticale: "ASSURANCE",
-  commercialFirstName: "",
-  commercialLastName: "",
+  ...prospectDefaultValues,
   companyName: "",
-  companySiren: "",
+  siren: "",
   legalForm: "",
   companyAddress: "",
-  companyZip: "",
   companyCity: "",
   companyCreatedAt: "",
   mainActivity: "",
@@ -51,62 +55,31 @@ export const assurancesProDefaultValues = {
   partner: "",
   effectiveDate: "",
   comments: "",
+  ...consentDefaultValues,
 };
 
 export const assurancesProSteps: StepConfig[] = [
-  {
-    id: "commercial",
-    label: "Commercial",
-    title: "Commercial Merciki",
-    fields: ["commercialFirstName", "commercialLastName"],
-    schema: z.object({
-      commercialFirstName: z.string().trim().min(1, requiredMsg).max(80),
-      commercialLastName: z.string().trim().min(1, requiredMsg).max(80),
-    }),
-    render: ({ control }) => (
-      <>
-        <FormTextField
-          control={control}
-          name="commercialFirstName"
-          label="Prénom du commercial"
-          required
-          placeholder="Ex. Julien"
-        />
-        <FormTextField
-          control={control}
-          name="commercialLastName"
-          label="Nom du commercial"
-          required
-          placeholder="Ex. Dupont"
-        />
-      </>
-    ),
-  },
+  prospectStep,
   {
     id: "entreprise",
     label: "Entreprise",
     title: "Identification de l'entreprise cliente",
     fields: [
       "companyName",
-      "companySiren",
+      "siren",
       "legalForm",
       "companyAddress",
-      "companyZip",
       "companyCity",
       "companyCreatedAt",
     ],
     schema: z.object({
       companyName: z.string().trim().min(1, requiredMsg).max(150),
-      companySiren: z
+      siren: z
         .string()
         .trim()
         .regex(/^\d{9}$|^\d{14}$/, "SIREN (9 chiffres) ou SIRET (14 chiffres)"),
       legalForm: z.string().trim().min(1, requiredMsg),
       companyAddress: z.string().trim().min(1, requiredMsg).max(200),
-      companyZip: z
-        .string()
-        .trim()
-        .regex(/^\d{5}$/, "Code postal invalide (5 chiffres)"),
       companyCity: z.string().trim().min(1, requiredMsg).max(100),
       companyCreatedAt: optionalText,
     }),
@@ -121,7 +94,7 @@ export const assurancesProSteps: StepConfig[] = [
         />
         <FormTextField
           control={control}
-          name="companySiren"
+          name="siren"
           label="SIREN ou SIRET"
           required
           inputMode="numeric"
@@ -150,14 +123,6 @@ export const assurancesProSteps: StepConfig[] = [
           label="Adresse du siège"
           required
           placeholder="12 rue des Artisans"
-        />
-        <FormTextField
-          control={control}
-          name="companyZip"
-          label="Code postal"
-          required
-          inputMode="numeric"
-          placeholder="13008"
         />
         <FormTextField
           control={control}
@@ -451,4 +416,5 @@ export const assurancesProSteps: StepConfig[] = [
       </>
     ),
   },
+  consentStep,
 ];
