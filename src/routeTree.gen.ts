@@ -17,6 +17,7 @@ import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
 import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
 import { Route as LeadgenerationAssurancesProRouteImport } from './routes/leadgeneration.assurances-pro'
+import { Route as LeadgenerationAdminRouteImport } from './routes/leadgeneration.admin'
 import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
@@ -71,6 +72,11 @@ const LeadgenerationAssurancesProRoute =
     path: '/assurances-pro',
     getParentRoute: () => LeadgenerationRoute,
   } as any)
+const LeadgenerationAdminRoute = LeadgenerationAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => LeadgenerationRoute,
+} as any)
 const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
   id: '/professionnels',
   path: '/professionnels',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/leadgeneration/admin': typeof LeadgenerationAdminRoute
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/contact': typeof PublicContactRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
+  '/leadgeneration/admin': typeof LeadgenerationAdminRoute
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/_public/professionnels': typeof PublicProfessionnelsRouteWithChildren
+  '/leadgeneration/admin': typeof LeadgenerationAdminRoute
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/particuliers'
     | '/politique-de-confidentialite'
     | '/professionnels'
+    | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/mentions-legales'
     | '/politique-de-confidentialite'
+    | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/_public/particuliers'
     | '/_public/politique-de-confidentialite'
     | '/_public/professionnels'
+    | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
     | '/leadgeneration/login'
@@ -337,6 +349,13 @@ declare module '@tanstack/react-router' {
       path: '/assurances-pro'
       fullPath: '/leadgeneration/assurances-pro'
       preLoaderRoute: typeof LeadgenerationAssurancesProRouteImport
+      parentRoute: typeof LeadgenerationRoute
+    }
+    '/leadgeneration/admin': {
+      id: '/leadgeneration/admin'
+      path: '/admin'
+      fullPath: '/leadgeneration/admin'
+      preLoaderRoute: typeof LeadgenerationAdminRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
     '/_public/professionnels': {
@@ -487,6 +506,7 @@ const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 interface LeadgenerationRouteChildren {
+  LeadgenerationAdminRoute: typeof LeadgenerationAdminRoute
   LeadgenerationAssurancesProRoute: typeof LeadgenerationAssurancesProRoute
   LeadgenerationDashboardRoute: typeof LeadgenerationDashboardRoute
   LeadgenerationLoginRoute: typeof LeadgenerationLoginRoute
@@ -495,6 +515,7 @@ interface LeadgenerationRouteChildren {
 }
 
 const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
+  LeadgenerationAdminRoute: LeadgenerationAdminRoute,
   LeadgenerationAssurancesProRoute: LeadgenerationAssurancesProRoute,
   LeadgenerationDashboardRoute: LeadgenerationDashboardRoute,
   LeadgenerationLoginRoute: LeadgenerationLoginRoute,
