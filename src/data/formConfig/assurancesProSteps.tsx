@@ -28,8 +28,6 @@ const optionalNumber = z
   .optional();
 
 export const assurancesProDefaultValues = {
-  produit: "ASSURANCES_PRO",
-  verticale: "ASSURANCE",
   ...prospectDefaultValues,
   companyName: "",
   siren: "",
