@@ -23,6 +23,8 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
     if (!getProduct(params.productId)) throw notFound();
   },
   component: ProductPage,
+  errorComponent: ProductNotFound,
+  notFoundComponent: ProductNotFound,
 });
 
 function ProductNotFound() {
