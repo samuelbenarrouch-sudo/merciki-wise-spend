@@ -17,8 +17,33 @@ import {
   loadDraftFromLocalStorage,
   saveDraftToLocalStorage,
 } from "@/lib/localStorage";
-import { createLead } from "@/lib/leads";
+import { createLead, uploadLeadFiles } from "@/lib/leads";
 import type { ProductId } from "@/data/products";
+
+/** Un File ne se sérialise pas : on l'écarte du brouillon et du payload lead. */
+function isFileValue(value: unknown): boolean {
+  if (typeof File === "undefined") return false;
+  if (value instanceof File) return true;
+  return Array.isArray(value) && value.some((v) => v instanceof File);
+}
+
+function extractFiles(values: Record<string, unknown>): File[] {
+  const files: File[] = [];
+  for (const value of Object.values(values)) {
+    if (typeof File === "undefined") break;
+    if (value instanceof File) files.push(value);
+    else if (Array.isArray(value)) {
+      for (const v of value) if (v instanceof File) files.push(v);
+    }
+  }
+  return files;
+}
+
+function withoutFiles(values: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(values).filter(([, v]) => !isFileValue(v)),
+  );
+}
 
 export interface StepConfig {
   id: string;
@@ -69,9 +94,17 @@ export function MultiStepForm({
     reference: string;
     prospect: string;
     phone: string;
+    leadId: string;
+    filesTotal: number;
   } | null>(null);
+  // Téléversement : uniquement après création du lead (le chemin en dépend).
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [uploadedCount, setUploadedCount] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   // Verrou synchrone : un double tap mobile ne peut pas lancer deux envois.
   const submitLock = useRef(false);
+  const uploadLock = useRef(false);
 
   const current = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
@@ -87,10 +120,45 @@ export function MultiStepForm({
   // Sauvegarde locale à chaque modification du formulaire.
   useEffect(() => {
     const subscription = form.watch((values) => {
-      saveDraftToLocalStorage(productId, values as Record<string, unknown>);
+      saveDraftToLocalStorage(
+        productId,
+        withoutFiles(values as Record<string, unknown>),
+      );
     });
     return () => subscription.unsubscribe();
   }, [form, productId]);
+
+  /**
+   * Envoie les fichiers restants, un par un, pour afficher une progression
+   * fidèle et ne relancer que ceux qui manquent en cas de reprise.
+   */
+  const runUpload = async (leadId: string, files: File[], startAt: number) => {
+    if (uploadLock.current) return;
+    uploadLock.current = true;
+    setUploading(true);
+    setUploadError(null);
+
+    let index = startAt;
+    try {
+      for (; index < files.length; index++) {
+        const result = await uploadLeadFiles(leadId, [files[index]]);
+        if (!result.ok) {
+          setUploadError(result.error);
+          break;
+        }
+        setUploadedCount(index + 1);
+      }
+    } catch (e) {
+      setUploadError(
+        `Envoi des fichiers impossible. (${
+          e instanceof Error ? e.message : "erreur inattendue"
+        })`,
+      );
+    } finally {
+      setUploading(false);
+      uploadLock.current = false;
+    }
+  };
 
   const submit = async () => {
     if (submitLock.current) return;
@@ -99,21 +167,31 @@ export function MultiStepForm({
     setSubmitError(null);
 
     const data = form.getValues() as Record<string, unknown>;
+    const files = extractFiles(data);
+    const payload = withoutFiles(data);
     // Sauvegarde locale avant envoi (protection contre les pertes).
-    saveDraftToLocalStorage(productId, data);
+    saveDraftToLocalStorage(productId, payload);
 
     try {
-      const result = await createLead(productId, data);
+      const result = await createLead(productId, payload);
       if (result.ok) {
         clearDraftFromLocalStorage(productId);
+        setPendingFiles(files);
+        setUploadedCount(0);
+        setUploadError(null);
         setSuccess({
           reference: result.reference,
+          leadId: result.id,
+          filesTotal: files.length,
           prospect: [data.prospectFirstName, data.prospectLastName]
             .filter(Boolean)
             .join(" "),
           phone: String(data.prospectPhone ?? ""),
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
+        if (files.length > 0) {
+          void runUpload(result.id, files, 0);
+        }
       } else {
         // La saisie reste intacte : ni reset, ni effacement du brouillon.
         setSubmitError(result.error);
@@ -180,6 +258,50 @@ export function MultiStepForm({
             </p>
             <p className="mt-1 text-h3 text-ink">{success.reference}</p>
           </div>
+
+          {success.filesTotal > 0 && (
+            <div className="mx-auto mt-4 max-w-md text-left">
+              {uploading ? (
+                <p className="flex items-center gap-2 rounded-xl bg-mist p-4 text-body text-ink">
+                  <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                  Envoi des fichiers ({uploadedCount + 1}/{success.filesTotal})…
+                </p>
+              ) : uploadError ? (
+                <div
+                  role="alert"
+                  className="flex items-start gap-3 rounded-xl bg-mist p-4"
+                >
+                  <AlertTriangle
+                    className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+                    strokeWidth={1.75}
+                  />
+                  <div className="space-y-3">
+                    <p className="text-body text-ink">
+                      Le lead est bien enregistré, mais l'envoi des fichiers a
+                      échoué ({uploadedCount}/{success.filesTotal} déposés).
+                    </p>
+                    <p className="text-small text-slate">{uploadError}</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="md"
+                      onClick={() =>
+                        void runUpload(success.leadId, pendingFiles, uploadedCount)
+                      }
+                    >
+                      Renvoyer les fichiers
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="rounded-xl bg-mist p-4 text-body text-ink">
+                  {uploadedCount} fichier{uploadedCount > 1 ? "s" : ""} déposé
+                  {uploadedCount > 1 ? "s" : ""}.
+                </p>
+              )}
+            </div>
+          )}
+
           <dl className="mx-auto mt-6 max-w-md space-y-2 text-left text-body">
             <div className="flex justify-between gap-4">
               <dt className="text-slate">Prospect</dt>
@@ -199,11 +321,15 @@ export function MultiStepForm({
               type="button"
               variant="primary"
               size="lg"
+              disabled={uploading}
               onClick={() => {
                 form.reset({ ...defaultValues });
                 setStepIndex(0);
                 setSuccess(null);
                 setSubmitError(null);
+                setPendingFiles([]);
+                setUploadedCount(0);
+                setUploadError(null);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >

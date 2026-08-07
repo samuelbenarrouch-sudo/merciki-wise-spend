@@ -2,6 +2,7 @@ import { z } from "zod";
 import { ExternalLink, AlertTriangle } from "lucide-react";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
+  FormFileField,
   FormRadioGroup,
   FormTextField,
   FormTextarea,
@@ -26,7 +27,7 @@ export const energieProDefaultValues = {
   enseigneAddress: "",
   contractEnd: "",
   acdDone: "",
-  invoicesLink: "",
+  invoiceFiles: [] as File[],
   appointment: "",
   comments: "",
   ...consentDefaultValues,
@@ -139,28 +140,26 @@ export const energieProSteps: StepConfig[] = [
     id: "factures",
     label: "Factures",
     title: "Factures d'énergie du client",
-    fields: ["invoicesLink"],
+    fields: ["invoiceFiles"],
     schema: z.object({
-      invoicesLink: z
-        .string()
-        .trim()
-        .min(1, requiredMsg)
-        .url("Lien invalide (doit commencer par https://)"),
+      invoiceFiles: z
+        .array(z.custom<File>((v) => typeof File !== "undefined" && v instanceof File))
+        .min(1, "Ajoutez au moins un fichier")
+        .max(5, "5 fichiers maximum"),
     }),
     render: ({ control }) => (
       <>
-        <FormTextField
+        <FormFileField
           control={control}
-          name="invoicesLink"
-          label="Lien vers les factures (Drive, WeTransfer…)"
+          name="invoiceFiles"
+          label="Factures d'énergie"
           required
-          placeholder="https://drive.google.com/…"
-          description="Si le client est en Heure Pleine / Heure Creuse ou Saison Haute (hiver) / Saison Basse (été), fournissez une facture pour chaque saison (une hiver et une été)."
+          description="Photo ou PDF de vos dernières factures. 5 fichiers maximum, 10 Mo par fichier."
         />
         <p className="rounded-xl bg-mist p-4 text-small text-slate">
-          Le dépôt direct de fichiers n'est pas encore pris en charge par le
-          connecteur de collecte : déposez les factures (PDF, JPG ou PNG) sur
-          un Drive ou WeTransfer, puis collez ici le lien de partage.
+          Si le client est en Heure Pleine / Heure Creuse ou Saison Haute
+          (hiver) / Saison Basse (été), fournissez une facture pour chaque
+          saison (une hiver et une été).
         </p>
       </>
     ),
