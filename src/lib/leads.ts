@@ -126,9 +126,10 @@ export async function createLead(
 
   const { data, error } = await supabase
     .from("leads")
-    .insert(payload)
+    .insert(payload as any)
     .select("id, reference")
     .single();
+
 
   if (error) {
     console.error("[createLead]", error);
