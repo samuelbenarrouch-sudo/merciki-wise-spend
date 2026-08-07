@@ -210,4 +210,5 @@ export const energieProSteps: StepConfig[] = [
       </>
     ),
   },
+  consentStep,
 ];
