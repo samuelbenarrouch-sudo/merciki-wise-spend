@@ -145,3 +145,101 @@ export async function createLead(
 
   return { ok: true, id: data.id, reference: data.reference };
 }
+
+/** Contraintes de téléversement — doivent rester alignées sur celles du bucket. */
+export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
+export const MAX_FILES = 5;
+export const ACCEPTED_MIME_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/heic",
+  "image/heif",
+] as const;
+
+export type UploadLeadFilesResult =
+  | { ok: true; uploaded: number }
+  | { ok: false; error: string; uploaded: number };
+
+/** Nettoie un nom de fichier pour un usage sûr comme chemin de stockage. */
+function safeFileName(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .slice(-120);
+}
+
+/**
+ * Dépose des fichiers rattachés à un lead EXISTANT.
+ * Le chemin suit la convention <lead_id>/<fichier> imposée par les règles de
+ * sécurité du bucket : le droit de déposer découle du droit de voir le lead.
+ *
+ * Renvoie le nombre de fichiers effectivement envoyés, y compris en cas
+ * d'échec : l'appelant peut ainsi ne relancer que ceux qui restent.
+ */
+export async function uploadLeadFiles(
+  leadId: string,
+  files: File[],
+  documentType: "facture" | "mandat" | "contrat" | "piece_identite" | "autre" = "facture",
+): Promise<UploadLeadFilesResult> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const userId = sessionData.session?.user?.id;
+  if (!userId) {
+    return { ok: false, error: "Votre session a expiré. Reconnectez-vous.", uploaded: 0 };
+  }
+
+  if (files.length > MAX_FILES) {
+    return { ok: false, error: `${MAX_FILES} fichiers maximum.`, uploaded: 0 };
+  }
+
+  let uploaded = 0;
+
+  for (const file of files) {
+    if (file.size > MAX_FILE_SIZE) {
+      return { ok: false, error: `« ${file.name} » dépasse 10 Mo.`, uploaded };
+    }
+
+    const path = `${leadId}/${Date.now()}-${safeFileName(file.name)}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("lead-files")
+      .upload(path, file, { contentType: file.type || undefined, upsert: false });
+
+    if (uploadError) {
+      console.error("[uploadLeadFiles] storage", uploadError);
+      return {
+        ok: false,
+        error: `Envoi de « ${file.name} » impossible : ${uploadError.message}`,
+        uploaded,
+      };
+    }
+
+    const { error: rowError } = await supabase.from("lead_attachments").insert({
+      lead_id: leadId,
+      storage_path: path,
+      file_name: file.name,
+      mime_type: file.type || null,
+      size_bytes: file.size,
+      uploaded_by: userId,
+      document_type: documentType,
+    });
+
+    if (rowError) {
+      // Le fichier est déposé mais non référencé : on le retire pour ne pas
+      // laisser d'orphelin invisible dans le bucket.
+      await supabase.storage.from("lead-files").remove([path]);
+      console.error("[uploadLeadFiles] attachment", rowError);
+      return {
+        ok: false,
+        error: `Enregistrement de « ${file.name} » impossible : ${rowError.message}`,
+        uploaded,
+      };
+    }
+
+    uploaded++;
+  }
+
+  return { ok: true, uploaded };
+}
