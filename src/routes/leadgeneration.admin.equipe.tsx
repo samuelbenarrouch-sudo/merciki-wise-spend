@@ -161,13 +161,11 @@ function AdminTeamPage() {
                           aria-label={`Manager de ${member.full_name}`}
                         >
                           <option value="">Aucun</option>
-                          {managers
-                            .filter((m) => m.id !== member.id)
-                            .map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.full_name}
-                              </option>
-                            ))}
+                          {eligibleManagers(managers, members, member.id).map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.full_name}
+                            </option>
+                          ))}
                         </select>
                       </td>
                       <td className="px-4 py-2">
