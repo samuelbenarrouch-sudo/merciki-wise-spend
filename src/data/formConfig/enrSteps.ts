@@ -15,7 +15,6 @@ import {
   prospectDefaultValues,
   prospectStep,
   prospectContactStep,
-  prospectContactStep,
 } from "./sharedSteps";
 
 export const enrDefaultValues = {
@@ -37,6 +36,7 @@ const requiredMsg = "Ce champ est requis";
 
 export const enrSteps: StepConfig[] = [
   prospectStep,
+  prospectContactStep,
   {
     id: "equipment",
     label: "Équipement",
