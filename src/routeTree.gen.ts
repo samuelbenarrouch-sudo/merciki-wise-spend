@@ -30,6 +30,7 @@ import { Route as LeadgenerationAdminIndexRouteImport } from './routes/leadgener
 import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
 import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
+import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadgeneration.admin.doublons'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 import { Route as LeadgenerationAdminLeadLeadIdRouteImport } from './routes/leadgeneration.admin.lead.$leadId'
@@ -145,6 +146,12 @@ const LeadgenerationProductProductIdRoute =
     path: '/product/$productId',
     getParentRoute: () => LeadgenerationRoute,
   } as any)
+const LeadgenerationAdminDoublonsRoute =
+  LeadgenerationAdminDoublonsRouteImport.update({
+    id: '/doublons',
+    path: '/doublons',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 const PublicProfessionnelsSlugRoute =
   PublicProfessionnelsSlugRouteImport.update({
     id: '/$slug',
@@ -182,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers/': typeof PublicParticuliersIndexRoute
   '/professionnels/': typeof PublicProfessionnelsIndexRoute
@@ -203,6 +211,7 @@ export interface FileRoutesByTo {
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/particuliers': typeof PublicParticuliersIndexRoute
   '/professionnels': typeof PublicProfessionnelsIndexRoute
@@ -230,6 +239,7 @@ export interface FileRoutesById {
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
+  '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/product/$productId': typeof LeadgenerationProductProductIdRoute
   '/_public/particuliers/': typeof PublicParticuliersIndexRoute
   '/_public/professionnels/': typeof PublicProfessionnelsIndexRoute
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/leadgeneration/'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
     | '/leadgeneration/product/$productId'
     | '/particuliers/'
     | '/professionnels/'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/leadgeneration'
     | '/particuliers/$slug'
     | '/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
     | '/leadgeneration/product/$productId'
     | '/particuliers'
     | '/professionnels'
@@ -304,6 +316,7 @@ export interface FileRouteTypes {
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
+    | '/leadgeneration/admin/doublons'
     | '/leadgeneration/product/$productId'
     | '/_public/particuliers/'
     | '/_public/professionnels/'
@@ -466,6 +479,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationProductProductIdRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
+    '/leadgeneration/admin/doublons': {
+      id: '/leadgeneration/admin/doublons'
+      path: '/doublons'
+      fullPath: '/leadgeneration/admin/doublons'
+      preLoaderRoute: typeof LeadgenerationAdminDoublonsRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
     '/_public/professionnels/$slug': {
       id: '/_public/professionnels/$slug'
       path: '/$slug'
@@ -544,11 +564,13 @@ const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 interface LeadgenerationAdminRouteChildren {
+  LeadgenerationAdminDoublonsRoute: typeof LeadgenerationAdminDoublonsRoute
   LeadgenerationAdminIndexRoute: typeof LeadgenerationAdminIndexRoute
   LeadgenerationAdminLeadLeadIdRoute: typeof LeadgenerationAdminLeadLeadIdRoute
 }
 
 const LeadgenerationAdminRouteChildren: LeadgenerationAdminRouteChildren = {
+  LeadgenerationAdminDoublonsRoute: LeadgenerationAdminDoublonsRoute,
   LeadgenerationAdminIndexRoute: LeadgenerationAdminIndexRoute,
   LeadgenerationAdminLeadLeadIdRoute: LeadgenerationAdminLeadLeadIdRoute,
 }
