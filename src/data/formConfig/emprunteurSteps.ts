@@ -11,6 +11,8 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 export const emprunteurDefaultValues = {

@@ -13,6 +13,8 @@ import {
   consentStep,
   prospectDefaultValues,
   prospectStep,
+  prospectContactStep,
+  prospectContactStep,
 } from "./sharedSteps";
 
 const requiredMsg = "Ce champ est requis";
