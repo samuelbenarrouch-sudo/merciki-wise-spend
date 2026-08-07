@@ -258,6 +258,50 @@ export function MultiStepForm({
             </p>
             <p className="mt-1 text-h3 text-ink">{success.reference}</p>
           </div>
+
+          {success.filesTotal > 0 && (
+            <div className="mx-auto mt-4 max-w-md text-left">
+              {uploading ? (
+                <p className="flex items-center gap-2 rounded-xl bg-mist p-4 text-body text-ink">
+                  <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                  Envoi des fichiers ({uploadedCount + 1}/{success.filesTotal})…
+                </p>
+              ) : uploadError ? (
+                <div
+                  role="alert"
+                  className="flex items-start gap-3 rounded-xl bg-mist p-4"
+                >
+                  <AlertTriangle
+                    className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+                    strokeWidth={1.75}
+                  />
+                  <div className="space-y-3">
+                    <p className="text-body text-ink">
+                      Le lead est bien enregistré, mais l'envoi des fichiers a
+                      échoué ({uploadedCount}/{success.filesTotal} déposés).
+                    </p>
+                    <p className="text-small text-slate">{uploadError}</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="md"
+                      onClick={() =>
+                        void runUpload(success.leadId, pendingFiles, uploadedCount)
+                      }
+                    >
+                      Renvoyer les fichiers
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="rounded-xl bg-mist p-4 text-body text-ink">
+                  {uploadedCount} fichier{uploadedCount > 1 ? "s" : ""} déposé
+                  {uploadedCount > 1 ? "s" : ""}.
+                </p>
+              )}
+            </div>
+          )}
+
           <dl className="mx-auto mt-6 max-w-md space-y-2 text-left text-body">
             <div className="flex justify-between gap-4">
               <dt className="text-slate">Prospect</dt>
@@ -277,11 +321,15 @@ export function MultiStepForm({
               type="button"
               variant="primary"
               size="lg"
+              disabled={uploading}
               onClick={() => {
                 form.reset({ ...defaultValues });
                 setStepIndex(0);
                 setSuccess(null);
                 setSubmitError(null);
+                setPendingFiles([]);
+                setUploadedCount(0);
+                setUploadError(null);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
