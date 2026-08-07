@@ -212,22 +212,30 @@ export async function listAttachments(
   }
 
   const rows = data ?? [];
-  const signed = await Promise.all(
-    rows.map(async (row) => {
-      const { data: urlData } = await supabase.storage
-        .from("lead-files")
-        .createSignedUrl(row.storage_path, SIGNED_URL_TTL);
-      return {
-        id: row.id,
-        file_name: row.file_name,
-        size_bytes: row.size_bytes,
-        mime_type: row.mime_type,
-        document_type: row.document_type,
-        created_at: row.created_at,
-        signedUrl: urlData?.signedUrl ?? null,
-      };
-    }),
-  );
+  if (rows.length === 0) return { ok: true, data: [] };
+
+  // Une seule signature groupée pour tous les fichiers du lead.
+  const { data: signedData } = await supabase.storage
+    .from("lead-files")
+    .createSignedUrls(
+      rows.map((row) => row.storage_path),
+      SIGNED_URL_TTL,
+    );
+
+  const urlByPath = new Map<string, string>();
+  for (const entry of signedData ?? []) {
+    if (entry.path && entry.signedUrl) urlByPath.set(entry.path, entry.signedUrl);
+  }
+
+  const signed = rows.map((row) => ({
+    id: row.id,
+    file_name: row.file_name,
+    size_bytes: row.size_bytes,
+    mime_type: row.mime_type,
+    document_type: row.document_type,
+    created_at: row.created_at,
+    signedUrl: urlByPath.get(row.storage_path) ?? null,
+  }));
 
   return { ok: true, data: signed };
 }

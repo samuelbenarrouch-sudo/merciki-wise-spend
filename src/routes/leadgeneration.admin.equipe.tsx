@@ -31,6 +31,30 @@ function formatDate(value: string): string {
   return new Date(value).toLocaleDateString("fr-FR");
 }
 
+/**
+ * Managers sélectionnables pour un profil : on écarte le profil lui-même et
+ * tous ses subordonnés (directs ou indirects), sans quoi un cycle de
+ * rattachement A -> B -> A deviendrait possible.
+ */
+function eligibleManagers(
+  managers: TeamMember[],
+  members: TeamMember[],
+  memberId: string,
+): TeamMember[] {
+  const subordinates = new Set<string>([memberId]);
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const m of members) {
+      if (m.manager_id && subordinates.has(m.manager_id) && !subordinates.has(m.id)) {
+        subordinates.add(m.id);
+        grew = true;
+      }
+    }
+  }
+  return managers.filter((m) => !subordinates.has(m.id));
+}
+
 function AdminTeamPage() {
   const queryClient = useQueryClient();
   const teamQuery = useQuery({ queryKey: ["admin-team"], queryFn: () => listTeam() });
@@ -137,13 +161,11 @@ function AdminTeamPage() {
                           aria-label={`Manager de ${member.full_name}`}
                         >
                           <option value="">Aucun</option>
-                          {managers
-                            .filter((m) => m.id !== member.id)
-                            .map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.full_name}
-                              </option>
-                            ))}
+                          {eligibleManagers(managers, members, member.id).map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.full_name}
+                            </option>
+                          ))}
                         </select>
                       </td>
                       <td className="px-4 py-2">

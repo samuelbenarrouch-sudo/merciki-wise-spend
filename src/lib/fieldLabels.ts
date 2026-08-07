@@ -75,7 +75,36 @@ function walk(node: ReactNode, out: FieldMap): void {
 
 /** Contexte factice : les composants de champ ne sont jamais exécutés. */
 const fakeControl = {} as Control<any>;
-const fakeWatch = (() => undefined) as unknown as UseFormWatch<any>;
+
+function makeWatch(values: Record<string, unknown>): UseFormWatch<any> {
+  return ((name?: string) =>
+    typeof name === "string" ? values[name] : values) as unknown as UseFormWatch<any>;
+}
+
+/**
+ * Valeurs candidates pour déclencher les branches conditionnelles d'un champ :
+ * ses propres options (connues du premier passage), la liste complète de ces
+ * options (champs à choix multiples), et quelques valeurs génériques couvrant
+ * les conditions booléennes ou numériques. Aucune clé de champ n'est codée en
+ * dur : seules les valeurs possibles sont explorées.
+ */
+function candidateValues(meta: FieldMeta | undefined): unknown[] {
+  const optionValues = meta?.options ? Object.keys(meta.options) : [];
+  return [...optionValues, optionValues, "oui", "non", true, 1];
+}
+
+function renderStep(
+  step: StepConfig,
+  values: Record<string, unknown>,
+  out: FieldMap,
+): void {
+  try {
+    walk(step.render({ control: fakeControl, watch: makeWatch(values) }), out);
+  } catch {
+    // Une branche conditionnelle peut dépendre d'une valeur incompatible :
+    // on ignore ce sondage plutôt que de perdre le reste de la résolution.
+  }
+}
 
 function buildFieldMap(productCode: string): FieldMap {
   const cached = cache.get(productCode);
@@ -83,15 +112,26 @@ function buildFieldMap(productCode: string): FieldMap {
 
   const steps = STEPS_BY_PRODUCT[productCode as ProductId] ?? [];
   const out: FieldMap = {};
+
   for (const step of steps) {
-    try {
-      walk(step.render({ control: fakeControl, watch: fakeWatch }), out);
-    } catch (error) {
-      // Un rendu conditionnel peut dépendre de valeurs absentes : on ignore
-      // l'étape plutôt que de perdre tout le reste de la résolution.
-      console.warn(`[fieldLabels] étape « ${step.id} » non explorée`, error);
+    // 1. Passage nominal : champs toujours visibles (et leurs options).
+    renderStep(step, {}, out);
+
+    // 2. Sondages : on rejoue le rendu en forçant tour à tour chaque champ de
+    //    l'étape à une valeur plausible, jusqu'à ce qu'aucun champ nouveau
+    //    n'apparaisse. Les champs conditionnels sont ainsi découverts.
+    let discovered = -1;
+    while (discovered !== Object.keys(out).length) {
+      discovered = Object.keys(out).length;
+      const keys = step.fields.length > 0 ? step.fields : Object.keys(out);
+      for (const key of keys) {
+        for (const value of candidateValues(out[key])) {
+          renderStep(step, { [key]: value }, out);
+        }
+      }
     }
   }
+
   cache.set(productCode, out);
   return out;
 }
