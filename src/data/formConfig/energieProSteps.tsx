@@ -7,7 +7,12 @@ import {
   FormTextarea,
   FormWeekdayDateTimeField,
 } from "@/components/forms/FormFields";
-import { FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const ACD_URL =
   "https://yousign.app/workflows/forms/5c721353-482b-492b-adca-f48bd230ad68";
@@ -16,18 +21,15 @@ const requiredMsg = "Ce champ est requis";
 
 export const energieProDefaultValues = {
   produit: "ENERGIE_PRO",
-  enseigneName: "",
+  ...prospectDefaultValues,
+  companyName: "",
   enseigneAddress: "",
-  enseigneZip: "",
-  contactPhone: "",
-  contactEmail: "",
-  commercialFirstName: "",
-  commercialLastName: "",
   contractEnd: "",
   acdDone: "",
   invoicesLink: "",
   appointment: "",
   comments: "",
+  ...consentDefaultValues,
 };
 
 function AcdCallout() {
@@ -57,24 +59,21 @@ function AcdCallout() {
 }
 
 export const energieProSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "enseigne",
     label: "Enseigne",
     title: "Identification de l'enseigne",
-    fields: ["enseigneName", "enseigneAddress", "enseigneZip"],
+    fields: ["companyName", "enseigneAddress"],
     schema: z.object({
-      enseigneName: z.string().trim().min(1, requiredMsg).max(120),
+      companyName: z.string().trim().min(1, requiredMsg).max(120),
       enseigneAddress: z.string().trim().min(1, requiredMsg).max(200),
-      enseigneZip: z
-        .string()
-        .trim()
-        .regex(/^\d{5}$/, "Code postal invalide (5 chiffres)"),
     }),
     render: ({ control }) => (
       <>
         <FormTextField
           control={control}
-          name="enseigneName"
+          name="companyName"
           label="Nom de l'enseigne"
           required
           placeholder="Ex. Boulangerie Martin"
@@ -85,74 +84,6 @@ export const energieProSteps: StepConfig[] = [
           label="Adresse de l'enseigne"
           required
           placeholder="12 rue des Artisans, Marseille"
-        />
-        <FormTextField
-          control={control}
-          name="enseigneZip"
-          label="Code postal de l'enseigne"
-          required
-          inputMode="numeric"
-          placeholder="13008"
-        />
-      </>
-    ),
-  },
-  {
-    id: "signataire",
-    label: "Signataire",
-    title: "Contact du signataire",
-    fields: ["contactPhone", "contactEmail"],
-    schema: z.object({
-      contactPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-      contactEmail: z.string().trim().email("Adresse e-mail invalide"),
-    }),
-    render: ({ control }) => (
-      <>
-        <FormTextField
-          control={control}
-          name="contactPhone"
-          label="Numéro de téléphone portable du client"
-          required
-          type="tel"
-          inputMode="tel"
-          placeholder="06 12 34 56 78"
-          description="Indispensable pour la signature électronique"
-        />
-        <FormTextField
-          control={control}
-          name="contactEmail"
-          label="Adresse mail du client"
-          required
-          type="email"
-          inputMode="email"
-          placeholder="contact@enseigne.fr"
-          description="Indispensable pour la signature électronique"
-        />
-      </>
-    ),
-  },
-  {
-    id: "commercial",
-    label: "Commercial",
-    title: "Commercial MERCIKI",
-    fields: ["commercialFirstName", "commercialLastName"],
-    schema: z.object({
-      commercialFirstName: z.string().trim().min(1, requiredMsg).max(80),
-      commercialLastName: z.string().trim().min(1, requiredMsg).max(80),
-    }),
-    render: ({ control }) => (
-      <>
-        <FormTextField
-          control={control}
-          name="commercialFirstName"
-          label="Prénom du commercial"
-          required
-        />
-        <FormTextField
-          control={control}
-          name="commercialLastName"
-          label="Nom du commercial"
-          required
         />
       </>
     ),
@@ -279,4 +210,5 @@ export const energieProSteps: StepConfig[] = [
       </>
     ),
   },
+  consentStep,
 ];

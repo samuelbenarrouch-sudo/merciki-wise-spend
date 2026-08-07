@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
-export const RGPD_LABEL = (
+export const CONSENT_LABEL = (
   <>
-    J'accepte que mes données soient utilisées pour cette demande.{" "}
+    Le prospect a donné son accord pour être recontacté et pour le traitement de
+    ses données par MERCIKI et ses partenaires.{" "}
     <Link
       to="/politique-de-confidentialite"
       className="text-primary underline hover:no-underline"

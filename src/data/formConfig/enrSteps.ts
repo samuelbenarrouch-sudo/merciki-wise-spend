@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
-  FormCheckbox,
   FormChipsField,
   FormNumberField,
   FormRadioGroup,
@@ -10,9 +9,15 @@ import {
   FormTextarea,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const enrDefaultValues = {
+  ...prospectDefaultValues,
   equipmentTypes: [] as string[],
   housingType: "",
   housingSurface: "",
@@ -23,14 +28,13 @@ export const enrDefaultValues = {
   subsidies: "",
   preferredBrands: "",
   architecturalConstraints: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
 
 export const enrSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "equipment",
     label: "Équipement",
@@ -206,45 +210,5 @@ export const enrSteps: StepConfig[] = [
         }),
       ),
   },
-  {
-    id: "commercial",
-    label: "Coordonnées",
-    title: "Vos informations.",
-    fields: ["commercialName", "commercialPhone", "rgpd"],
-    schema: z.object({
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
-    }),
-    render: ({ control }) =>
-      createElement(
-        Fragment,
-        null,
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
-      ),
-  },
+  consentStep,
 ];

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
-  FormCheckbox,
   FormNumberField,
   FormRadioGroup,
   FormScaleField,
@@ -10,9 +9,15 @@ import {
   FormTextarea,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 export const mutuelleSanteDefaultValues = {
+  ...prospectDefaultValues,
   coverageType: "",
   mainDob: "",
   extraBeneficiaries: "",
@@ -25,9 +30,7 @@ export const mutuelleSanteDefaultValues = {
   needOptique: "",
   needDentaire: "",
   effectiveDate: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
@@ -38,6 +41,7 @@ const scaleSchema = z.coerce
   .max(4);
 
 export const mutuelleSanteSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "coverage-type",
     label: "Type de couverture",
@@ -205,14 +209,9 @@ export const mutuelleSanteSteps: StepConfig[] = [
     id: "commercial",
     label: "Coordonnées",
     title: "Finalisons votre demande.",
-    fields: ["effectiveDate", "commercialName", "commercialPhone", "rgpd"],
+    fields: ["effectiveDate"],
     schema: z.object({
       effectiveDate: z.string().min(1, requiredMsg),
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z.string().trim().regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
     }),
     render: ({ control }) =>
       createElement(
@@ -226,29 +225,7 @@ export const mutuelleSanteSteps: StepConfig[] = [
           required: true,
           type: "date",
         }),
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
       ),
   },
+  consentStep,
 ];
