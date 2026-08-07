@@ -195,46 +195,5 @@ export const energySteps: StepConfig[] = [
         }),
       ),
   },
-  {
-    id: "commercial",
-    label: "Vos informations",
-    title: "Vos informations.",
-    fields: ["commercialName", "commercialPhone", "rgpd"],
-    schema: z.object({
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z
-        .string()
-        .trim()
-        .regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
-    }),
-    render: ({ control }) =>
-      createElement(Fragment, null,
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
-      ),
-  },
+  consentStep,
 ];
