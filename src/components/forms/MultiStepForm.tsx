@@ -1,15 +1,24 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useForm, type Control, type UseFormWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+} from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
+  clearDraftFromLocalStorage,
   loadDraftFromLocalStorage,
   saveDraftToLocalStorage,
 } from "@/lib/localStorage";
+import { createLead } from "@/lib/leads";
+import type { ProductId } from "@/data/products";
 
 export interface StepConfig {
   id: string;
@@ -61,7 +70,14 @@ export function MultiStepForm({
 
   const [stepIndex, setStepIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [unavailable, setUnavailable] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<{
+    reference: string;
+    prospect: string;
+    phone: string;
+  } | null>(null);
+  // Verrou synchrone : un double tap mobile ne peut pas lancer deux envois.
+  const submitLock = useRef(false);
 
   const current = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
@@ -82,7 +98,46 @@ export function MultiStepForm({
     return () => subscription.unsubscribe();
   }, [form, productId]);
 
+  const submit = async () => {
+    if (submitLock.current) return;
+    submitLock.current = true;
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const data = form.getValues() as Record<string, unknown>;
+    // Sauvegarde locale avant envoi (protection contre les pertes).
+    saveDraftToLocalStorage(productId, data);
+
+    try {
+      const result = await createLead(productId as ProductId, data);
+      if (result.ok) {
+        clearDraftFromLocalStorage(productId);
+        setSuccess({
+          reference: result.reference,
+          prospect: [data.prospectFirstName, data.prospectLastName]
+            .filter(Boolean)
+            .join(" "),
+          phone: String(data.prospectPhone ?? ""),
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        // La saisie reste intacte : ni reset, ni effacement du brouillon.
+        setSubmitError(result.error);
+      }
+    } catch (e) {
+      setSubmitError(
+        `Enregistrement impossible. Réessayez dans un instant. (${
+          e instanceof Error ? e.message : "erreur inattendue"
+        })`,
+      );
+    } finally {
+      setSubmitting(false);
+      submitLock.current = false;
+    }
+  };
+
   const goNext = async () => {
+    if (submitting) return;
     const valid = await form.trigger(current.fields as any, {
       shouldFocus: true,
     });
@@ -104,58 +159,64 @@ export function MultiStepForm({
       return;
     }
 
-    setSubmitting(true);
-    const data = form.getValues();
-    // Sauvegarde locale avant envoi (protection contre les pertes).
-    saveDraftToLocalStorage(productId, data);
-    const payload: SubmissionPayload = {
-      productId,
-      timestamp: new Date().toISOString(),
-      data,
-    };
-    // TODO(lot-5) : branchement Supabase — voir src/lib/leads.ts
-    console.warn("Soumission désactivée : backend en cours de reconstruction", payload);
-    setUnavailable(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setSubmitting(false);
+    await submit();
   };
 
   const goPrev = () => {
-    if (stepIndex > 0) {
+    if (stepIndex > 0 && !submitting) {
       setStepIndex((i) => i - 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  if (unavailable) {
+  if (success) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="w-full rounded-2xl bg-background p-8 text-center shadow-soft sm:p-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-mist text-accent">
-            <AlertTriangle className="h-8 w-8" strokeWidth={1.75} />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-mist text-primary">
+            <CheckCircle2 className="h-8 w-8" strokeWidth={1.75} />
           </div>
-          <h2 className="mt-6 text-h2 text-ink">Soumission indisponible</h2>
+          <h2 className="mt-6 text-h2 text-ink">Lead enregistré</h2>
           <p className="mt-3 text-body font-medium text-ink">
-            L'envoi des leads est temporairement désactivé.
+            Les informations du prospect ont bien été transmises.
           </p>
-          <p className="mx-auto mt-4 max-w-md text-body text-slate">
-            Le backend est en cours de reconstruction : vos réponses ont été
-            conservées localement sur cet appareil, mais rien n'a été transmis.
-          </p>
+          <div className="mx-auto mt-6 max-w-md rounded-xl bg-mist p-5">
+            <p className="text-small uppercase tracking-wide text-slate">
+              Référence
+            </p>
+            <p className="mt-1 text-h3 text-ink">{success.reference}</p>
+          </div>
+          <dl className="mx-auto mt-6 max-w-md space-y-2 text-left text-body">
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate">Prospect</dt>
+              <dd className="text-ink">{success.prospect}</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate">Téléphone</dt>
+              <dd className="text-ink">{success.phone}</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate">Produit</dt>
+              <dd className="text-ink">{productLabel}</dd>
+            </div>
+          </dl>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Button
               type="button"
-              variant="outline"
+              variant="primary"
               size="lg"
               onClick={() => {
-                setUnavailable(false);
+                form.reset({ ...defaultValues });
+                setStepIndex(0);
+                setSuccess(null);
+                setSubmitError(null);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              Revenir au formulaire
+              Saisir un nouveau lead
             </Button>
-            <Button asChild variant="primary" size="lg">
-              <Link to="/leadgeneration/dashboard">Retour à l'accueil</Link>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/leadgeneration/dashboard">Retour au tableau de bord</Link>
             </Button>
           </div>
         </div>
@@ -195,13 +256,37 @@ export function MultiStepForm({
       >
         {current.render({ control: form.control, watch: form.watch })}
 
+        {submitError && (
+          <div
+            role="alert"
+            className="flex items-start gap-3 rounded-xl bg-mist p-4 text-left"
+          >
+            <AlertTriangle
+              className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+              strokeWidth={1.75}
+            />
+            <div className="space-y-3">
+              <p className="text-body text-ink">{submitError}</p>
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                disabled={submitting}
+                onClick={() => void submit()}
+              >
+                Réessayer
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
           <Button
             type="button"
             variant="outline"
             size="md"
             onClick={goPrev}
-            disabled={stepIndex === 0}
+            disabled={stepIndex === 0 || submitting}
             className={cn(stepIndex === 0 && "invisible sm:invisible")}
           >
             <ChevronLeft className="h-4 w-4" strokeWidth={1.75} />
@@ -213,8 +298,17 @@ export function MultiStepForm({
             size="md"
             disabled={submitting}
           >
-            {isLast ? (submitLabel ?? "Valider mon lead") : "Suivant"}
-            <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
+            {submitting ? (
+              <>
+                Envoi en cours…
+                <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+              </>
+            ) : (
+              <>
+                {isLast ? (submitLabel ?? "Valider mon lead") : "Suivant"}
+                <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
+              </>
+            )}
           </Button>
         </div>
       </form>
