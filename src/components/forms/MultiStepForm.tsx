@@ -146,7 +146,6 @@ export function MultiStepForm({
           setUploadError(result.error);
           break;
         }
-        index === index; // progression après succès
         setUploadedCount(index + 1);
       }
     } catch (e) {
