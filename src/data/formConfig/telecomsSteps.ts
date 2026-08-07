@@ -6,14 +6,19 @@ import {
   FormSelectField,
   FormTextField,
   FormRadioGroup,
-  FormCheckbox,
 } from "@/components/forms/FormFields";
 import { createElement, Fragment } from "react";
-import { RGPD_LABEL, FR_PHONE_REGEX, PHONE_ERROR } from "./rgpdLabel";
+import {
+  consentDefaultValues,
+  consentStep,
+  prospectDefaultValues,
+  prospectStep,
+} from "./sharedSteps";
 
 const requiredMsg = "Ce champ est requis";
 
 export const telecomsDefaultValues = {
+  ...prospectDefaultValues,
   needType: [] as string[],
   currentOperator: "",
   monthlyAmount: "",
@@ -21,12 +26,11 @@ export const telecomsDefaultValues = {
   mobileLines: "",
   hasCommitment: "",
   commitmentEnd: "",
-  commercialName: "",
-  commercialPhone: "",
-  rgpd: false,
+  ...consentDefaultValues,
 };
 
 export const telecomsSteps: StepConfig[] = [
+  prospectStep,
   {
     id: "needs",
     label: "Besoins",
@@ -147,46 +151,5 @@ export const telecomsSteps: StepConfig[] = [
       );
     },
   },
-  {
-    id: "commercial",
-    label: "Vos informations",
-    title: "Vos informations.",
-    fields: ["commercialName", "commercialPhone", "rgpd"],
-    schema: z.object({
-      commercialName: z.string().trim().min(2, requiredMsg).max(100),
-      commercialPhone: z
-        .string()
-        .trim()
-        .regex(FR_PHONE_REGEX, PHONE_ERROR),
-      rgpd: z.literal(true, {
-        errorMap: () => ({ message: "Votre consentement est requis." }),
-      }),
-    }),
-    render: ({ control }) =>
-      createElement(Fragment, null,
-        createElement(FormTextField, {
-          key: "commercialName",
-          control,
-          name: "commercialName",
-          label: "Prénom & Nom",
-          required: true,
-        }),
-        createElement(FormTextField, {
-          key: "commercialPhone",
-          control,
-          name: "commercialPhone",
-          label: "Téléphone",
-          required: true,
-          type: "tel",
-          inputMode: "tel",
-          placeholder: "06 12 34 56 78",
-        }),
-        createElement(FormCheckbox, {
-          key: "rgpd",
-          control,
-          name: "rgpd",
-          label: RGPD_LABEL,
-        }),
-      ),
-  },
+  consentStep,
 ];
