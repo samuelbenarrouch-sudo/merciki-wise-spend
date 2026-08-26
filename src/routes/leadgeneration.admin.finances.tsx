@@ -345,13 +345,11 @@ function BillingSection({
   groups,
   totalInSystem,
   hasRows,
-  now,
   onDone,
 }: {
   groups: ReturnType<typeof groupBillingByProductSupplier>;
   totalInSystem: number;
   hasRows: boolean;
-  now: Date;
   onDone: () => Promise<void>;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
