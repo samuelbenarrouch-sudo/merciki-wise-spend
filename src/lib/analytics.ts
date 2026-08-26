@@ -372,24 +372,20 @@ export interface FunnelStage {
 }
 
 /**
- * Reconstitue les statuts ATTEINTS par chaque lead.
+ * Reconstitue les statuts ATTEINTS par chaque lead, EXCLUSIVEMENT à partir de
+ * lead_events (`to_status` et `from_status`).
  *
- * Un lead signé est passé par les étapes antérieures : compter les statuts
- * courants sous-estimerait gravement le haut de l'entonnoir. Un statut est
- * considéré comme atteint si le lead porte un événement de changement de
- * statut VERS ce statut, ou s'il s'y trouve aujourd'hui. Tout lead a par
- * ailleurs été créé au statut « nouveau » : la création vaut donc passage
- * par la première étape.
+ * Le déclencheur d'audit écrit un événement « created » à chaque insertion :
+ * le passage par « nouveau » est donc toujours tracé. Le statut courant du
+ * lead n'est volontairement PAS réintégré — cela masquerait les trous du
+ * journal d'audit au lieu de les révéler (voir `countAuditGaps`).
  */
 export function reachedStatuses(
   leads: AnalyticsLead[],
   events: AnalyticsEvent[],
 ): Map<string, Set<LeadStatus>> {
   const byLead = new Map<string, Set<LeadStatus>>();
-  for (const lead of leads) {
-    const set = new Set<LeadStatus>(["nouveau", lead.status]);
-    byLead.set(lead.id, set);
-  }
+  for (const lead of leads) byLead.set(lead.id, new Set<LeadStatus>());
   for (const event of events) {
     const set = byLead.get(event.lead_id);
     if (!set) continue; // événement hors périmètre de la période
@@ -398,6 +394,20 @@ export function reachedStatuses(
     if (event.from_status) set.add(event.from_status);
   }
   return byLead;
+}
+
+/**
+ * Contrôle de cohérence : nombre de leads dont le statut ACTUEL n'apparaît pas
+ * dans leur historique d'événements. En temps normal ce compteur vaut zéro ;
+ * une valeur non nulle signale un trou du journal d'audit, que l'on affiche
+ * plutôt que de le corriger silencieusement.
+ */
+export function countAuditGaps(
+  leads: AnalyticsLead[],
+  events: AnalyticsEvent[],
+): number {
+  const reached = reachedStatuses(leads, events);
+  return leads.filter((lead) => !reached.get(lead.id)?.has(lead.status)).length;
 }
 
 export function buildFunnel(
@@ -549,6 +559,8 @@ export interface CommercialPerformance {
   avgQualificationHours: number | null;
   /** Date du dernier lead remonté (ISO). */
   lastLeadAt: string | null;
+  /** Compte désactivé : la ligne reste affichée, grisée. */
+  isActive: boolean;
 }
 
 export function commercialPerformance(
@@ -557,13 +569,14 @@ export function commercialPerformance(
   profiles: AnalyticsProfile[],
 ): CommercialPerformance[] {
   const nameById = new Map(profiles.map((p) => [p.id, p.full_name]));
-  const activeIds = new Set(profiles.filter((p) => p.is_active).map((p) => p.id));
+  const activeById = new Map(profiles.map((p) => [p.id, p.is_active]));
   const reached = reachedStatuses(leads, events);
   const byCommercial = new Map<string, AnalyticsLead[]>();
 
+  // Aucun commercial n'est exclu, pas même un compte désactivé : sa production
+  // a eu lieu et compte dans les totaux. La somme des lignes du tableau est
+  // donc TOUJOURS égale au nombre de leads de la période.
   for (const lead of leads) {
-    // Un commercial désactivé n'a plus vocation à figurer au pilotage.
-    if (!activeIds.has(lead.commercial_id)) continue;
     const list = byCommercial.get(lead.commercial_id) ?? [];
     list.push(lead);
     byCommercial.set(lead.commercial_id, list);
@@ -586,6 +599,7 @@ export function commercialPerformance(
         conversion: conversionRate(own),
         avgQualificationHours: average(delays),
         lastLeadAt,
+        isActive: activeById.get(commercialId) ?? true,
       };
     })
     .sort((a, b) => b.leads - a.leads);
