@@ -9,6 +9,7 @@ import { PRODUCTS } from "@/data/products";
 import { formatMoney } from "@/components/admin/lead-contracts";
 import {
   COMMISSION_STATUSES,
+  CONTRACTS_MAX_ROWS,
   CONTRACT_STATUSES,
   commissionStatusLabel,
   contractStatusLabel,

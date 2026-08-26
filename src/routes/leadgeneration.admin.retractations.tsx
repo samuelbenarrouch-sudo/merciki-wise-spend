@@ -5,7 +5,11 @@ import { CheckCircle2, Loader2, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { formatMoney } from "@/components/admin/lead-contracts";
-import { listWithdrawalPending, updateContract } from "@/lib/backoffice";
+import {
+  CONTRACTS_MAX_ROWS,
+  listWithdrawalPending,
+  updateContract,
+} from "@/lib/backoffice";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin/retractations")({
@@ -27,7 +31,9 @@ function AdminWithdrawalsPage() {
     queryFn: () => listWithdrawalPending(),
   });
 
-  const rows = query.data?.ok ? query.data.data : [];
+  const rows = query.data?.ok ? query.data.data.rows : [];
+  const truncated = query.data?.ok ? query.data.data.truncated : false;
+  const total = query.data?.ok ? query.data.data.total : 0;
 
   const act = async (id: string, status: "actif" | "retracte") => {
     setPending(id);
@@ -50,6 +56,17 @@ function AdminWithdrawalsPage() {
           Contrats encore dans le délai légal de 14 jours, les plus urgents en
           premier.
         </p>
+
+        {/* Troncature signalée : la liste ne doit jamais paraître exhaustive. */}
+        {truncated ? (
+          <p
+            role="status"
+            className="mt-4 rounded-xl border border-accent/40 bg-accent/10 p-4 text-small font-medium text-ink"
+          >
+            Affichage limité à {CONTRACTS_MAX_ROWS} contrats sur {total}. Les
+            totaux ci-dessous sont partiels.
+          </p>
+        ) : null}
 
         {error ? (
           <p className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-small text-destructive">
