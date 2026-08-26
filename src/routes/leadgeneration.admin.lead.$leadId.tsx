@@ -14,6 +14,7 @@ import {
   listAttachments,
   listLeadEvents,
   lossReasonLabel,
+  openLeadAttachment,
   statusLabel,
   updateLeadStatus,
   type LeadStatus,
