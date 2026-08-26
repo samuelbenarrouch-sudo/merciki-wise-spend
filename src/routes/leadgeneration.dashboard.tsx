@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { PRODUCTS } from "@/data/products";
-import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/leadgeneration/dashboard")({
   head: () => ({
