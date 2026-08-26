@@ -6,7 +6,7 @@ import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
-import { Loader2, LogOut, Menu, Shield, X } from "lucide-react";
+import { Loader2, LogOut, Menu, PenLine, Shield, X } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 import { PRODUCTS } from "@/data/products";
 import { AuthProvider, useAuth } from "@/lib/auth";
@@ -37,6 +37,7 @@ function LeadGenerationLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isLoginPage = pathname.startsWith("/leadgeneration/login");
+  const isAdminPage = pathname.startsWith("/leadgeneration/admin");
 
   useEffect(() => {
     if (!isLoginPage && (status === "unauthenticated" || status === "disabled")) {
