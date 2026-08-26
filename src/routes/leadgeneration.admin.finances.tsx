@@ -19,7 +19,6 @@ import {
   BILLING_OVERDUE_DAYS,
   FINANCE_PERIOD_PRESETS,
   computeFinanceTotals,
-  daysSince,
   filterBillingPending,
   filterFinanceByProducts,
   filterPayoutPending,
@@ -456,7 +455,10 @@ function BillingSection({
                   <p className="text-small text-slate">
                     {product.contracts} contrat(s) · {formatMoney(product.totalHt)}
                     {product.overdueCount > 0
-                      ? ` · ${product.overdueCount} en retard`
+                      ? ` · ${product.overdueCount} facture(s) à émettre`
+                      : ""}
+                    {product.paymentOverdueCount > 0
+                      ? ` · ${product.paymentOverdueCount} règlement(s) en retard`
                       : ""}
                   </p>
                 </div>
@@ -490,7 +492,14 @@ function BillingSection({
                           {supplier.invoicedCount})
                           {supplier.overdueCount > 0 ? (
                             <span className="ml-2 rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive">
-                              {supplier.overdueCount} &gt; {BILLING_OVERDUE_DAYS} j
+                              {supplier.overdueCount} facture(s) à émettre &gt;{" "}
+                              {BILLING_OVERDUE_DAYS} j
+                            </span>
+                          ) : null}
+                          {supplier.paymentOverdueCount > 0 ? (
+                            <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent-foreground">
+                              {supplier.paymentOverdueCount} règlement(s) en retard
+                              &gt; {BILLING_OVERDUE_DAYS} j
                             </span>
                           ) : null}
                         </p>
