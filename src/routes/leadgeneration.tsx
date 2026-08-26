@@ -123,13 +123,15 @@ function LeadGenerationLayout() {
       </header>
 
       <div className="flex flex-1">
-        {/* Desktop sidebar */}
-        <aside className="hidden w-[280px] shrink-0 border-r border-mist bg-mist lg:block">
-          <SidebarContent pathname={pathname} />
-        </aside>
+        {/* Desktop sidebar — masquée dans le backoffice */}
+        {!isAdminPage ? (
+          <aside className="hidden w-[280px] shrink-0 border-r border-mist bg-mist lg:block">
+            <SidebarContent pathname={pathname} />
+          </aside>
+        ) : null}
 
         {/* Mobile sidebar overlay */}
-        {menuOpen && (
+        {menuOpen && !isAdminPage && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div
               className="absolute inset-0 bg-ink/50"
