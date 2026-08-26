@@ -357,7 +357,6 @@ export async function listProfilesLight(): Promise<
 export interface CreatedAccount {
   email: string;
   password: string;
-  userId: string;
   /** Succès partiel : le compte existe, mais une étape secondaire a échoué. */
   warning?: string;
 }
@@ -374,7 +373,7 @@ export async function createCommercialAccount(input: {
   managerId: string | null;
 }): Promise<Result<CreatedAccount>> {
   const { data, error } = await supabase.functions.invoke<
-    CreatedAccount & { error?: string }
+    Partial<CreatedAccount> & { error?: string }
   >("create-commercial", {
     body: {
       email: input.email.trim(),
@@ -388,15 +387,28 @@ export async function createCommercialAccount(input: {
     return { ok: false, error: await readFunctionError(error) };
   }
 
-  if (!data || !data.password || !data.userId) {
+  // Succès dès lors que l'email et le mot de passe sont présents : `warning`
+  // signale un succès partiel (profil incomplet), jamais un échec.
+  if (data && typeof data.email === "string" && typeof data.password === "string") {
     return {
-      ok: false,
-      error: data?.error ?? "Réponse inattendue du serveur. Réessayez.",
+      ok: true,
+      data: {
+        email: data.email,
+        password: data.password,
+        ...(typeof data.warning === "string" && data.warning
+          ? { warning: data.warning }
+          : {}),
+      },
     };
   }
 
-  return { ok: true, data };
+  console.error("[createCommercialAccount] réponse inattendue", { data, error });
+  return {
+    ok: false,
+    error: data?.error ?? "Réponse inattendue du serveur. Réessayez.",
+  };
 }
+
 
 /**
  * supabase-js masque le corps des réponses non-2xx derrière un message
