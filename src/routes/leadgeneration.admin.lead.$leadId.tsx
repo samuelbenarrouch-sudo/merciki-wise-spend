@@ -246,19 +246,20 @@ function AdminLeadPage() {
                       <span className="text-small text-slate">
                         {formatSize(file.size_bytes)}
                       </span>
-                      {file.signedUrl ? (
-                        <a
-                          href={file.signedUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline"
-                        >
+                      <button
+                        type="button"
+                        disabled={downloading === file.id}
+                        onClick={() => void handleDownload(file.id, file.storage_path)}
+                        className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline disabled:opacity-60"
+                      >
+                        {downloading === file.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                        ) : (
                           <Download className="h-4 w-4" strokeWidth={1.75} />
-                          Télécharger
-                        </a>
-                      ) : (
-                        <span className="text-small text-slate">Lien indisponible</span>
-                      )}
+                        )}
+                        Télécharger
+                      </button>
+
                     </li>
                   ))}
                 </ul>
