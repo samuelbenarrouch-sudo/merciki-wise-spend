@@ -3,7 +3,8 @@ import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tan
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { listWithdrawalPending } from "@/lib/backoffice";
+import { listWithdrawalPending, loadFinanceContracts } from "@/lib/backoffice";
+import { filterBillingPending, filterPayoutPending } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
