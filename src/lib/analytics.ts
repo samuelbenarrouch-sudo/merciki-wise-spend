@@ -683,3 +683,365 @@ export function emptyKind(periodCount: number, systemCount: number): EmptyKind {
   if (periodCount === 0) return "empty-period";
   return "has-data";
 }
+
+/* ------------------------------------------------------------------ */
+/* Finances — calculs PURS sur la vue v_finance_contracts              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Ligne financière : la vue `v_finance_contracts` enrichie du nom du prospect,
+ * que la vue n'expose pas et que la couche de lecture rapproche depuis `leads`.
+ */
+export type FinanceRow =
+  Database["public"]["Views"]["v_finance_contracts"]["Row"] & {
+    prospect_name: string | null;
+  };
+
+export type FinancePeriodPreset =
+  | "current-month"
+  | "previous-month"
+  | "quarter"
+  | "year"
+  | "custom";
+
+export const FINANCE_PERIOD_PRESETS: {
+  value: FinancePeriodPreset;
+  label: string;
+}[] = [
+  { value: "current-month", label: "Mois en cours" },
+  { value: "previous-month", label: "Mois précédent" },
+  { value: "quarter", label: "Trimestre en cours" },
+  { value: "year", label: "Année en cours" },
+  { value: "custom", label: "Plage personnalisée" },
+];
+
+export interface FinanceRange {
+  /** Début inclus. */
+  from: Date;
+  /** Fin EXCLUE. */
+  to: Date;
+  label: string;
+}
+
+/** Résout un préréglage en plage de dates. Fonction pure : `now` est injecté. */
+export function resolveFinanceRange(
+  preset: FinancePeriodPreset,
+  now: Date,
+  custom?: { from: string; to: string },
+): FinanceRange | null {
+  const y = now.getFullYear();
+  const m = now.getMonth();
+  switch (preset) {
+    case "current-month":
+      return {
+        from: new Date(y, m, 1),
+        to: new Date(y, m + 1, 1),
+        label: "Mois en cours",
+      };
+    case "previous-month":
+      return {
+        from: new Date(y, m - 1, 1),
+        to: new Date(y, m, 1),
+        label: "Mois précédent",
+      };
+    case "quarter": {
+      const q = Math.floor(m / 3) * 3;
+      return {
+        from: new Date(y, q, 1),
+        to: new Date(y, q + 3, 1),
+        label: "Trimestre en cours",
+      };
+    }
+    case "year":
+      return {
+        from: new Date(y, 0, 1),
+        to: new Date(y + 1, 0, 1),
+        label: "Année en cours",
+      };
+    case "custom": {
+      if (!custom?.from || !custom.to) return null;
+      const from = new Date(`${custom.from}T00:00:00`);
+      const to = new Date(`${custom.to}T00:00:00`);
+      if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) return null;
+      if (to.getTime() < from.getTime()) return null;
+      // Borne haute inclusive côté utilisateur, exclusive côté calcul.
+      to.setDate(to.getDate() + 1);
+      return { from, to, label: "Plage personnalisée" };
+    }
+  }
+}
+
+/** Filtre par produit (sélection multiple ; vide = tous les produits). */
+export function filterFinanceByProducts(
+  rows: FinanceRow[],
+  productCodes: string[],
+): FinanceRow[] {
+  if (productCodes.length === 0) return rows;
+  const set = new Set(productCodes);
+  return rows.filter((r) => r.product_code !== null && set.has(r.product_code));
+}
+
+/** Contrats dont la commission a été ENCAISSÉE dans la plage. */
+export function filterRealized(
+  rows: FinanceRow[],
+  range: FinanceRange,
+): FinanceRow[] {
+  return rows.filter((r) => {
+    if (!r.commission_paid_at) return false;
+    const t = new Date(r.commission_paid_at).getTime();
+    return t >= range.from.getTime() && t < range.to.getTime();
+  });
+}
+
+export interface FinanceTotals {
+  contracts: number;
+  /** Volume d'affaires apporté au fournisseur : indicateur d'ACTIVITÉ. */
+  volumeClientHt: number;
+  /** CA MERCIKI : la commission encaissée — le seul vrai revenu. */
+  revenueHt: number;
+  /** Coûts commerciaux : parts reversées aux commerciaux. */
+  commercialCostHt: number;
+  /** Marge nette = CA MERCIKI − coûts commerciaux. */
+  marginHt: number;
+  /** Taux de marge = marge / CA. `null` quand le CA est nul (non calculable). */
+  marginRate: number | null;
+}
+
+/** Somme des indicateurs financiers d'un ensemble de contrats. */
+export function computeFinanceTotals(rows: FinanceRow[]): FinanceTotals {
+  let volumeClientHt = 0;
+  let revenueHt = 0;
+  let commercialCostHt = 0;
+  for (const r of rows) {
+    volumeClientHt += r.volume_client_ht ?? 0;
+    revenueHt += r.commission_ht ?? 0;
+    commercialCostHt += r.commercial_share_ht ?? 0;
+  }
+  const marginHt = revenueHt - commercialCostHt;
+  return {
+    contracts: rows.length,
+    volumeClientHt,
+    revenueHt,
+    commercialCostHt,
+    marginHt,
+    // Un CA nul rend le taux indéfini : on renvoie null plutôt que 0 %.
+    marginRate: revenueHt === 0 ? null : marginHt / revenueHt,
+  };
+}
+
+export interface FinanceProductBreakdown extends FinanceTotals {
+  productCode: string;
+  productLabel: string;
+}
+
+/** Ventilation par produit, triée par CA MERCIKI décroissant. */
+export function financeByProduct(rows: FinanceRow[]): FinanceProductBreakdown[] {
+  const groups = new Map<string, { label: string; rows: FinanceRow[] }>();
+  for (const r of rows) {
+    const code = r.product_code ?? "—";
+    const group = groups.get(code) ?? {
+      label: r.product_label ?? code,
+      rows: [],
+    };
+    group.rows.push(r);
+    groups.set(code, group);
+  }
+  return [...groups.entries()]
+    .map(([productCode, g]) => ({
+      productCode,
+      productLabel: g.label,
+      ...computeFinanceTotals(g.rows),
+    }))
+    .sort((a, b) => b.revenueHt - a.revenueHt);
+}
+
+/* --- Section B : à facturer aux fournisseurs ---------------------- */
+
+export const BILLING_STATES = ["a_facturer", "facture"] as const;
+
+/** Nombre de jours écoulés depuis une date (pure : `now` injecté). */
+export function daysSince(value: string | null, now: Date): number | null {
+  if (!value) return null;
+  const t = new Date(value).getTime();
+  if (Number.isNaN(t)) return null;
+  return Math.floor((now.getTime() - t) / 86_400_000);
+}
+
+export const BILLING_OVERDUE_DAYS = 60;
+
+/** Un contrat « à facturer » signé il y a plus de 60 jours est en retard. */
+export function isBillingOverdue(row: FinanceRow, now: Date): boolean {
+  if (row.billing_state !== "a_facturer") return false;
+  const days = daysSince(row.signed_at, now);
+  return days !== null && days > BILLING_OVERDUE_DAYS;
+}
+
+export interface SupplierBillingGroup {
+  supplierId: string;
+  supplierName: string;
+  rows: FinanceRow[];
+  contracts: number;
+  /** Total des commissions à facturer ET déjà facturées non encaissées. */
+  totalHt: number;
+  toInvoiceHt: number;
+  invoicedHt: number;
+  toInvoiceCount: number;
+  invoicedCount: number;
+  overdueCount: number;
+}
+
+export interface ProductBillingGroup {
+  productCode: string;
+  productLabel: string;
+  contracts: number;
+  totalHt: number;
+  overdueCount: number;
+  suppliers: SupplierBillingGroup[];
+}
+
+export function filterBillingPending(rows: FinanceRow[]): FinanceRow[] {
+  return rows.filter(
+    (r) => r.billing_state === "a_facturer" || r.billing_state === "facture",
+  );
+}
+
+/** Regroupement à deux niveaux : produit, puis fournisseur. */
+export function groupBillingByProductSupplier(
+  rows: FinanceRow[],
+  now: Date,
+): ProductBillingGroup[] {
+  const byProduct = new Map<string, FinanceRow[]>();
+  const labels = new Map<string, string>();
+  for (const r of rows) {
+    const code = r.product_code ?? "—";
+    labels.set(code, r.product_label ?? code);
+    byProduct.set(code, [...(byProduct.get(code) ?? []), r]);
+  }
+
+  const products: ProductBillingGroup[] = [];
+  for (const [productCode, productRows] of byProduct) {
+    const bySupplier = new Map<string, FinanceRow[]>();
+    const names = new Map<string, string>();
+    for (const r of productRows) {
+      const key = r.supplier_id ?? r.supplier_name ?? "—";
+      names.set(key, r.supplier_name ?? "Fournisseur non renseigné");
+      bySupplier.set(key, [...(bySupplier.get(key) ?? []), r]);
+    }
+    const suppliers: SupplierBillingGroup[] = [...bySupplier.entries()]
+      .map(([supplierId, supplierRows]) => {
+        let toInvoiceHt = 0;
+        let invoicedHt = 0;
+        let toInvoiceCount = 0;
+        let invoicedCount = 0;
+        let overdueCount = 0;
+        for (const r of supplierRows) {
+          const amount = r.commission_ht ?? 0;
+          if (r.billing_state === "a_facturer") {
+            toInvoiceHt += amount;
+            toInvoiceCount += 1;
+            if (isBillingOverdue(r, now)) overdueCount += 1;
+          } else {
+            invoicedHt += amount;
+            invoicedCount += 1;
+          }
+        }
+        return {
+          supplierId,
+          supplierName: names.get(supplierId) ?? "—",
+          rows: supplierRows,
+          contracts: supplierRows.length,
+          totalHt: toInvoiceHt + invoicedHt,
+          toInvoiceHt,
+          invoicedHt,
+          toInvoiceCount,
+          invoicedCount,
+          overdueCount,
+        };
+      })
+      .sort((a, b) => b.totalHt - a.totalHt);
+
+    products.push({
+      productCode,
+      productLabel: labels.get(productCode) ?? productCode,
+      contracts: productRows.length,
+      totalHt: suppliers.reduce((sum, s) => sum + s.totalHt, 0),
+      overdueCount: suppliers.reduce((sum, s) => sum + s.overdueCount, 0),
+      suppliers,
+    });
+  }
+  return products.sort((a, b) => b.totalHt - a.totalHt);
+}
+
+/* --- Section C : à régler aux commerciaux ------------------------- */
+
+export function filterPayoutPending(rows: FinanceRow[]): FinanceRow[] {
+  return rows.filter(
+    (r) =>
+      r.payout_state === "facture_a_recevoir" || r.payout_state === "a_regler",
+  );
+}
+
+export interface CommercialPayoutGroup {
+  commercialId: string;
+  commercialName: string;
+  isActive: boolean;
+  rows: FinanceRow[];
+  contracts: number;
+  totalHt: number;
+  invoiceAwaitedHt: number;
+  toPayHt: number;
+  invoiceAwaitedCount: number;
+  toPayCount: number;
+}
+
+export function groupPayoutByCommercial(
+  rows: FinanceRow[],
+): CommercialPayoutGroup[] {
+  const groups = new Map<string, FinanceRow[]>();
+  for (const r of rows) {
+    const key = r.commercial_id ?? "—";
+    groups.set(key, [...(groups.get(key) ?? []), r]);
+  }
+  return [...groups.entries()]
+    .map(([commercialId, groupRows]) => {
+      let invoiceAwaitedHt = 0;
+      let toPayHt = 0;
+      let invoiceAwaitedCount = 0;
+      let toPayCount = 0;
+      for (const r of groupRows) {
+        const amount = r.commercial_share_ht ?? 0;
+        if (r.payout_state === "facture_a_recevoir") {
+          invoiceAwaitedHt += amount;
+          invoiceAwaitedCount += 1;
+        } else {
+          toPayHt += amount;
+          toPayCount += 1;
+        }
+      }
+      const first = groupRows[0];
+      return {
+        commercialId,
+        commercialName: first?.commercial_name ?? "Commercial inconnu",
+        isActive: first?.commercial_is_active !== false,
+        rows: groupRows,
+        contracts: groupRows.length,
+        totalHt: invoiceAwaitedHt + toPayHt,
+        invoiceAwaitedHt,
+        toPayHt,
+        invoiceAwaitedCount,
+        toPayCount,
+      };
+    })
+    .sort((a, b) => b.totalHt - a.totalHt);
+}
+
+/** Récapitulatif copiable : nom, nombre de contrats, total dû. */
+export function payoutSummaryText(groups: CommercialPayoutGroup[]): string {
+  const lines = ["Commercial\tContrats\tTotal dû HT"];
+  for (const g of groups) {
+    lines.push(
+      `${g.commercialName}\t${g.contracts}\t${g.totalHt.toFixed(2)} €`,
+    );
+  }
+  return lines.join("\n");
+}
