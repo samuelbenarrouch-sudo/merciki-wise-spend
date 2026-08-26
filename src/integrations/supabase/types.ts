@@ -44,9 +44,14 @@ export type Database = {
       contracts: {
         Row: {
           amount_annual_ht: number | null
+          commercial_invoice_received_at: string | null
+          commercial_invoice_ref: string | null
+          commercial_paid_at: string | null
           commercial_share: number | null
           commission_actual: number | null
           commission_expected: number | null
+          commission_invoice_ref: string | null
+          commission_invoiced_at: string | null
           commission_paid_at: string | null
           commission_status: Database["public"]["Enums"]["commission_status"]
           created_at: string
@@ -60,14 +65,20 @@ export type Database = {
           start_date: string | null
           status: Database["public"]["Enums"]["contract_status"]
           supplier: string
+          supplier_id: string | null
           updated_at: string
           withdrawal_deadline: string | null
         }
         Insert: {
           amount_annual_ht?: number | null
+          commercial_invoice_received_at?: string | null
+          commercial_invoice_ref?: string | null
+          commercial_paid_at?: string | null
           commercial_share?: number | null
           commission_actual?: number | null
           commission_expected?: number | null
+          commission_invoice_ref?: string | null
+          commission_invoiced_at?: string | null
           commission_paid_at?: string | null
           commission_status?: Database["public"]["Enums"]["commission_status"]
           created_at?: string
@@ -81,14 +92,20 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["contract_status"]
           supplier: string
+          supplier_id?: string | null
           updated_at?: string
           withdrawal_deadline?: string | null
         }
         Update: {
           amount_annual_ht?: number | null
+          commercial_invoice_received_at?: string | null
+          commercial_invoice_ref?: string | null
+          commercial_paid_at?: string | null
           commercial_share?: number | null
           commission_actual?: number | null
           commission_expected?: number | null
+          commission_invoice_ref?: string | null
+          commission_invoiced_at?: string | null
           commission_paid_at?: string | null
           commission_status?: Database["public"]["Enums"]["commission_status"]
           created_at?: string
@@ -102,6 +119,7 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["contract_status"]
           supplier?: string
+          supplier_id?: string | null
           updated_at?: string
           withdrawal_deadline?: string | null
         }
@@ -154,6 +172,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_withdrawal_pending"
             referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -495,6 +520,13 @@ export type Database = {
             foreignKeyName: "leads_product_code_fkey"
             columns: ["product_code"]
             isOneToOne: false
+            referencedRelation: "v_finance_contracts"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
           },
@@ -601,6 +633,103 @@ export type Database = {
           },
         ]
       }
+      supplier_products: {
+        Row: {
+          product_code: string
+          supplier_id: string
+        }
+        Insert: {
+          product_code: string
+          supplier_id: string
+        }
+        Update: {
+          product_code?: string
+          supplier_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_commission_monthly"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_contracts_admin"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_finance_contracts"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_funnel"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "supplier_products_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      suppliers: {
+        Row: {
+          account_reference: string | null
+          billing_contact: string | null
+          billing_email: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          payment_terms_days: number | null
+          updated_at: string
+        }
+        Insert: {
+          account_reference?: string | null
+          billing_contact?: string | null
+          billing_email?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          payment_terms_days?: number | null
+          updated_at?: string
+        }
+        Update: {
+          account_reference?: string | null
+          billing_contact?: string | null
+          billing_email?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          payment_terms_days?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       v_commission_monthly: {
@@ -702,6 +831,99 @@ export type Database = {
           },
         ]
       }
+      v_finance_contracts: {
+        Row: {
+          billing_state: string | null
+          commercial_id: string | null
+          commercial_invoice_received_at: string | null
+          commercial_invoice_ref: string | null
+          commercial_is_active: boolean | null
+          commercial_name: string | null
+          commercial_paid_at: string | null
+          commercial_share_ht: number | null
+          commission_ht: number | null
+          commission_invoice_ref: string | null
+          commission_invoiced_at: string | null
+          commission_is_actual: boolean | null
+          commission_paid_at: string | null
+          commission_status:
+            | Database["public"]["Enums"]["commission_status"]
+            | null
+          contract_id: string | null
+          contract_reference: string | null
+          contract_status: Database["public"]["Enums"]["contract_status"] | null
+          lead_id: string | null
+          lead_reference: string | null
+          marge_ht: number | null
+          payout_state: string | null
+          product_code: string | null
+          product_label: string | null
+          signed_at: string | null
+          supplier_billing_email: string | null
+          supplier_id: string | null
+          supplier_name: string | null
+          tunnel: Database["public"]["Enums"]["tunnel_type"] | null
+          volume_client_ht: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_leads_admin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_mandates_pending"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["earlier_lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_commercial_id_fkey"
+            columns: ["commercial_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_funnel: {
         Row: {
           delai_qualif_heures: number | null
@@ -791,6 +1013,13 @@ export type Database = {
             columns: ["product_code"]
             isOneToOne: false
             referencedRelation: "v_contracts_admin"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_finance_contracts"
             referencedColumns: ["product_code"]
           },
           {
