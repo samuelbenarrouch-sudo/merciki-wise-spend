@@ -868,11 +868,26 @@ export function daysSince(value: string | null, now: Date): number | null {
 
 export const BILLING_OVERDUE_DAYS = 60;
 
-/** Un contrat « à facturer » signé il y a plus de 60 jours est en retard. */
-export function isBillingOverdue(row: FinanceRow, now: Date): boolean {
+/**
+ * Retard imputable à MERCIKI : la commission est facturable depuis plus de
+ * 60 jours et la facture n'a toujours pas été émise. `jours_encours` vient de
+ * la vue.
+ */
+export function isBillingOverdue(row: FinanceRow): boolean {
   if (row.billing_state !== "a_facturer") return false;
-  const days = daysSince(row.signed_at, now);
-  return days !== null && days > BILLING_OVERDUE_DAYS;
+  return row.jours_encours !== null && row.jours_encours > BILLING_OVERDUE_DAYS;
+}
+
+/**
+ * Retard imputable au fournisseur : la facture est émise depuis plus de
+ * 60 jours et n'est pas encaissée. `jours_depuis_facturation` vient de la vue.
+ */
+export function isPaymentOverdue(row: FinanceRow): boolean {
+  if (row.billing_state !== "facture") return false;
+  return (
+    row.jours_depuis_facturation !== null &&
+    row.jours_depuis_facturation > BILLING_OVERDUE_DAYS
+  );
 }
 
 export interface SupplierBillingGroup {
