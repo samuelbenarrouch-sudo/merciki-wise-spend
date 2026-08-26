@@ -622,6 +622,7 @@ export type Database = {
       v_contracts_admin: {
         Row: {
           amount_annual_ht: number | null
+          commercial_id: string | null
           commercial_name: string | null
           commercial_share: number | null
           commission_actual: number | null
@@ -691,6 +692,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_withdrawal_pending"
             referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "leads_commercial_id_fkey"
+            columns: ["commercial_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -797,6 +805,7 @@ export type Database = {
       v_withdrawal_pending: {
         Row: {
           amount_annual_ht: number | null
+          commercial_id: string | null
           commercial_name: string | null
           commercial_share: number | null
           commission_expected: number | null
@@ -813,7 +822,15 @@ export type Database = {
           supplier: string | null
           withdrawal_deadline: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "leads_commercial_id_fkey"
+            columns: ["commercial_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
