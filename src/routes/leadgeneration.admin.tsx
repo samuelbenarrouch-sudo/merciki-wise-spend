@@ -17,6 +17,7 @@ export const Route = createFileRoute("/leadgeneration/admin")({
 });
 
 const TABS = [
+  { to: "/leadgeneration/admin/dashboard", label: "Dashboard", exact: false },
   { to: "/leadgeneration/admin", label: "Leads", exact: true },
   { to: "/leadgeneration/admin/contrats", label: "Contrats", exact: false },
   {

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/leadgeneration/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { status, signIn } = useAuth();
+  const { status, profile, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -26,9 +26,16 @@ function LoginPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      navigate({ to: "/leadgeneration/dashboard", replace: true });
+      // Un administrateur arrive directement sur son dashboard de pilotage.
+      navigate({
+        to:
+          profile?.role === "admin"
+            ? "/leadgeneration/admin/dashboard"
+            : "/leadgeneration/dashboard",
+        replace: true,
+      });
     }
-  }, [status, navigate]);
+  }, [status, profile, navigate]);
 
   useEffect(() => {
     if (status === "disabled") {

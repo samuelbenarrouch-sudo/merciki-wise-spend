@@ -34,6 +34,7 @@ import { Route as LeadgenerationProductProductIdRouteImport } from './routes/lea
 import { Route as LeadgenerationAdminRetractationsRouteImport } from './routes/leadgeneration.admin.retractations'
 import { Route as LeadgenerationAdminEquipeRouteImport } from './routes/leadgeneration.admin.equipe'
 import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadgeneration.admin.doublons'
+import { Route as LeadgenerationAdminDashboardRouteImport } from './routes/leadgeneration.admin.dashboard'
 import { Route as LeadgenerationAdminContratsRouteImport } from './routes/leadgeneration.admin.contrats'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
@@ -173,6 +174,12 @@ const LeadgenerationAdminDoublonsRoute =
     path: '/doublons',
     getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
+const LeadgenerationAdminDashboardRoute =
+  LeadgenerationAdminDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
 const LeadgenerationAdminContratsRoute =
   LeadgenerationAdminContratsRouteImport.update({
     id: '/contrats',
@@ -218,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
+  '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
   '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/admin/retractations': typeof LeadgenerationAdminRetractationsRoute
@@ -244,6 +252,7 @@ export interface FileRoutesByTo {
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
+  '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
   '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/admin/retractations': typeof LeadgenerationAdminRetractationsRoute
@@ -276,6 +285,7 @@ export interface FileRoutesById {
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
+  '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
   '/leadgeneration/admin/doublons': typeof LeadgenerationAdminDoublonsRoute
   '/leadgeneration/admin/equipe': typeof LeadgenerationAdminEquipeRoute
   '/leadgeneration/admin/retractations': typeof LeadgenerationAdminRetractationsRoute
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/particuliers/$slug'
     | '/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
+    | '/leadgeneration/admin/dashboard'
     | '/leadgeneration/admin/doublons'
     | '/leadgeneration/admin/equipe'
     | '/leadgeneration/admin/retractations'
@@ -334,6 +345,7 @@ export interface FileRouteTypes {
     | '/particuliers/$slug'
     | '/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
+    | '/leadgeneration/admin/dashboard'
     | '/leadgeneration/admin/doublons'
     | '/leadgeneration/admin/equipe'
     | '/leadgeneration/admin/retractations'
@@ -365,6 +377,7 @@ export interface FileRouteTypes {
     | '/_public/particuliers/$slug'
     | '/_public/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
+    | '/leadgeneration/admin/dashboard'
     | '/leadgeneration/admin/doublons'
     | '/leadgeneration/admin/equipe'
     | '/leadgeneration/admin/retractations'
@@ -559,6 +572,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationAdminDoublonsRouteImport
       parentRoute: typeof LeadgenerationAdminRoute
     }
+    '/leadgeneration/admin/dashboard': {
+      id: '/leadgeneration/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/leadgeneration/admin/dashboard'
+      preLoaderRoute: typeof LeadgenerationAdminDashboardRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
     '/leadgeneration/admin/contrats': {
       id: '/leadgeneration/admin/contrats'
       path: '/contrats'
@@ -645,6 +665,7 @@ const PublicRouteWithChildren =
 
 interface LeadgenerationAdminRouteChildren {
   LeadgenerationAdminContratsRoute: typeof LeadgenerationAdminContratsRoute
+  LeadgenerationAdminDashboardRoute: typeof LeadgenerationAdminDashboardRoute
   LeadgenerationAdminDoublonsRoute: typeof LeadgenerationAdminDoublonsRoute
   LeadgenerationAdminEquipeRoute: typeof LeadgenerationAdminEquipeRoute
   LeadgenerationAdminRetractationsRoute: typeof LeadgenerationAdminRetractationsRoute
@@ -654,6 +675,7 @@ interface LeadgenerationAdminRouteChildren {
 
 const LeadgenerationAdminRouteChildren: LeadgenerationAdminRouteChildren = {
   LeadgenerationAdminContratsRoute: LeadgenerationAdminContratsRoute,
+  LeadgenerationAdminDashboardRoute: LeadgenerationAdminDashboardRoute,
   LeadgenerationAdminDoublonsRoute: LeadgenerationAdminDoublonsRoute,
   LeadgenerationAdminEquipeRoute: LeadgenerationAdminEquipeRoute,
   LeadgenerationAdminRetractationsRoute: LeadgenerationAdminRetractationsRoute,

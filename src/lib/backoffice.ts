@@ -1,5 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import type {
+  AnalyticsEvent,
+  AnalyticsLead,
+  AnalyticsProfile,
+} from "@/lib/analytics";
 
 /**
  * Point d'accès unique en lecture/écriture pour le backoffice d'administration.
@@ -634,6 +639,92 @@ export async function suggestCommission(
     data: {
       commission: row?.commission ?? null,
       commercialShare: row?.commercial_share ?? null,
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard de pilotage — lectures brutes                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Plafond de lignes rapatriées pour le dashboard. L'agrégation étant faite
+ * côté client (voir src/lib/analytics.ts), on borne explicitement la lecture
+ * et on remonte les compteurs exacts pour signaler toute troncature.
+ */
+export const ANALYTICS_MAX_ROWS = 5000;
+
+export interface DashboardData {
+  leads: AnalyticsLead[];
+  events: AnalyticsEvent[];
+  contracts: ContractRow[];
+  profiles: AnalyticsProfile[];
+  /** Nombre total de leads existant dans le système, toutes périodes. */
+  totalLeadsInSystem: number;
+  /** Nombre total de contrats existant dans le système, toutes périodes. */
+  totalContractsInSystem: number;
+  truncated: boolean;
+}
+
+/**
+ * Une seule passe de lecture pour tout le dashboard.
+ * `sinceIso` doit couvrir la période courante ET la période de comparaison.
+ */
+export async function loadDashboardData(
+  sinceIso: string | null,
+): Promise<Result<DashboardData>> {
+  let leadsQuery = supabase
+    .from("leads")
+    .select(
+      "id, reference, created_at, status, loss_reason, product_code, commercial_id, mandate_status",
+      { count: "exact" },
+    )
+    .order("created_at", { ascending: false })
+    .limit(ANALYTICS_MAX_ROWS);
+  if (sinceIso) leadsQuery = leadsQuery.gte("created_at", sinceIso);
+
+  // Un événement d'un lead de la période est nécessairement postérieur à la
+  // création de ce lead : filtrer les événements sur la même borne est exact.
+  let eventsQuery = supabase
+    .from("lead_events")
+    .select("lead_id, event_type, from_status, to_status, created_at")
+    .order("created_at", { ascending: true })
+    .limit(ANALYTICS_MAX_ROWS * 4);
+  if (sinceIso) eventsQuery = eventsQuery.gte("created_at", sinceIso);
+
+  const [leadsRes, eventsRes, contractsRes, profilesRes, leadsCountRes, contractsCountRes] =
+    await Promise.all([
+      leadsQuery,
+      eventsQuery,
+      supabase
+        .from("v_contracts_admin")
+        .select("*")
+        .order("signed_at", { ascending: false })
+        .limit(ANALYTICS_MAX_ROWS),
+      supabase.from("profiles").select("id, full_name, role, is_active"),
+      supabase.from("leads").select("id", { count: "exact", head: true }),
+      supabase.from("contracts").select("id", { count: "exact", head: true }),
+    ]);
+
+  const failure = [leadsRes, eventsRes, contractsRes, profilesRes].find((r) => r.error);
+  if (failure?.error) {
+    console.error("[loadDashboardData]", failure.error);
+    return { ok: false, error: frenchError(failure.error.code, failure.error.message) };
+  }
+
+  const leads = (leadsRes.data ?? []) as AnalyticsLead[];
+  const periodCount = leadsRes.count ?? leads.length;
+
+  return {
+    ok: true,
+    data: {
+      leads,
+      events: (eventsRes.data ?? []) as AnalyticsEvent[],
+      contracts: contractsRes.data ?? [],
+      profiles: (profilesRes.data ?? []) as AnalyticsProfile[],
+      totalLeadsInSystem: leadsCountRes.count ?? periodCount,
+      totalContractsInSystem: contractsCountRes.count ?? (contractsRes.data ?? []).length,
+      truncated: periodCount > leads.length,
     },
   };
 }
