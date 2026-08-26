@@ -904,36 +904,10 @@ export async function loadFinanceContracts(): Promise<Result<FinanceData>> {
     console.error("[loadFinanceContracts]", viewRes.error);
     return { ok: false, error: frenchError(viewRes.error.code, viewRes.error.message) };
   }
-  const base = viewRes.data ?? [];
-  const total = viewRes.count ?? base.length;
-
-  // La vue n'expose pas l'identité du prospect : on la rapproche depuis les
-  // leads correspondants, en une seule requête.
-  const leadIds = [...new Set(base.map((r) => r.lead_id).filter((id): id is string => !!id))];
-  const names = new Map<string, string>();
-  if (leadIds.length > 0) {
-    const { data: leads, error } = await supabase
-      .from("leads")
-      .select("id, prospect_first_name, prospect_last_name, company_name")
-      .in("id", leadIds);
-    if (error) {
-      console.error("[loadFinanceContracts:leads]", error);
-    } else {
-      for (const l of leads ?? []) {
-        names.set(
-          l.id,
-          l.company_name?.trim()
-            ? l.company_name
-            : `${l.prospect_first_name} ${l.prospect_last_name}`.trim(),
-        );
-      }
-    }
-  }
-
-  const rows: FinanceRow[] = base.map((r) => ({
-    ...r,
-    prospect_name: r.lead_id ? (names.get(r.lead_id) ?? null) : null,
-  }));
+  // La vue expose `prospect_display` (société sinon prénom + nom) depuis la
+  // migration 012 : aucune lecture séparée de `leads` n'est nécessaire.
+  const rows: FinanceRow[] = viewRes.data ?? [];
+  const total = viewRes.count ?? rows.length;
 
   return {
     ok: true,
