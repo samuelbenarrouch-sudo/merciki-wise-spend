@@ -36,6 +36,16 @@ function AdminLayout() {
 
   const isAdmin = profile?.role === "admin" && profile.is_active === true;
 
+  const withdrawalsQuery = useQuery({
+    queryKey: ["admin-withdrawals"],
+    queryFn: () => listWithdrawalPending(),
+    enabled: isAdmin,
+  });
+  const withdrawalCount = withdrawalsQuery.data?.ok
+    ? withdrawalsQuery.data.data.length
+    : 0;
+
+
   useEffect(() => {
     if (status === "authenticated" && !isAdmin) {
       navigate({ to: "/leadgeneration/dashboard", replace: true });
