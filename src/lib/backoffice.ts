@@ -442,3 +442,179 @@ async function readFunctionError(error: unknown): Promise<string> {
     return fallback;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Contrats et commissions                                             */
+/* ------------------------------------------------------------------ */
+
+export type ContractStatus = Database["public"]["Enums"]["contract_status"];
+export type CommissionStatus = Database["public"]["Enums"]["commission_status"];
+
+export const CONTRACT_STATUSES: { value: ContractStatus; label: string }[] = [
+  { value: "en_attente", label: "En attente" },
+  { value: "actif", label: "Actif" },
+  { value: "retracte", label: "Rétracté" },
+  { value: "resilie", label: "Résilié" },
+  { value: "annule", label: "Annulé" },
+];
+
+export const COMMISSION_STATUSES: { value: CommissionStatus; label: string }[] = [
+  { value: "estimee", label: "Estimée" },
+  { value: "confirmee", label: "Confirmée" },
+  { value: "payee", label: "Payée" },
+  { value: "annulee", label: "Annulée" },
+];
+
+export const contractStatusLabel = (s: ContractStatus): string =>
+  CONTRACT_STATUSES.find((c) => c.value === s)?.label ?? s;
+
+export const commissionStatusLabel = (s: CommissionStatus): string =>
+  COMMISSION_STATUSES.find((c) => c.value === s)?.label ?? s;
+
+/** Une commission est « sécurisée » dès lors qu'elle est confirmée ou payée. */
+export const isCommissionSecured = (s: CommissionStatus | null): boolean =>
+  s === "confirmee" || s === "payee";
+
+export type ContractRow = Database["public"]["Views"]["v_contracts_admin"]["Row"];
+export type WithdrawalRow =
+  Database["public"]["Views"]["v_withdrawal_pending"]["Row"];
+
+export interface ContractFilters {
+  status?: ContractStatus | "";
+  commissionStatus?: CommissionStatus | "";
+  productCode?: string;
+  commercialId?: string;
+  from?: string;
+  to?: string;
+}
+
+export async function listContracts(
+  filters: ContractFilters = {},
+): Promise<Result<ContractRow[]>> {
+  let query = supabase
+    .from("v_contracts_admin")
+    .select("*")
+    .order("signed_at", { ascending: false });
+
+  if (filters.status) query = query.eq("status", filters.status);
+  if (filters.commissionStatus)
+    query = query.eq("commission_status", filters.commissionStatus);
+  if (filters.productCode) query = query.eq("product_code", filters.productCode);
+  if (filters.from) query = query.gte("signed_at", filters.from);
+  if (filters.to) query = query.lte("signed_at", filters.to);
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("[listContracts]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+
+  // La vue expose le nom du commercial, pas son identifiant : le filtre par
+  // commercial est donc résolu côté client à partir de ce nom.
+  let rows = data ?? [];
+  if (filters.commercialId) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", filters.commercialId)
+      .maybeSingle();
+    const name = profile?.full_name ?? null;
+    rows = rows.filter((r) => r.commercial_name === name);
+  }
+
+  return { ok: true, data: rows };
+}
+
+export async function listContractsForLead(
+  leadId: string,
+): Promise<Result<ContractRow[]>> {
+  const { data, error } = await supabase
+    .from("v_contracts_admin")
+    .select("*")
+    .eq("lead_id", leadId)
+    .order("signed_at", { ascending: false });
+
+  if (error) {
+    console.error("[listContractsForLead]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: data ?? [] };
+}
+
+export type ContractInsert = Database["public"]["Tables"]["contracts"]["Insert"];
+export type ContractUpdate = Database["public"]["Tables"]["contracts"]["Update"];
+
+export async function createContract(
+  payload: ContractInsert,
+): Promise<Result<true>> {
+  // Le passage du lead en « signé » est réalisé par un déclencheur de base.
+  // Si le produit exige un mandat ACD non signé, la base refuse l'opération :
+  // son message métier est remonté tel quel à l'utilisateur.
+  const { error } = await supabase.from("contracts").insert(payload);
+  if (error) {
+    console.error("[createContract]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: true };
+}
+
+export async function updateContract(
+  id: string,
+  payload: ContractUpdate,
+): Promise<Result<true>> {
+  if (
+    payload.commission_status === "payee" &&
+    !payload.commission_paid_at
+  ) {
+    return {
+      ok: false,
+      error: "La date de paiement est obligatoire pour une commission payée.",
+    };
+  }
+  const { error } = await supabase.from("contracts").update(payload).eq("id", id);
+  if (error) {
+    console.error("[updateContract]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: true };
+}
+
+export async function listWithdrawalPending(): Promise<Result<WithdrawalRow[]>> {
+  const { data, error } = await supabase
+    .from("v_withdrawal_pending")
+    .select("*")
+    .order("jours_restants", { ascending: true });
+
+  if (error) {
+    console.error("[listWithdrawalPending]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: data ?? [] };
+}
+
+/**
+ * Suggestion de commission : simple aide à la saisie.
+ * Un produit sans barème configuré renvoie des valeurs nulles, sans erreur.
+ */
+export async function suggestCommission(
+  productCode: string,
+  amountAnnualHt: number,
+): Promise<Result<{ commission: number | null; commercialShare: number | null }>> {
+  const { data, error } = await supabase.rpc("suggest_commission", {
+    p_product_code: productCode,
+    p_amount_annual_ht: amountAnnualHt,
+  });
+
+  if (error) {
+    console.error("[suggestCommission]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  const row = (data ?? [])[0];
+  return {
+    ok: true,
+    data: {
+      commission: row?.commission ?? null,
+      commercialShare: row?.commercial_share ?? null,
+    },
+  };
+}
