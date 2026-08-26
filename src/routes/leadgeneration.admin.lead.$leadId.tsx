@@ -14,6 +14,7 @@ import {
   listAttachments,
   listLeadEvents,
   lossReasonLabel,
+  openLeadAttachment,
   statusLabel,
   updateLeadStatus,
   type LeadStatus,
@@ -87,6 +88,17 @@ function AdminLeadPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const handleDownload = async (fileId: string, storagePath: string) => {
+    setDownloading(fileId);
+    setFileError(null);
+    const res = await openLeadAttachment(storagePath);
+    setDownloading(null);
+    if (!res.ok) setFileError(res.error);
+  };
+
 
   if (leadQuery.isLoading) {
     return (
@@ -246,23 +258,27 @@ function AdminLeadPage() {
                       <span className="text-small text-slate">
                         {formatSize(file.size_bytes)}
                       </span>
-                      {file.signedUrl ? (
-                        <a
-                          href={file.signedUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline"
-                        >
+                      <button
+                        type="button"
+                        disabled={downloading === file.id}
+                        onClick={() => void handleDownload(file.id, file.storage_path)}
+                        className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline disabled:opacity-60"
+                      >
+                        {downloading === file.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                        ) : (
                           <Download className="h-4 w-4" strokeWidth={1.75} />
-                          Télécharger
-                        </a>
-                      ) : (
-                        <span className="text-small text-slate">Lien indisponible</span>
-                      )}
+                        )}
+                        Télécharger
+                      </button>
                     </li>
                   ))}
                 </ul>
               )}
+              {fileError ? (
+                <p className="mt-3 text-small text-destructive">{fileError}</p>
+              ) : null}
+
             </Section>
 
             <Section title="Historique">

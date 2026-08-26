@@ -191,11 +191,9 @@ export interface LeadAttachment {
   mime_type: string | null;
   document_type: string;
   created_at: string;
-  /** URL signée valable 60 minutes, null si la signature a échoué. */
-  signedUrl: string | null;
+  /** Chemin de stockage `<lead_id>/<fichier>`, servi via /api/lead-file. */
+  storage_path: string;
 }
-
-const SIGNED_URL_TTL = 60 * 60; // 60 minutes
 
 export async function listAttachments(
   leadId: string,
@@ -211,34 +209,44 @@ export async function listAttachments(
     return { ok: false, error: frenchError(error.code, error.message) };
   }
 
-  const rows = data ?? [];
-  if (rows.length === 0) return { ok: true, data: [] };
-
-  // Une seule signature groupée pour tous les fichiers du lead.
-  const { data: signedData } = await supabase.storage
-    .from("lead-files")
-    .createSignedUrls(
-      rows.map((row) => row.storage_path),
-      SIGNED_URL_TTL,
-    );
-
-  const urlByPath = new Map<string, string>();
-  for (const entry of signedData ?? []) {
-    if (entry.path && entry.signedUrl) urlByPath.set(entry.path, entry.signedUrl);
-  }
-
-  const signed = rows.map((row) => ({
-    id: row.id,
-    file_name: row.file_name,
-    size_bytes: row.size_bytes,
-    mime_type: row.mime_type,
-    document_type: row.document_type,
-    created_at: row.created_at,
-    signedUrl: urlByPath.get(row.storage_path) ?? null,
-  }));
-
-  return { ok: true, data: signed };
+  return { ok: true, data: (data ?? []) as LeadAttachment[] };
 }
+
+/**
+ * Télécharge une pièce jointe via la route relais de l'application
+ * (évite les blocages d'extensions sur les URL *.supabase.co).
+ */
+export async function openLeadAttachment(
+  storagePath: string,
+): Promise<Result<null>> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData.session?.access_token;
+  if (!token) return { ok: false, error: "Session expirée, reconnectez-vous." };
+
+  try {
+    const res = await fetch(`/api/lead-file?path=${encodeURIComponent(storagePath)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      return {
+        ok: false,
+        error:
+          res.status === 404
+            ? "Fichier indisponible."
+            : "Téléchargement impossible pour le moment.",
+      };
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank", "noopener");
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    return { ok: true, data: null };
+  } catch (e) {
+    console.error("[openLeadAttachment]", e);
+    return { ok: false, error: "Téléchargement impossible pour le moment." };
+  }
+}
+
 
 export async function updateLeadStatus(
   leadId: string,
