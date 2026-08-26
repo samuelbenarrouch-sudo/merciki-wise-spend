@@ -296,19 +296,30 @@ export interface TeamMember {
 }
 
 export async function listTeam(): Promise<Result<TeamMember[]>> {
+  // Auto-jointure abandonnée : PostgREST ne résout pas profiles -> profiles
+  // de façon fiable. On charge tous les profils à plat (ils tiennent dans une
+  // seule requête) et on résout le nom du manager côté client.
   const { data, error } = await supabase
     .from("profiles")
-    .select(
-      "id, email, full_name, role, manager_id, is_active, created_at, manager:profiles!profiles_manager_id_fkey(full_name)",
-    )
+    .select("id, email, full_name, role, manager_id, is_active, created_at")
     .order("full_name", { ascending: true });
 
   if (error) {
     console.error("[listTeam]", error);
     return { ok: false, error: frenchError(error.code, error.message) };
   }
-  return { ok: true, data: (data ?? []) as unknown as TeamMember[] };
+
+  const rows = data ?? [];
+  const nameById = new Map(rows.map((row) => [row.id, row.full_name]));
+  const members: TeamMember[] = rows.map((row) => ({
+    ...row,
+    manager: row.manager_id
+      ? { full_name: nameById.get(row.manager_id) ?? "—" }
+      : null,
+  }));
+  return { ok: true, data: members };
 }
+
 
 export async function updateProfile(
   userId: string,
