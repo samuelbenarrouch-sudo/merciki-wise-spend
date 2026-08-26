@@ -488,42 +488,51 @@ export interface ContractFilters {
   to?: string;
 }
 
+/**
+ * Plafond explicite de lignes rapatriées. Les totaux de commission étant
+ * calculés à partir des lignes affichées, une troncature silencieuse les
+ * rendrait faux : on borne donc la requête et on remonte le compte exact.
+ */
+export const CONTRACTS_MAX_ROWS = 1000;
+
+export interface ListedContracts {
+  rows: ContractRow[];
+  /** Nombre total de lignes correspondant aux filtres, côté base. */
+  total: number;
+  /** Vrai lorsque le total dépasse les lignes effectivement rapatriées. */
+  truncated: boolean;
+}
+
 export async function listContracts(
   filters: ContractFilters = {},
-): Promise<Result<ContractRow[]>> {
+): Promise<Result<ListedContracts>> {
   let query = supabase
     .from("v_contracts_admin")
-    .select("*")
-    .order("signed_at", { ascending: false });
+    .select("*", { count: "exact" })
+    .order("signed_at", { ascending: false })
+    .limit(CONTRACTS_MAX_ROWS);
 
   if (filters.status) query = query.eq("status", filters.status);
   if (filters.commissionStatus)
     query = query.eq("commission_status", filters.commissionStatus);
   if (filters.productCode) query = query.eq("product_code", filters.productCode);
+  // Filtre sur l'identifiant, jamais sur le nom : un libellé d'affichage
+  // reste modifiable et ne doit pas servir de clé de filtrage.
+  if (filters.commercialId) query = query.eq("commercial_id", filters.commercialId);
   if (filters.from) query = query.gte("signed_at", filters.from);
   if (filters.to) query = query.lte("signed_at", filters.to);
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
   if (error) {
     console.error("[listContracts]", error);
     return { ok: false, error: frenchError(error.code, error.message) };
   }
 
-  // La vue expose le nom du commercial, pas son identifiant : le filtre par
-  // commercial est donc résolu côté client à partir de ce nom.
-  let rows = data ?? [];
-  if (filters.commercialId) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", filters.commercialId)
-      .maybeSingle();
-    const name = profile?.full_name ?? null;
-    rows = rows.filter((r) => r.commercial_name === name);
-  }
-
-  return { ok: true, data: rows };
+  const rows = data ?? [];
+  const total = count ?? rows.length;
+  return { ok: true, data: { rows, total, truncated: total > rows.length } };
 }
+
 
 export async function listContractsForLead(
   leadId: string,
@@ -579,18 +588,28 @@ export async function updateContract(
   return { ok: true, data: true };
 }
 
-export async function listWithdrawalPending(): Promise<Result<WithdrawalRow[]>> {
-  const { data, error } = await supabase
+export interface ListedWithdrawals {
+  rows: WithdrawalRow[];
+  total: number;
+  truncated: boolean;
+}
+
+export async function listWithdrawalPending(): Promise<Result<ListedWithdrawals>> {
+  const { data, error, count } = await supabase
     .from("v_withdrawal_pending")
-    .select("*")
-    .order("jours_restants", { ascending: true });
+    .select("*", { count: "exact" })
+    .order("jours_restants", { ascending: true })
+    .limit(CONTRACTS_MAX_ROWS);
 
   if (error) {
     console.error("[listWithdrawalPending]", error);
     return { ok: false, error: frenchError(error.code, error.message) };
   }
-  return { ok: true, data: data ?? [] };
+  const rows = data ?? [];
+  const total = count ?? rows.length;
+  return { ok: true, data: { rows, total, truncated: total > rows.length } };
 }
+
 
 /**
  * Suggestion de commission : simple aide à la saisie.

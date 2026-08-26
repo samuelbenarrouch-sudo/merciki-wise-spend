@@ -9,6 +9,7 @@ import { PRODUCTS } from "@/data/products";
 import { formatMoney } from "@/components/admin/lead-contracts";
 import {
   COMMISSION_STATUSES,
+  CONTRACTS_MAX_ROWS,
   CONTRACT_STATUSES,
   commissionStatusLabel,
   contractStatusLabel,
@@ -59,7 +60,10 @@ function AdminContractsPage() {
   });
 
   const result = contractsQuery.data;
-  const rows = result?.ok ? result.data : [];
+  const rows: ContractRow[] = result?.ok ? result.data.rows : [];
+  const truncated = result?.ok ? result.data.truncated : false;
+  const total = result?.ok ? result.data.total : 0;
+
 
   const totals = useMemo(() => {
     let estimated = 0;
@@ -160,6 +164,20 @@ function AdminContractsPage() {
             />
           </div>
         </div>
+
+        {/*
+          Troncature : les totaux sont calculés sur les lignes rapatriées.
+          Dès que la base en compte davantage, on le dit avant de les afficher.
+        */}
+        {truncated ? (
+          <p
+            role="status"
+            className="mt-6 rounded-xl border border-accent/40 bg-accent/10 p-4 text-small font-medium text-ink"
+          >
+            Affichage limité à {CONTRACTS_MAX_ROWS} contrats sur {total}. Les
+            totaux ci-dessous sont partiels.
+          </p>
+        ) : null}
 
         {/* Totaux : estimé et sécurisé restent toujours séparés. */}
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
