@@ -38,6 +38,7 @@ import {
   buildTimeSeries,
   commercialPerformance,
   computeKpis,
+  countAuditGaps,
   emptyKind,
   filterByPeriod,
   filterContractsBySignedAt,
@@ -254,6 +255,7 @@ function AdminDashboardPage() {
       series: buildTimeSeries(current, previous, range, now),
       products: productBreakdown(current),
       funnel: buildFunnel(current, currentEvents),
+      auditGaps: countAuditGaps(current, currentEvents),
       exits: buildExitBreakdown(current),
       delays: qualificationDelaysHours(current, currentEvents),
       aging: pendingAging(current, now),
@@ -502,6 +504,14 @@ function AdminDashboardPage() {
                 })}
               </ul>
             )}
+            {computed.auditGaps > 0 ? (
+              <p className="mt-3 text-xs text-slate">
+                {nf.format(computed.auditGaps)} lead
+                {computed.auditGaps > 1 ? "s présentent" : " présente"} un
+                historique incomplet. L'entonnoir peut être légèrement
+                sous-estimé.
+              </p>
+            ) : null}
           </Card>
 
           <Card title="Sorties du pipeline">
@@ -575,7 +585,7 @@ function AdminDashboardPage() {
           {sortedTeam.length === 0 ? (
             <EmptyState
               kind={computed.leadsEmpty === "empty-system" ? "empty-system" : "empty-period"}
-              scope="lead remonté par un commercial actif"
+              scope="lead remonté"
             />
           ) : (
             <div className="-mx-5 overflow-x-auto px-5 lg:-mx-6 lg:px-6">
@@ -608,8 +618,23 @@ function AdminDashboardPage() {
                 </thead>
                 <tbody>
                   {sortedTeam.map((row) => (
-                    <tr key={row.commercialId} className="border-b border-mist/70">
-                      <td className="py-2.5 pr-4 text-ink">{row.name}</td>
+                    <tr
+                      key={row.commercialId}
+                      className={cn(
+                        "border-b border-mist/70",
+                        row.isActive ? "" : "text-slate opacity-70",
+                      )}
+                    >
+                      <td className="py-2.5 pr-4 text-ink">
+                        <span className={row.isActive ? "" : "text-slate"}>
+                          {row.name}
+                        </span>
+                        {row.isActive ? null : (
+                          <span className="ml-2 rounded-full bg-mist px-2 py-0.5 text-xs text-slate">
+                            compte désactivé
+                          </span>
+                        )}
+                      </td>
                       <td className="py-2.5 pr-4">{nf.format(row.leads)}</td>
                       <td className="py-2.5 pr-4">{nf.format(row.qualified)}</td>
                       <td className="py-2.5 pr-4">{nf.format(row.signed)}</td>
