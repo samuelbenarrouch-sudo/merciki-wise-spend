@@ -588,18 +588,28 @@ export async function updateContract(
   return { ok: true, data: true };
 }
 
-export async function listWithdrawalPending(): Promise<Result<WithdrawalRow[]>> {
-  const { data, error } = await supabase
+export interface ListedWithdrawals {
+  rows: WithdrawalRow[];
+  total: number;
+  truncated: boolean;
+}
+
+export async function listWithdrawalPending(): Promise<Result<ListedWithdrawals>> {
+  const { data, error, count } = await supabase
     .from("v_withdrawal_pending")
-    .select("*")
-    .order("jours_restants", { ascending: true });
+    .select("*", { count: "exact" })
+    .order("jours_restants", { ascending: true })
+    .limit(CONTRACTS_MAX_ROWS);
 
   if (error) {
     console.error("[listWithdrawalPending]", error);
     return { ok: false, error: frenchError(error.code, error.message) };
   }
-  return { ok: true, data: data ?? [] };
+  const rows = data ?? [];
+  const total = count ?? rows.length;
+  return { ok: true, data: { rows, total, truncated: total > rows.length } };
 }
+
 
 /**
  * Suggestion de commission : simple aide à la saisie.
