@@ -122,6 +122,12 @@ function AdminLayout() {
                     {withdrawalCount}
                   </span>
                 ) : null}
+                {tab.to === "/leadgeneration/admin/finances" &&
+                financeCount > 0 ? (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-xs font-semibold text-accent-foreground">
+                    {financeCount}
+                  </span>
+                ) : null}
               </Link>
 
             );
