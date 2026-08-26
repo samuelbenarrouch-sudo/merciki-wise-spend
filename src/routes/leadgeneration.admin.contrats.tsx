@@ -164,6 +164,20 @@ function AdminContractsPage() {
           </div>
         </div>
 
+        {/*
+          Troncature : les totaux sont calculés sur les lignes rapatriées.
+          Dès que la base en compte davantage, on le dit avant de les afficher.
+        */}
+        {truncated ? (
+          <p
+            role="status"
+            className="mt-6 rounded-xl border border-accent/40 bg-accent/10 p-4 text-small font-medium text-ink"
+          >
+            Affichage limité à {CONTRACTS_MAX_ROWS} contrats sur {total}. Les
+            totaux ci-dessous sont partiels.
+          </p>
+        ) : null}
+
         {/* Totaux : estimé et sécurisé restent toujours séparés. */}
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
           <div className="rounded-xl border border-mist bg-mist/40 p-4">
