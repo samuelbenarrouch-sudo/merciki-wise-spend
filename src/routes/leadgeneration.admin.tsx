@@ -39,7 +39,7 @@ const TABS = [
 
 
 function AdminLayout() {
-  const { status, profile } = useAuth();
+  const { status, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
