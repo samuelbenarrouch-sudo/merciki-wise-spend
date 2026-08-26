@@ -87,6 +87,17 @@ function AdminLeadPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const handleDownload = async (fileId: string, storagePath: string) => {
+    setDownloading(fileId);
+    setFileError(null);
+    const res = await openLeadAttachment(storagePath);
+    setDownloading(null);
+    if (!res.ok) setFileError(res.error);
+  };
+
 
   if (leadQuery.isLoading) {
     return (
