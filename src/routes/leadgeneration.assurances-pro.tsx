@@ -10,7 +10,7 @@ export const Route = createFileRoute("/leadgeneration/assurances-pro")({
       {
         name: "description",
         content:
-          "Formulaire interne réservé aux commerciaux MERCIKI : RC Pro, RC Exploitation, Garantie Décennale.",
+          "Soumission de dossier assurances professionnelles : RC Pro, RC Exploitation, Garantie Décennale.",
       },
       {
         property: "og:title",
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/leadgeneration/assurances-pro")({
       },
       {
         property: "og:description",
-        content: "Formulaire interne de soumission de dossier assurances professionnelles.",
+        content: "Soumission de dossier assurances professionnelles.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
