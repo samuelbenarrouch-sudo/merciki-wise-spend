@@ -52,6 +52,19 @@ function AdminLayout() {
     ? withdrawalsQuery.data.data.total
     : 0;
 
+  // Pastille Finances : contrats en attente d'action, à facturer ou à régler.
+  const financeQuery = useQuery({
+    queryKey: ["admin-finance"],
+    queryFn: () => loadFinanceContracts(),
+    enabled: isAdmin,
+  });
+  const financeRows = financeQuery.data?.ok ? financeQuery.data.data.rows : [];
+  const financeCount =
+    filterBillingPending(financeRows).length +
+    filterPayoutPending(financeRows).length;
+
+
+
 
 
   useEffect(() => {
