@@ -59,7 +59,10 @@ function AdminContractsPage() {
   });
 
   const result = contractsQuery.data;
-  const rows = result?.ok ? result.data : [];
+  const rows: ContractRow[] = result?.ok ? result.data.rows : [];
+  const truncated = result?.ok ? result.data.truncated : false;
+  const total = result?.ok ? result.data.total : 0;
+
 
   const totals = useMemo(() => {
     let estimated = 0;
