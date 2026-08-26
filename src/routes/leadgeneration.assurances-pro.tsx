@@ -32,8 +32,7 @@ function AssurancesProPage() {
     <div className="py-12 lg:py-16">
       <Container>
         <div className="max-w-3xl">
-          <Badge variant="accent-soft">Interne / Commerciaux</Badge>
-          <h1 className="mt-4 text-h1 text-ink">
+          <h1 className="text-h1 text-ink">
             Soumission dossier Assurances Professionnelles
           </h1>
           <p className="mt-3 text-body text-slate">
