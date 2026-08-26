@@ -87,14 +87,21 @@ function AdminLayout() {
                 key={tab.to}
                 to={tab.to}
                 className={cn(
-                  "whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors",
+                  "inline-flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors",
                   active
                     ? "border-primary text-primary"
                     : "border-transparent text-slate hover:text-ink",
                 )}
               >
                 {tab.label}
+                {tab.to === "/leadgeneration/admin/retractations" &&
+                withdrawalCount > 0 ? (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-xs font-semibold text-accent-foreground">
+                    {withdrawalCount}
+                  </span>
+                ) : null}
               </Link>
+
             );
           })}
         </div>
