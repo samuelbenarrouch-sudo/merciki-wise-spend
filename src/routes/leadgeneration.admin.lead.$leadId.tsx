@@ -13,6 +13,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { LeadContracts } from "@/components/admin/lead-contracts";
+
 import {
   LEAD_STATUSES,
   LOSS_REASONS,
