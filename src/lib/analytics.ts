@@ -901,7 +901,10 @@ export interface SupplierBillingGroup {
   invoicedHt: number;
   toInvoiceCount: number;
   invoicedCount: number;
+  /** Encours facturables depuis > 60 j : facture à émettre par MERCIKI. */
   overdueCount: number;
+  /** Factures émises depuis > 60 j et non encaissées : fournisseur à relancer. */
+  paymentOverdueCount: number;
 }
 
 export interface ProductBillingGroup {
@@ -910,6 +913,7 @@ export interface ProductBillingGroup {
   contracts: number;
   totalHt: number;
   overdueCount: number;
+  paymentOverdueCount: number;
   suppliers: SupplierBillingGroup[];
 }
 
