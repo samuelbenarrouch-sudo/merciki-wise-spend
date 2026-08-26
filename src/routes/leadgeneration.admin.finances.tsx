@@ -515,40 +515,76 @@ function BillingSection({
                               <tr>
                                 <th className="px-4 py-2 font-medium"> </th>
                                 <th className="px-4 py-2 font-medium">Référence</th>
-                                <th className="px-4 py-2 font-medium">Signé le</th>
-                                <th className="px-4 py-2 font-medium">Prospect</th>
-                                <th className="px-4 py-2 font-medium">Commission</th>
-                                <th className="px-4 py-2 font-medium">État</th>
-                                <th className="px-4 py-2 font-medium">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {supplier.rows.map((r) => {
-                                const id = r.contract_id ?? "";
-                                const age = daysSince(r.signed_at, now);
-                                return (
-                                  <tr key={id} className="border-t border-mist">
-                                    <td className="px-4 py-2">
-                                      <Checkbox
-                                        checked={selected.includes(id)}
-                                        onCheckedChange={() => toggle(id)}
-                                        aria-label="Sélectionner le contrat"
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2 text-ink">
-                                      {r.contract_reference ?? r.lead_reference ?? "—"}
-                                    </td>
-                                    <td className="px-4 py-2 text-slate">
-                                      {formatDay(r.signed_at)}
-                                      {isBillingOverdue(r, now) && age !== null ? (
-                                        <span className="ml-2 text-xs text-destructive">
-                                          {age} j
-                                        </span>
-                                      ) : null}
-                                    </td>
-                                    <td className="px-4 py-2 text-slate">
-                                      {r.prospect_name ?? "Non renseigné"}
-                                    </td>
+                                 <th className="px-4 py-2 font-medium">Signé le</th>
+                                 <th className="px-4 py-2 font-medium">
+                                   Confirmée le
+                                 </th>
+                                 <th className="px-4 py-2 font-medium">
+                                   Ancienneté
+                                 </th>
+                                 <th className="px-4 py-2 font-medium">Prospect</th>
+                                 <th className="px-4 py-2 font-medium">Commission</th>
+                                 <th className="px-4 py-2 font-medium">État</th>
+                                 <th className="px-4 py-2 font-medium">Actions</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                               {supplier.rows.map((r) => {
+                                 const id = r.contract_id ?? "";
+                                 // Deux retards distincts : encours non facturé
+                                 // (à nous d'émettre la facture) et facture non
+                                 // payée (fournisseur à relancer).
+                                 const toInvoice = r.billing_state === "a_facturer";
+                                 const ownOverdue = isBillingOverdue(r);
+                                 const supplierOverdue = isPaymentOverdue(r);
+                                 return (
+                                   <tr key={id} className="border-t border-mist">
+                                     <td className="px-4 py-2">
+                                       <Checkbox
+                                         checked={selected.includes(id)}
+                                         onCheckedChange={() => toggle(id)}
+                                         aria-label="Sélectionner le contrat"
+                                       />
+                                     </td>
+                                     <td className="px-4 py-2 text-ink">
+                                       {r.contract_reference ?? r.lead_reference ?? "—"}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {formatDay(r.signed_at)}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {formatDay(r.commission_confirmed_at)}
+                                     </td>
+                                     <td className="px-4 py-2">
+                                       {toInvoice ? (
+                                         <div className="flex flex-col gap-1">
+                                           <span className="text-slate">
+                                             Facturable depuis{" "}
+                                             {r.jours_encours ?? "—"} j
+                                           </span>
+                                           {ownOverdue ? (
+                                             <span className="inline-flex w-fit items-center rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive">
+                                               Facture à émettre (nous)
+                                             </span>
+                                           ) : null}
+                                         </div>
+                                       ) : (
+                                         <div className="flex flex-col gap-1">
+                                           <span className="text-slate">
+                                             Facturée depuis{" "}
+                                             {r.jours_depuis_facturation ?? "—"} j
+                                           </span>
+                                           {supplierOverdue ? (
+                                             <span className="inline-flex w-fit items-center rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent-foreground">
+                                               Fournisseur à relancer
+                                             </span>
+                                           ) : null}
+                                         </div>
+                                       )}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {r.prospect_display ?? "Non renseigné"}
+                                     </td>
                                     <td className="px-4 py-2 text-ink">
                                       {r.commission_ht === null
                                         ? "Non renseignée"
