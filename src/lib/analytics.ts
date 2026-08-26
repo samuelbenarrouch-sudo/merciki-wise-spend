@@ -975,6 +975,7 @@ export function groupBillingByProductSupplier(
           toInvoiceCount,
           invoicedCount,
           overdueCount,
+          paymentOverdueCount,
         };
       })
       .sort((a, b) => b.totalHt - a.totalHt);
@@ -985,6 +986,10 @@ export function groupBillingByProductSupplier(
       contracts: productRows.length,
       totalHt: suppliers.reduce((sum, s) => sum + s.totalHt, 0),
       overdueCount: suppliers.reduce((sum, s) => sum + s.overdueCount, 0),
+      paymentOverdueCount: suppliers.reduce(
+        (sum, s) => sum + s.paymentOverdueCount,
+        0,
+      ),
       suppliers,
     });
   }
