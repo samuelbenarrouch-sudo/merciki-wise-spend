@@ -4,6 +4,7 @@ import type {
   AnalyticsEvent,
   AnalyticsLead,
   AnalyticsProfile,
+  FinanceRow,
 } from "@/lib/analytics";
 
 /**
