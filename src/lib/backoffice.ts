@@ -4,6 +4,7 @@ import type {
   AnalyticsEvent,
   AnalyticsLead,
   AnalyticsProfile,
+  FinanceRow,
 } from "@/lib/analytics";
 
 /**
@@ -727,4 +728,282 @@ export async function loadDashboardData(
       truncated: periodCount > leads.length,
     },
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Référentiel fournisseurs                                            */
+/* ------------------------------------------------------------------ */
+
+export type SupplierRow = Database["public"]["Tables"]["suppliers"]["Row"];
+export type SupplierInsert = Database["public"]["Tables"]["suppliers"]["Insert"];
+export type SupplierUpdate = Database["public"]["Tables"]["suppliers"]["Update"];
+
+export interface SupplierWithProducts extends SupplierRow {
+  /** Codes produits rattachés. */
+  productCodes: string[];
+}
+
+export interface ProductLight {
+  code: string;
+  label: string;
+  is_active: boolean;
+}
+
+export async function listProductsLight(): Promise<Result<ProductLight[]>> {
+  const { data, error } = await supabase
+    .from("products")
+    .select("code, label, is_active")
+    .order("sort_order", { ascending: true });
+  if (error) {
+    console.error("[listProductsLight]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: data ?? [] };
+}
+
+export async function listSuppliers(): Promise<Result<SupplierWithProducts[]>> {
+  const [suppliersRes, linksRes] = await Promise.all([
+    supabase.from("suppliers").select("*").order("name", { ascending: true }),
+    supabase.from("supplier_products").select("supplier_id, product_code"),
+  ]);
+  const failure = [suppliersRes, linksRes].find((r) => r.error);
+  if (failure?.error) {
+    console.error("[listSuppliers]", failure.error);
+    return { ok: false, error: frenchError(failure.error.code, failure.error.message) };
+  }
+  const links = linksRes.data ?? [];
+  const rows = (suppliersRes.data ?? []).map((s) => ({
+    ...s,
+    productCodes: links
+      .filter((l) => l.supplier_id === s.id)
+      .map((l) => l.product_code),
+  }));
+  return { ok: true, data: rows };
+}
+
+export async function createSupplier(
+  payload: SupplierInsert,
+  productCodes: string[],
+): Promise<Result<string>> {
+  const { data, error } = await supabase
+    .from("suppliers")
+    .insert(payload)
+    .select("id")
+    .single();
+  if (error || !data) {
+    console.error("[createSupplier]", error);
+    return {
+      ok: false,
+      error: frenchError(error?.code, error?.message ?? "Création impossible."),
+    };
+  }
+  const linked = await setSupplierProducts(data.id, productCodes);
+  if (!linked.ok) return linked;
+  return { ok: true, data: data.id };
+}
+
+export async function updateSupplier(
+  id: string,
+  payload: SupplierUpdate,
+): Promise<Result<true>> {
+  const { error } = await supabase.from("suppliers").update(payload).eq("id", id);
+  if (error) {
+    console.error("[updateSupplier]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: true };
+}
+
+/**
+ * Remplace les rattachements produits d'un fournisseur.
+ * Aucune suppression de fournisseur n'est exposée : des contrats y font
+ * référence. La désactivation (`is_active = false`) est le seul retrait
+ * possible — le fournisseur reste lisible sur les contrats existants.
+ */
+export async function setSupplierProducts(
+  supplierId: string,
+  productCodes: string[],
+): Promise<Result<true>> {
+  const del = await supabase
+    .from("supplier_products")
+    .delete()
+    .eq("supplier_id", supplierId);
+  if (del.error) {
+    console.error("[setSupplierProducts:delete]", del.error);
+    return { ok: false, error: frenchError(del.error.code, del.error.message) };
+  }
+  if (productCodes.length === 0) return { ok: true, data: true };
+  const { error } = await supabase
+    .from("supplier_products")
+    .insert(productCodes.map((code) => ({ supplier_id: supplierId, product_code: code })));
+  if (error) {
+    console.error("[setSupplierProducts:insert]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: true };
+}
+
+export interface SuppliersForProduct {
+  suppliers: SupplierRow[];
+  /** Vrai lorsque aucun fournisseur n'est rattaché au produit : on retombe
+   *  alors sur l'ensemble des fournisseurs actifs, sans jamais bloquer. */
+  fallbackAllActive: boolean;
+}
+
+export async function listSuppliersForProduct(
+  productCode: string,
+): Promise<Result<SuppliersForProduct>> {
+  const [linkedRes, allRes] = await Promise.all([
+    supabase
+      .from("supplier_products")
+      .select("supplier_id")
+      .eq("product_code", productCode),
+    supabase
+      .from("suppliers")
+      .select("*")
+      .eq("is_active", true)
+      .order("name", { ascending: true }),
+  ]);
+  const failure = [linkedRes, allRes].find((r) => r.error);
+  if (failure?.error) {
+    console.error("[listSuppliersForProduct]", failure.error);
+    return { ok: false, error: frenchError(failure.error.code, failure.error.message) };
+  }
+  const all = allRes.data ?? [];
+  const ids = new Set((linkedRes.data ?? []).map((l) => l.supplier_id));
+  const linked = all.filter((s) => ids.has(s.id));
+  return linked.length > 0
+    ? { ok: true, data: { suppliers: linked, fallbackAllActive: false } }
+    : { ok: true, data: { suppliers: all, fallbackAllActive: true } };
+}
+
+/* ------------------------------------------------------------------ */
+/* Finances — lectures et écritures                                    */
+/* ------------------------------------------------------------------ */
+
+export const FINANCE_MAX_ROWS = 2000;
+
+export interface FinanceData {
+  rows: FinanceRow[];
+  /** Nombre de contrats existants, toutes périodes : distingue « système
+   *  vide » de « rien sur la période ». */
+  totalContractsInSystem: number;
+  truncated: boolean;
+}
+
+export async function loadFinanceContracts(): Promise<Result<FinanceData>> {
+  const [viewRes, countRes] = await Promise.all([
+    supabase
+      .from("v_finance_contracts")
+      .select("*", { count: "exact" })
+      .order("signed_at", { ascending: false })
+      .limit(FINANCE_MAX_ROWS),
+    supabase.from("contracts").select("id", { count: "exact", head: true }),
+  ]);
+  if (viewRes.error) {
+    console.error("[loadFinanceContracts]", viewRes.error);
+    return { ok: false, error: frenchError(viewRes.error.code, viewRes.error.message) };
+  }
+  const base = viewRes.data ?? [];
+  const total = viewRes.count ?? base.length;
+
+  // La vue n'expose pas l'identité du prospect : on la rapproche depuis les
+  // leads correspondants, en une seule requête.
+  const leadIds = [...new Set(base.map((r) => r.lead_id).filter((id): id is string => !!id))];
+  const names = new Map<string, string>();
+  if (leadIds.length > 0) {
+    const { data: leads, error } = await supabase
+      .from("leads")
+      .select("id, prospect_first_name, prospect_last_name, company_name")
+      .in("id", leadIds);
+    if (error) {
+      console.error("[loadFinanceContracts:leads]", error);
+    } else {
+      for (const l of leads ?? []) {
+        names.set(
+          l.id,
+          l.company_name?.trim()
+            ? l.company_name
+            : `${l.prospect_first_name} ${l.prospect_last_name}`.trim(),
+        );
+      }
+    }
+  }
+
+  const rows: FinanceRow[] = base.map((r) => ({
+    ...r,
+    prospect_name: r.lead_id ? (names.get(r.lead_id) ?? null) : null,
+  }));
+
+  return {
+    ok: true,
+    data: {
+      rows,
+      totalContractsInSystem: countRes.count ?? total,
+      truncated: total > base.length,
+    },
+  };
+}
+
+/** Marque un lot de contrats comme facturés au fournisseur. */
+export async function markCommissionInvoiced(
+  contractIds: string[],
+  invoicedAt: string,
+  invoiceRef: string | null,
+): Promise<Result<true>> {
+  return bulkUpdateContracts(contractIds, {
+    commission_invoiced_at: invoicedAt,
+    commission_invoice_ref: invoiceRef,
+  });
+}
+
+/** Marque un lot de contrats comme encaissés par MERCIKI. */
+export async function markCommissionPaid(
+  contractIds: string[],
+  paidAt: string,
+): Promise<Result<true>> {
+  return bulkUpdateContracts(contractIds, { commission_paid_at: paidAt });
+}
+
+/** Marque la facture du commercial comme reçue, sur un lot de contrats. */
+export async function markCommercialInvoiceReceived(
+  contractIds: string[],
+  receivedAt: string,
+  invoiceRef: string | null,
+): Promise<Result<true>> {
+  return bulkUpdateContracts(contractIds, {
+    commercial_invoice_received_at: receivedAt,
+    commercial_invoice_ref: invoiceRef,
+  });
+}
+
+/** Marque un lot de contrats comme réglés au commercial. */
+export async function markCommercialPaid(
+  contractIds: string[],
+  paidAt: string,
+): Promise<Result<true>> {
+  return bulkUpdateContracts(contractIds, { commercial_paid_at: paidAt });
+}
+
+/**
+ * Écriture en lot : une facture fournisseur couvre plusieurs contrats.
+ * En cas de refus de la base (contrainte métier — un règlement commercial
+ * avant encaissement MERCIKI, par exemple), son message est remonté tel quel.
+ */
+async function bulkUpdateContracts(
+  contractIds: string[],
+  payload: ContractUpdate,
+): Promise<Result<true>> {
+  if (contractIds.length === 0) {
+    return { ok: false, error: "Aucun contrat sélectionné." };
+  }
+  const { error } = await supabase
+    .from("contracts")
+    .update(payload)
+    .in("id", contractIds);
+  if (error) {
+    console.error("[bulkUpdateContracts]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: true };
 }

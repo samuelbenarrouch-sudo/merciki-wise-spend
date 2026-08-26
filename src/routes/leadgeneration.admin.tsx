@@ -3,7 +3,8 @@ import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tan
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { listWithdrawalPending } from "@/lib/backoffice";
+import { listWithdrawalPending, loadFinanceContracts } from "@/lib/backoffice";
+import { filterBillingPending, filterPayoutPending } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
@@ -20,6 +21,12 @@ const TABS = [
   { to: "/leadgeneration/admin/dashboard", label: "Dashboard", exact: false },
   { to: "/leadgeneration/admin", label: "Leads", exact: true },
   { to: "/leadgeneration/admin/contrats", label: "Contrats", exact: false },
+  { to: "/leadgeneration/admin/finances", label: "Finances", exact: false },
+  {
+    to: "/leadgeneration/admin/fournisseurs",
+    label: "Fournisseurs",
+    exact: false,
+  },
   {
     to: "/leadgeneration/admin/retractations",
     label: "Rétractations",
@@ -45,6 +52,19 @@ function AdminLayout() {
   const withdrawalCount = withdrawalsQuery.data?.ok
     ? withdrawalsQuery.data.data.total
     : 0;
+
+  // Pastille Finances : contrats en attente d'action, à facturer ou à régler.
+  const financeQuery = useQuery({
+    queryKey: ["admin-finance"],
+    queryFn: () => loadFinanceContracts(),
+    enabled: isAdmin,
+  });
+  const financeRows = financeQuery.data?.ok ? financeQuery.data.data.rows : [];
+  const financeCount =
+    filterBillingPending(financeRows).length +
+    filterPayoutPending(financeRows).length;
+
+
 
 
 
@@ -100,6 +120,12 @@ function AdminLayout() {
                 withdrawalCount > 0 ? (
                   <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-xs font-semibold text-accent-foreground">
                     {withdrawalCount}
+                  </span>
+                ) : null}
+                {tab.to === "/leadgeneration/admin/finances" &&
+                financeCount > 0 ? (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-xs font-semibold text-accent-foreground">
+                    {financeCount}
                   </span>
                 ) : null}
               </Link>
