@@ -271,11 +271,14 @@ function AdminLeadPage() {
                         )}
                         Télécharger
                       </button>
-
                     </li>
                   ))}
                 </ul>
               )}
+              {fileError ? (
+                <p className="mt-3 text-small text-destructive">{fileError}</p>
+              ) : null}
+
             </Section>
 
             <Section title="Historique">
