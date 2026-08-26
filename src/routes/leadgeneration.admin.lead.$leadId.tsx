@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, Eye, Loader2 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
 import {
   LEAD_STATUSES,
@@ -19,6 +26,7 @@ import {
   updateLeadStatus,
   type LeadStatus,
   type LossReason,
+  type LeadAttachment,
 } from "@/lib/backoffice";
 import { formatDetailValue, resolveFieldLabel } from "@/lib/fieldLabels";
 
@@ -65,9 +73,20 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
+/** Déclenche le téléchargement d'un blob via un élément <a> détaché. */
+function triggerDownload(objectUrl: string, fileName: string) {
+  const a = document.createElement("a");
+  a.href = objectUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 function AdminLeadPage() {
   const { leadId } = Route.useParams();
   const queryClient = useQueryClient();
+  const previewUrlRef = useRef<string | null>(null);
 
   const leadQuery = useQuery({
     queryKey: ["admin-lead", leadId],
@@ -90,15 +109,67 @@ function AdminLeadPage() {
   const [saved, setSaved] = useState(false);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [preview, setPreview] = useState<{
+    fileId: string;
+    fileName: string;
+    mimeType: string;
+    objectUrl: string;
+  } | null>(null);
 
-  const handleDownload = async (fileId: string, storagePath: string) => {
-    setDownloading(fileId);
-    setFileError(null);
-    const res = await openLeadAttachment(storagePath);
-    setDownloading(null);
-    if (!res.ok) setFileError(res.error);
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    };
+  }, []);
+
+  const closePreview = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setPreview(null);
   };
 
+  const handleDownload = async (file: LeadAttachment) => {
+    setDownloading(file.id);
+    setFileError(null);
+    const res = await openLeadAttachment(file.storage_path);
+    setDownloading(null);
+    if (!res.ok) {
+      setFileError(res.error);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(res.data);
+    triggerDownload(objectUrl, file.file_name);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 5_000);
+  };
+
+  const handleOpenPreview = async (file: LeadAttachment) => {
+    setDownloading(file.id);
+    setFileError(null);
+    const res = await openLeadAttachment(file.storage_path);
+    setDownloading(null);
+    if (!res.ok) {
+      setFileError(res.error);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(res.data);
+    previewUrlRef.current = objectUrl;
+    setPreview({
+      fileId: file.id,
+      fileName: file.file_name,
+      mimeType: file.mime_type ?? "application/octet-stream",
+      objectUrl,
+    });
+  };
+
+  const handlePreviewDownload = () => {
+    if (!preview) return;
+    triggerDownload(preview.objectUrl, preview.fileName);
+  };
 
   if (leadQuery.isLoading) {
     return (
@@ -247,38 +318,47 @@ function AdminLeadPage() {
                 <p className="text-small text-slate">Aucune pièce jointe.</p>
               ) : (
                 <ul className="space-y-2">
-                  {filesQuery.data.data.map((file) => (
-                    <li
-                      key={file.id}
-                      className="flex items-center justify-between gap-3 rounded-lg border border-mist px-3 py-2"
-                    >
-                      <span className="min-w-0 flex-1 truncate text-small text-ink">
-                        {file.file_name}
-                      </span>
-                      <span className="text-small text-slate">
-                        {formatSize(file.size_bytes)}
-                      </span>
-                      <button
-                        type="button"
-                        disabled={downloading === file.id}
-                        onClick={() => void handleDownload(file.id, file.storage_path)}
-                        className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline disabled:opacity-60"
+                  {filesQuery.data.data.map((file) => {
+                    const isPreviewable =
+                      (file.mime_type ?? "").startsWith("image/") ||
+                      file.mime_type === "application/pdf";
+                    return (
+                      <li
+                        key={file.id}
+                        className="flex items-center justify-between gap-3 rounded-lg border border-mist px-3 py-2"
                       >
-                        {downloading === file.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
-                        ) : (
-                          <Download className="h-4 w-4" strokeWidth={1.75} />
-                        )}
-                        Télécharger
-                      </button>
-                    </li>
-                  ))}
+                        <button
+                          type="button"
+                          onClick={() => void handleOpenPreview(file)}
+                          className="min-w-0 flex-1 truncate text-left text-small text-ink hover:text-primary"
+                          title={isPreviewable ? "Voir l'aperçu" : "Télécharger"}
+                        >
+                          {file.file_name}
+                        </button>
+                        <span className="text-small text-slate">
+                          {formatSize(file.size_bytes)}
+                        </span>
+                        <button
+                          type="button"
+                          disabled={downloading === file.id}
+                          onClick={() => void handleDownload(file)}
+                          className="inline-flex items-center gap-1 text-small font-medium text-primary hover:underline disabled:opacity-60"
+                        >
+                          {downloading === file.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                          ) : (
+                            <Download className="h-4 w-4" strokeWidth={1.75} />
+                          )}
+                          Télécharger
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
               {fileError ? (
                 <p className="mt-3 text-small text-destructive">{fileError}</p>
               ) : null}
-
             </Section>
 
             <Section title="Historique">
@@ -396,6 +476,40 @@ function AdminLeadPage() {
           </aside>
         </div>
       </Container>
+
+      <Dialog open={!!preview} onOpenChange={(open) => { if (!open) closePreview(); }}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{preview?.fileName}</DialogTitle>
+          </DialogHeader>
+          <div className="min-h-[200px]">
+            {preview?.mimeType.startsWith("image/") ? (
+              <img
+                src={preview.objectUrl}
+                alt={preview.fileName}
+                className="max-h-[60vh] w-auto rounded-md mx-auto"
+              />
+            ) : preview?.mimeType === "application/pdf" ? (
+              <iframe
+                src={preview.objectUrl}
+                className="h-[60vh] w-full rounded-md border border-mist"
+                title={preview.fileName}
+              />
+            ) : (
+              <div className="flex h-[200px] flex-col items-center justify-center text-slate">
+                <Eye className="h-8 w-8 mb-2 opacity-40" strokeWidth={1.75} />
+                <p className="text-small">Aperçu non disponible pour ce type de fichier.</p>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button type="button" onClick={handlePreviewDownload}>
+              <Download className="h-4 w-4 mr-2" strokeWidth={1.75} />
+              Télécharger
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
