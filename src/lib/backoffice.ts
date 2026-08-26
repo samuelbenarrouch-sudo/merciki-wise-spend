@@ -342,3 +342,74 @@ export async function listProfilesLight(): Promise<
   }
   return { ok: true, data: data ?? [] };
 }
+
+export interface CreatedAccount {
+  email: string;
+  password: string;
+  userId: string;
+  /** Succès partiel : le compte existe, mais une étape secondaire a échoué. */
+  warning?: string;
+}
+
+/**
+ * Création d'un compte commercial via l'Edge Function `create-commercial`
+ * (la clé de service n'est disponible que dans ce runtime).
+ * Le client Supabase joint automatiquement le jeton de session : aucun en-tête
+ * n'est ajouté à la main.
+ */
+export async function createCommercialAccount(input: {
+  email: string;
+  fullName: string;
+  managerId: string | null;
+}): Promise<Result<CreatedAccount>> {
+  const { data, error } = await supabase.functions.invoke<
+    CreatedAccount & { error?: string }
+  >("create-commercial", {
+    body: {
+      email: input.email.trim(),
+      fullName: input.fullName.trim(),
+      managerId: input.managerId,
+    },
+  });
+
+  if (error) {
+    console.error("[createCommercialAccount]", error);
+    return { ok: false, error: await readFunctionError(error) };
+  }
+
+  if (!data || !data.password || !data.userId) {
+    return {
+      ok: false,
+      error: data?.error ?? "Réponse inattendue du serveur. Réessayez.",
+    };
+  }
+
+  return { ok: true, data };
+}
+
+/**
+ * supabase-js masque le corps des réponses non-2xx derrière un message
+ * générique en anglais. Le corps JSON `{ error: "..." }` reste accessible via
+ * `error.context` (la Response brute) : on le lit pour remonter le message
+ * métier en français.
+ */
+async function readFunctionError(error: unknown): Promise<string> {
+  const fallback = "Création du compte impossible. Réessayez dans un instant.";
+  const context = (error as { context?: unknown }).context;
+  if (!context) return fallback;
+
+  try {
+    let payload: unknown;
+    if (typeof Response !== "undefined" && context instanceof Response) {
+      payload = await context.clone().json();
+    } else if (typeof context === "string") {
+      payload = JSON.parse(context);
+    } else {
+      payload = context;
+    }
+    const message = (payload as { error?: unknown } | null)?.error;
+    return typeof message === "string" && message.trim() ? message : fallback;
+  } catch {
+    return fallback;
+  }
+}

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { Check, Copy, Loader2, UserPlus } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
+  createCommercialAccount,
   listTeam,
   updateProfile,
+  type CreatedAccount,
   type TeamMember,
   type UserRole,
 } from "@/lib/backoffice";
-import { createCommercialAccountFn } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/leadgeneration/admin/equipe")({
   component: AdminTeamPage,
@@ -219,21 +219,21 @@ function CreateAccountCard({
   managers: TeamMember[];
   onCreated: () => void;
 }) {
-  const createAccount = useServerFn(createCommercialAccountFn);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [managerId, setManagerId] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async () =>
-      createAccount({
-        data: {
-          email: email.trim(),
-          fullName: fullName.trim(),
-          managerId: managerId || null,
-        },
-      }),
+  const mutation = useMutation<CreatedAccount>({
+    mutationFn: async () => {
+      const res = await createCommercialAccount({
+        email: email.trim(),
+        fullName: fullName.trim(),
+        managerId: managerId || null,
+      });
+      if (!res.ok) throw new Error(res.error);
+      return res.data;
+    },
     onSuccess: () => {
       setEmail("");
       setFullName("");
@@ -326,6 +326,11 @@ function CreateAccountCard({
               {copied ? "Copié" : "Copier"}
             </Button>
           </div>
+          {created.warning ? (
+            <p className="mt-2 rounded-lg border border-accent/50 bg-accent/15 p-2 text-small text-ink">
+              {created.warning}
+            </p>
+          ) : null}
           <p className="mt-2 text-xs text-slate">
             Ce mot de passe ne sera plus jamais affiché. Transmettez-le maintenant
             au commercial, qui pourra le changer ensuite.
