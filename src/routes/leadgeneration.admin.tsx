@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { listWithdrawalPending } from "@/lib/backoffice";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
@@ -16,9 +18,16 @@ export const Route = createFileRoute("/leadgeneration/admin")({
 
 const TABS = [
   { to: "/leadgeneration/admin", label: "Leads", exact: true },
+  { to: "/leadgeneration/admin/contrats", label: "Contrats", exact: false },
+  {
+    to: "/leadgeneration/admin/retractations",
+    label: "Rétractations",
+    exact: false,
+  },
   { to: "/leadgeneration/admin/doublons", label: "Doublons", exact: false },
   { to: "/leadgeneration/admin/equipe", label: "Équipe", exact: false },
 ] as const;
+
 
 function AdminLayout() {
   const { status, profile } = useAuth();
@@ -26,6 +35,16 @@ function AdminLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const isAdmin = profile?.role === "admin" && profile.is_active === true;
+
+  const withdrawalsQuery = useQuery({
+    queryKey: ["admin-withdrawals"],
+    queryFn: () => listWithdrawalPending(),
+    enabled: isAdmin,
+  });
+  const withdrawalCount = withdrawalsQuery.data?.ok
+    ? withdrawalsQuery.data.data.length
+    : 0;
+
 
   useEffect(() => {
     if (status === "authenticated" && !isAdmin) {
@@ -68,14 +87,21 @@ function AdminLayout() {
                 key={tab.to}
                 to={tab.to}
                 className={cn(
-                  "whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors",
+                  "inline-flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors",
                   active
                     ? "border-primary text-primary"
                     : "border-transparent text-slate hover:text-ink",
                 )}
               >
                 {tab.label}
+                {tab.to === "/leadgeneration/admin/retractations" &&
+                withdrawalCount > 0 ? (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-xs font-semibold text-accent-foreground">
+                    {withdrawalCount}
+                  </span>
+                ) : null}
               </Link>
+
             );
           })}
         </div>

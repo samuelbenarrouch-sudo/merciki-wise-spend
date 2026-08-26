@@ -13,6 +13,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { LeadContracts } from "@/components/admin/lead-contracts";
+
 import {
   LEAD_STATUSES,
   LOSS_REASONS,
@@ -361,7 +363,12 @@ function AdminLeadPage() {
               ) : null}
             </Section>
 
+            <Section title="Contrats">
+              <LeadContracts leadId={leadId} productCode={lead.product_code} />
+            </Section>
+
             <Section title="Historique">
+
               {eventsQuery.isLoading ? (
                 <p className="text-small text-slate">Chargement…</p>
               ) : !eventsQuery.data?.ok ? (
