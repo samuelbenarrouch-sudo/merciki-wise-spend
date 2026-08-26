@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container } from "@/components/ui/container";
-import { Badge } from "@/components/ui/badge";
 import { AssurancesProForm } from "@/components/forms/AssurancesProForm";
 
 export const Route = createFileRoute("/leadgeneration/assurances-pro")({
