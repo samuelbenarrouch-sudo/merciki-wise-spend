@@ -42,8 +42,9 @@ function AdminLayout() {
     enabled: isAdmin,
   });
   const withdrawalCount = withdrawalsQuery.data?.ok
-    ? withdrawalsQuery.data.data.length
+    ? withdrawalsQuery.data.data.total
     : 0;
+
 
 
   useEffect(() => {
