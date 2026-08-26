@@ -49,6 +49,7 @@ export type Database = {
           commercial_paid_at: string | null
           commercial_share: number | null
           commission_actual: number | null
+          commission_confirmed_at: string | null
           commission_expected: number | null
           commission_invoice_ref: string | null
           commission_invoiced_at: string | null
@@ -64,7 +65,7 @@ export type Database = {
           signed_at: string
           start_date: string | null
           status: Database["public"]["Enums"]["contract_status"]
-          supplier: string
+          supplier: string | null
           supplier_id: string | null
           updated_at: string
           withdrawal_deadline: string | null
@@ -76,6 +77,7 @@ export type Database = {
           commercial_paid_at?: string | null
           commercial_share?: number | null
           commission_actual?: number | null
+          commission_confirmed_at?: string | null
           commission_expected?: number | null
           commission_invoice_ref?: string | null
           commission_invoiced_at?: string | null
@@ -91,7 +93,7 @@ export type Database = {
           signed_at: string
           start_date?: string | null
           status?: Database["public"]["Enums"]["contract_status"]
-          supplier: string
+          supplier?: string | null
           supplier_id?: string | null
           updated_at?: string
           withdrawal_deadline?: string | null
@@ -103,6 +105,7 @@ export type Database = {
           commercial_paid_at?: string | null
           commercial_share?: number | null
           commission_actual?: number | null
+          commission_confirmed_at?: string | null
           commission_expected?: number | null
           commission_invoice_ref?: string | null
           commission_invoiced_at?: string | null
@@ -118,7 +121,7 @@ export type Database = {
           signed_at?: string
           start_date?: string | null
           status?: Database["public"]["Enums"]["contract_status"]
-          supplier?: string
+          supplier?: string | null
           supplier_id?: string | null
           updated_at?: string
           withdrawal_deadline?: string | null
@@ -841,6 +844,7 @@ export type Database = {
           commercial_name: string | null
           commercial_paid_at: string | null
           commercial_share_ht: number | null
+          commission_confirmed_at: string | null
           commission_ht: number | null
           commission_invoice_ref: string | null
           commission_invoiced_at: string | null
@@ -849,15 +853,21 @@ export type Database = {
           commission_status:
             | Database["public"]["Enums"]["commission_status"]
             | null
+          company_name: string | null
           contract_id: string | null
           contract_reference: string | null
           contract_status: Database["public"]["Enums"]["contract_status"] | null
+          jours_depuis_facturation: number | null
+          jours_encours: number | null
           lead_id: string | null
           lead_reference: string | null
           marge_ht: number | null
           payout_state: string | null
           product_code: string | null
           product_label: string | null
+          prospect_display: string | null
+          prospect_first_name: string | null
+          prospect_last_name: string | null
           signed_at: string | null
           supplier_billing_email: string | null
           supplier_id: string | null
