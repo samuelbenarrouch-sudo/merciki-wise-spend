@@ -28,6 +28,7 @@ import {
   groupBillingByProductSupplier,
   groupPayoutByCommercial,
   isBillingOverdue,
+  isPaymentOverdue,
   payoutSummaryText,
   resolveFinanceRange,
   type FinancePeriodPreset,
@@ -510,7 +511,7 @@ function BillingSection({
 
                       {isOpen ? (
                         <div className="overflow-x-auto border-t border-mist">
-                          <table className="w-full min-w-[900px] text-left text-sm">
+                          <table className="w-full min-w-[1100px] text-left text-sm">
                             <thead className="bg-background text-slate">
                               <tr>
                                 <th className="px-4 py-2 font-medium"> </th>
@@ -849,7 +850,7 @@ function PayoutSection({
                                   {r.product_label ?? r.product_code ?? "—"}
                                 </td>
                                 <td className="px-4 py-2 text-slate">
-                                  {r.prospect_name ?? "Non renseigné"}
+                                  {r.prospect_display ?? "Non renseigné"}
                                 </td>
                                 <td className="px-4 py-2 text-slate">
                                   {formatDay(r.commission_paid_at)}
