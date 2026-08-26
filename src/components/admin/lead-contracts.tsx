@@ -116,9 +116,9 @@ export function LeadContracts({ leadId, productCode }: Props) {
     const res = await createContract({
       lead_id: leadId,
       supplier_id: selected.id,
-      // La colonne texte `supplier` reste alimentée du nom au moment de la
-      // signature : elle est NOT NULL en base et sert désormais d'historique.
-      supplier: selected.name,
+      // La colonne texte `supplier` est obsolète depuis la migration 012
+      // (nullable) : seul `supplier_id` fait foi. Elle n'est plus alimentée,
+      // la vue ne s'en sert qu'en repli pour les contrats antérieurs.
       reference: reference.trim() || null,
       signed_at: signedAt,
       start_date: startDate || null,

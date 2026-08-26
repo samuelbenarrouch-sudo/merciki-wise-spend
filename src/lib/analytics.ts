@@ -689,13 +689,12 @@ export function emptyKind(periodCount: number, systemCount: number): EmptyKind {
 /* ------------------------------------------------------------------ */
 
 /**
- * Ligne financière : la vue `v_finance_contracts` enrichie du nom du prospect,
- * que la vue n'expose pas et que la couche de lecture rapproche depuis `leads`.
+ * Ligne financière : la vue `v_finance_contracts` telle quelle. Depuis la
+ * migration 012 elle expose `prospect_display` et les anciennetés calculées :
+ * rien n'est recomposé côté client.
  */
 export type FinanceRow =
-  Database["public"]["Views"]["v_finance_contracts"]["Row"] & {
-    prospect_name: string | null;
-  };
+  Database["public"]["Views"]["v_finance_contracts"]["Row"];
 
 export type FinancePeriodPreset =
   | "current-month"
@@ -869,11 +868,26 @@ export function daysSince(value: string | null, now: Date): number | null {
 
 export const BILLING_OVERDUE_DAYS = 60;
 
-/** Un contrat « à facturer » signé il y a plus de 60 jours est en retard. */
-export function isBillingOverdue(row: FinanceRow, now: Date): boolean {
+/**
+ * Retard imputable à MERCIKI : la commission est facturable depuis plus de
+ * 60 jours et la facture n'a toujours pas été émise. `jours_encours` vient de
+ * la vue.
+ */
+export function isBillingOverdue(row: FinanceRow): boolean {
   if (row.billing_state !== "a_facturer") return false;
-  const days = daysSince(row.signed_at, now);
-  return days !== null && days > BILLING_OVERDUE_DAYS;
+  return row.jours_encours !== null && row.jours_encours > BILLING_OVERDUE_DAYS;
+}
+
+/**
+ * Retard imputable au fournisseur : la facture est émise depuis plus de
+ * 60 jours et n'est pas encaissée. `jours_depuis_facturation` vient de la vue.
+ */
+export function isPaymentOverdue(row: FinanceRow): boolean {
+  if (row.billing_state !== "facture") return false;
+  return (
+    row.jours_depuis_facturation !== null &&
+    row.jours_depuis_facturation > BILLING_OVERDUE_DAYS
+  );
 }
 
 export interface SupplierBillingGroup {
@@ -887,7 +901,10 @@ export interface SupplierBillingGroup {
   invoicedHt: number;
   toInvoiceCount: number;
   invoicedCount: number;
+  /** Encours facturables depuis > 60 j : facture à émettre par MERCIKI. */
   overdueCount: number;
+  /** Factures émises depuis > 60 j et non encaissées : fournisseur à relancer. */
+  paymentOverdueCount: number;
 }
 
 export interface ProductBillingGroup {
@@ -896,6 +913,7 @@ export interface ProductBillingGroup {
   contracts: number;
   totalHt: number;
   overdueCount: number;
+  paymentOverdueCount: number;
   suppliers: SupplierBillingGroup[];
 }
 
@@ -908,7 +926,6 @@ export function filterBillingPending(rows: FinanceRow[]): FinanceRow[] {
 /** Regroupement à deux niveaux : produit, puis fournisseur. */
 export function groupBillingByProductSupplier(
   rows: FinanceRow[],
-  now: Date,
 ): ProductBillingGroup[] {
   const byProduct = new Map<string, FinanceRow[]>();
   const labels = new Map<string, string>();
@@ -934,15 +951,17 @@ export function groupBillingByProductSupplier(
         let toInvoiceCount = 0;
         let invoicedCount = 0;
         let overdueCount = 0;
+        let paymentOverdueCount = 0;
         for (const r of supplierRows) {
           const amount = r.commission_ht ?? 0;
           if (r.billing_state === "a_facturer") {
             toInvoiceHt += amount;
             toInvoiceCount += 1;
-            if (isBillingOverdue(r, now)) overdueCount += 1;
+            if (isBillingOverdue(r)) overdueCount += 1;
           } else {
             invoicedHt += amount;
             invoicedCount += 1;
+            if (isPaymentOverdue(r)) paymentOverdueCount += 1;
           }
         }
         return {
@@ -956,6 +975,7 @@ export function groupBillingByProductSupplier(
           toInvoiceCount,
           invoicedCount,
           overdueCount,
+          paymentOverdueCount,
         };
       })
       .sort((a, b) => b.totalHt - a.totalHt);
@@ -966,6 +986,10 @@ export function groupBillingByProductSupplier(
       contracts: productRows.length,
       totalHt: suppliers.reduce((sum, s) => sum + s.totalHt, 0),
       overdueCount: suppliers.reduce((sum, s) => sum + s.overdueCount, 0),
+      paymentOverdueCount: suppliers.reduce(
+        (sum, s) => sum + s.paymentOverdueCount,
+        0,
+      ),
       suppliers,
     });
   }

@@ -19,7 +19,6 @@ import {
   BILLING_OVERDUE_DAYS,
   FINANCE_PERIOD_PRESETS,
   computeFinanceTotals,
-  daysSince,
   filterBillingPending,
   filterFinanceByProducts,
   filterPayoutPending,
@@ -28,6 +27,7 @@ import {
   groupBillingByProductSupplier,
   groupPayoutByCommercial,
   isBillingOverdue,
+  isPaymentOverdue,
   payoutSummaryText,
   resolveFinanceRange,
   type FinancePeriodPreset,
@@ -120,8 +120,8 @@ function AdminFinancePage() {
 
   const billingRows = useMemo(() => filterBillingPending(rows), [rows]);
   const billingGroups = useMemo(
-    () => groupBillingByProductSupplier(billingRows, now),
-    [billingRows, now],
+    () => groupBillingByProductSupplier(billingRows),
+    [billingRows],
   );
   const payoutRows = useMemo(() => filterPayoutPending(rows), [rows]);
   const payoutGroups = useMemo(() => groupPayoutByCommercial(payoutRows), [payoutRows]);
@@ -322,7 +322,6 @@ function AdminFinancePage() {
           groups={billingGroups}
           totalInSystem={totalInSystem}
           hasRows={rows.length > 0}
-          now={now}
           onDone={refresh}
         />
 
@@ -346,13 +345,11 @@ function BillingSection({
   groups,
   totalInSystem,
   hasRows,
-  now,
   onDone,
 }: {
   groups: ReturnType<typeof groupBillingByProductSupplier>;
   totalInSystem: number;
   hasRows: boolean;
-  now: Date;
   onDone: () => Promise<void>;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
@@ -458,7 +455,10 @@ function BillingSection({
                   <p className="text-small text-slate">
                     {product.contracts} contrat(s) · {formatMoney(product.totalHt)}
                     {product.overdueCount > 0
-                      ? ` · ${product.overdueCount} en retard`
+                      ? ` · ${product.overdueCount} facture(s) à émettre`
+                      : ""}
+                    {product.paymentOverdueCount > 0
+                      ? ` · ${product.paymentOverdueCount} règlement(s) en retard`
                       : ""}
                   </p>
                 </div>
@@ -492,7 +492,14 @@ function BillingSection({
                           {supplier.invoicedCount})
                           {supplier.overdueCount > 0 ? (
                             <span className="ml-2 rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive">
-                              {supplier.overdueCount} &gt; {BILLING_OVERDUE_DAYS} j
+                              {supplier.overdueCount} facture(s) à émettre &gt;{" "}
+                              {BILLING_OVERDUE_DAYS} j
+                            </span>
+                          ) : null}
+                          {supplier.paymentOverdueCount > 0 ? (
+                            <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent-foreground">
+                              {supplier.paymentOverdueCount} règlement(s) en retard
+                              &gt; {BILLING_OVERDUE_DAYS} j
                             </span>
                           ) : null}
                         </p>
@@ -513,45 +520,81 @@ function BillingSection({
 
                       {isOpen ? (
                         <div className="overflow-x-auto border-t border-mist">
-                          <table className="w-full min-w-[900px] text-left text-sm">
+                          <table className="w-full min-w-[1100px] text-left text-sm">
                             <thead className="bg-background text-slate">
                               <tr>
                                 <th className="px-4 py-2 font-medium"> </th>
                                 <th className="px-4 py-2 font-medium">Référence</th>
-                                <th className="px-4 py-2 font-medium">Signé le</th>
-                                <th className="px-4 py-2 font-medium">Prospect</th>
-                                <th className="px-4 py-2 font-medium">Commission</th>
-                                <th className="px-4 py-2 font-medium">État</th>
-                                <th className="px-4 py-2 font-medium">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {supplier.rows.map((r) => {
-                                const id = r.contract_id ?? "";
-                                const age = daysSince(r.signed_at, now);
-                                return (
-                                  <tr key={id} className="border-t border-mist">
-                                    <td className="px-4 py-2">
-                                      <Checkbox
-                                        checked={selected.includes(id)}
-                                        onCheckedChange={() => toggle(id)}
-                                        aria-label="Sélectionner le contrat"
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2 text-ink">
-                                      {r.contract_reference ?? r.lead_reference ?? "—"}
-                                    </td>
-                                    <td className="px-4 py-2 text-slate">
-                                      {formatDay(r.signed_at)}
-                                      {isBillingOverdue(r, now) && age !== null ? (
-                                        <span className="ml-2 text-xs text-destructive">
-                                          {age} j
-                                        </span>
-                                      ) : null}
-                                    </td>
-                                    <td className="px-4 py-2 text-slate">
-                                      {r.prospect_name ?? "Non renseigné"}
-                                    </td>
+                                 <th className="px-4 py-2 font-medium">Signé le</th>
+                                 <th className="px-4 py-2 font-medium">
+                                   Confirmée le
+                                 </th>
+                                 <th className="px-4 py-2 font-medium">
+                                   Ancienneté
+                                 </th>
+                                 <th className="px-4 py-2 font-medium">Prospect</th>
+                                 <th className="px-4 py-2 font-medium">Commission</th>
+                                 <th className="px-4 py-2 font-medium">État</th>
+                                 <th className="px-4 py-2 font-medium">Actions</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                               {supplier.rows.map((r) => {
+                                 const id = r.contract_id ?? "";
+                                 // Deux retards distincts : encours non facturé
+                                 // (à nous d'émettre la facture) et facture non
+                                 // payée (fournisseur à relancer).
+                                 const toInvoice = r.billing_state === "a_facturer";
+                                 const ownOverdue = isBillingOverdue(r);
+                                 const supplierOverdue = isPaymentOverdue(r);
+                                 return (
+                                   <tr key={id} className="border-t border-mist">
+                                     <td className="px-4 py-2">
+                                       <Checkbox
+                                         checked={selected.includes(id)}
+                                         onCheckedChange={() => toggle(id)}
+                                         aria-label="Sélectionner le contrat"
+                                       />
+                                     </td>
+                                     <td className="px-4 py-2 text-ink">
+                                       {r.contract_reference ?? r.lead_reference ?? "—"}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {formatDay(r.signed_at)}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {formatDay(r.commission_confirmed_at)}
+                                     </td>
+                                     <td className="px-4 py-2">
+                                       {toInvoice ? (
+                                         <div className="flex flex-col gap-1">
+                                           <span className="text-slate">
+                                             Facturable depuis{" "}
+                                             {r.jours_encours ?? "—"} j
+                                           </span>
+                                           {ownOverdue ? (
+                                             <span className="inline-flex w-fit items-center rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive">
+                                               Facture à émettre (nous)
+                                             </span>
+                                           ) : null}
+                                         </div>
+                                       ) : (
+                                         <div className="flex flex-col gap-1">
+                                           <span className="text-slate">
+                                             Facturée depuis{" "}
+                                             {r.jours_depuis_facturation ?? "—"} j
+                                           </span>
+                                           {supplierOverdue ? (
+                                             <span className="inline-flex w-fit items-center rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent-foreground">
+                                               Fournisseur à relancer
+                                             </span>
+                                           ) : null}
+                                         </div>
+                                       )}
+                                     </td>
+                                     <td className="px-4 py-2 text-slate">
+                                       {r.prospect_display ?? "Non renseigné"}
+                                     </td>
                                     <td className="px-4 py-2 text-ink">
                                       {r.commission_ht === null
                                         ? "Non renseignée"
@@ -816,7 +859,7 @@ function PayoutSection({
                                   {r.product_label ?? r.product_code ?? "—"}
                                 </td>
                                 <td className="px-4 py-2 text-slate">
-                                  {r.prospect_name ?? "Non renseigné"}
+                                  {r.prospect_display ?? "Non renseigné"}
                                 </td>
                                 <td className="px-4 py-2 text-slate">
                                   {formatDay(r.commission_paid_at)}
