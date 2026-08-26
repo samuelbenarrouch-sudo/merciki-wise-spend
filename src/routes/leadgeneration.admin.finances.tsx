@@ -120,8 +120,8 @@ function AdminFinancePage() {
 
   const billingRows = useMemo(() => filterBillingPending(rows), [rows]);
   const billingGroups = useMemo(
-    () => groupBillingByProductSupplier(billingRows, now),
-    [billingRows, now],
+    () => groupBillingByProductSupplier(billingRows),
+    [billingRows],
   );
   const payoutRows = useMemo(() => filterPayoutPending(rows), [rows]);
   const payoutGroups = useMemo(() => groupPayoutByCommercial(payoutRows), [payoutRows]);
@@ -322,7 +322,6 @@ function AdminFinancePage() {
           groups={billingGroups}
           totalInSystem={totalInSystem}
           hasRows={rows.length > 0}
-          now={now}
           onDone={refresh}
         />
 
