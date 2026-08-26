@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { ClipboardList, Loader2, LogOut } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { listWithdrawalPending, loadFinanceContracts } from "@/lib/backoffice";
 import { filterBillingPending, filterPayoutPending } from "@/lib/analytics";
+import { Logo } from "@/components/layout/logo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
