@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   contractStatusLabel,
+  listSuppliersForProduct,
   commissionStatusLabel,
   createContract,
   listContractsForLead,
@@ -51,7 +52,7 @@ export function LeadContracts({ leadId, productCode }: Props) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [supplier, setSupplier] = useState("");
+  const [supplierId, setSupplierId] = useState("");
   const [reference, setReference] = useState("");
   const [signedAt, setSignedAt] = useState(today());
   const [startDate, setStartDate] = useState("");
@@ -66,8 +67,21 @@ export function LeadContracts({ leadId, productCode }: Props) {
     queryFn: () => listContractsForLead(leadId),
   });
 
+  // Fournisseurs actifs rattachés au produit du lead. Sans rattachement, on
+  // propose tous les fournisseurs actifs : la saisie n'est jamais bloquée.
+  const suppliersQuery = useQuery({
+    queryKey: ["admin-suppliers-product", productCode],
+    queryFn: () => listSuppliersForProduct(productCode),
+  });
+  const suppliers = suppliersQuery.data?.ok
+    ? suppliersQuery.data.data.suppliers
+    : [];
+  const supplierFallback = suppliersQuery.data?.ok
+    ? suppliersQuery.data.data.fallbackAllActive
+    : false;
+
   const reset = () => {
-    setSupplier("");
+    setSupplierId("");
     setReference("");
     setSignedAt(today());
     setStartDate("");
@@ -92,7 +106,8 @@ export function LeadContracts({ leadId, productCode }: Props) {
 
   const handleSave = async () => {
     if (saving) return;
-    if (!supplier.trim() || !signedAt) {
+    const selected = suppliers.find((s) => s.id === supplierId);
+    if (!selected || !signedAt) {
       setError("Le fournisseur et la date de signature sont obligatoires.");
       return;
     }
@@ -100,7 +115,10 @@ export function LeadContracts({ leadId, productCode }: Props) {
     setError(null);
     const res = await createContract({
       lead_id: leadId,
-      supplier: supplier.trim(),
+      supplier_id: selected.id,
+      // La colonne texte `supplier` reste alimentée du nom au moment de la
+      // signature : elle est NOT NULL en base et sert désormais d'historique.
+      supplier: selected.name,
       reference: reference.trim() || null,
       signed_at: signedAt,
       start_date: startDate || null,
@@ -177,11 +195,31 @@ export function LeadContracts({ leadId, productCode }: Props) {
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="space-y-1">
               <span className={labelClass}>Fournisseur *</span>
-              <Input
-                className={inputClass}
-                value={supplier}
-                onChange={(e) => setSupplier(e.target.value)}
-              />
+              <select
+                className="h-11 w-full rounded-lg border border-mist bg-background px-3 text-sm text-ink"
+                value={supplierId}
+                onChange={(e) => setSupplierId(e.target.value)}
+              >
+                <option value="">Sélectionner un fournisseur</option>
+                {suppliers.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+              {supplierFallback && suppliers.length > 0 ? (
+                <span className="block text-xs text-slate">
+                  Aucun fournisseur n'est rattaché à ce produit : tous les
+                  fournisseurs actifs sont proposés. Complétez les rattachements
+                  dans l'écran Fournisseurs.
+                </span>
+              ) : null}
+              {suppliers.length === 0 ? (
+                <span className="block text-xs text-slate">
+                  Aucun fournisseur actif : créez-en un dans l'écran
+                  Fournisseurs.
+                </span>
+              ) : null}
             </label>
             <label className="space-y-1">
               <span className={labelClass}>Référence</span>
