@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { listWithdrawalPending } from "@/lib/backoffice";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
@@ -16,9 +18,16 @@ export const Route = createFileRoute("/leadgeneration/admin")({
 
 const TABS = [
   { to: "/leadgeneration/admin", label: "Leads", exact: true },
+  { to: "/leadgeneration/admin/contrats", label: "Contrats", exact: false },
+  {
+    to: "/leadgeneration/admin/retractations",
+    label: "Rétractations",
+    exact: false,
+  },
   { to: "/leadgeneration/admin/doublons", label: "Doublons", exact: false },
   { to: "/leadgeneration/admin/equipe", label: "Équipe", exact: false },
 ] as const;
+
 
 function AdminLayout() {
   const { status, profile } = useAuth();
