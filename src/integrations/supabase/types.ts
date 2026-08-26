@@ -148,6 +148,13 @@ export type Database = {
             referencedRelation: "v_potential_duplicates"
             referencedColumns: ["lead_id"]
           },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
+            referencedColumns: ["lead_id"]
+          },
         ]
       }
       lead_attachments: {
@@ -218,6 +225,13 @@ export type Database = {
             columns: ["lead_id"]
             isOneToOne: false
             referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "lead_attachments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
             referencedColumns: ["lead_id"]
           },
           {
@@ -301,6 +315,13 @@ export type Database = {
             columns: ["lead_id"]
             isOneToOne: false
             referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "lead_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
             referencedColumns: ["lead_id"]
           },
         ]
@@ -443,6 +464,13 @@ export type Database = {
             referencedColumns: ["lead_id"]
           },
           {
+            foreignKeyName: "leads_duplicate_of_fkey"
+            columns: ["duplicate_of"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
+            referencedColumns: ["lead_id"]
+          },
+          {
             foreignKeyName: "leads_product_code_fkey"
             columns: ["product_code"]
             isOneToOne: false
@@ -460,6 +488,13 @@ export type Database = {
             foreignKeyName: "leads_product_code_fkey"
             columns: ["product_code"]
             isOneToOne: false
+            referencedRelation: "v_contracts_admin"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
           },
@@ -468,8 +503,13 @@ export type Database = {
       products: {
         Row: {
           code: string
+          commercial_share_basis: string
+          commercial_share_fixed: number | null
+          commercial_share_rate: number | null
+          commission_basis: string
+          commission_fixed: number | null
+          commission_rate: number | null
           created_at: string
-          default_commission_rate: number | null
           icon: string | null
           is_active: boolean
           label: string
@@ -481,8 +521,13 @@ export type Database = {
         }
         Insert: {
           code: string
+          commercial_share_basis?: string
+          commercial_share_fixed?: number | null
+          commercial_share_rate?: number | null
+          commission_basis?: string
+          commission_fixed?: number | null
+          commission_rate?: number | null
           created_at?: string
-          default_commission_rate?: number | null
           icon?: string | null
           is_active?: boolean
           label: string
@@ -494,8 +539,13 @@ export type Database = {
         }
         Update: {
           code?: string
+          commercial_share_basis?: string
+          commercial_share_fixed?: number | null
+          commercial_share_rate?: number | null
+          commission_basis?: string
+          commission_fixed?: number | null
+          commission_rate?: number | null
           created_at?: string
-          default_commission_rate?: number | null
           icon?: string | null
           is_active?: boolean
           label?: string
@@ -555,10 +605,12 @@ export type Database = {
     Views: {
       v_commission_monthly: {
         Row: {
+          commercial_share_total: number | null
           commission_clawback: number | null
           commission_expected: number | null
           commission_paid: number | null
           commission_secured: number | null
+          contracts_retracted: number | null
           contracts_signed: number | null
           month: string | null
           product_code: string | null
@@ -566,6 +618,81 @@ export type Database = {
           revenue_client_ht: number | null
         }
         Relationships: []
+      }
+      v_contracts_admin: {
+        Row: {
+          amount_annual_ht: number | null
+          commercial_name: string | null
+          commercial_share: number | null
+          commission_actual: number | null
+          commission_expected: number | null
+          commission_paid_at: string | null
+          commission_status:
+            | Database["public"]["Enums"]["commission_status"]
+            | null
+          company_name: string | null
+          created_at: string | null
+          duration_months: number | null
+          id: string | null
+          lead_id: string | null
+          lead_reference: string | null
+          notes: string | null
+          product_code: string | null
+          product_label: string | null
+          prospect_first_name: string | null
+          prospect_last_name: string | null
+          reference: string | null
+          retractable: boolean | null
+          signed_at: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["contract_status"] | null
+          supplier: string | null
+          withdrawal_deadline: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_leads_admin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_mandates_pending"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["earlier_lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_potential_duplicates"
+            referencedColumns: ["lead_id"]
+          },
+          {
+            foreignKeyName: "contracts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "v_withdrawal_pending"
+            referencedColumns: ["lead_id"]
+          },
+        ]
       }
       v_funnel: {
         Row: {
@@ -655,16 +782,51 @@ export type Database = {
             foreignKeyName: "leads_product_code_fkey"
             columns: ["product_code"]
             isOneToOne: false
+            referencedRelation: "v_contracts_admin"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
           },
         ]
+      }
+      v_withdrawal_pending: {
+        Row: {
+          amount_annual_ht: number | null
+          commercial_name: string | null
+          commercial_share: number | null
+          commission_expected: number | null
+          company_name: string | null
+          id: string | null
+          jours_restants: number | null
+          lead_id: string | null
+          lead_reference: string | null
+          product_label: string | null
+          prospect_first_name: string | null
+          prospect_last_name: string | null
+          reference: string | null
+          signed_at: string | null
+          supplier: string | null
+          withdrawal_deadline: string | null
+        }
+        Relationships: []
       }
     }
     Functions: {
       jsonb_num: { Args: { p_data: Json; p_key: string }; Returns: number }
       purge_stale_leads: { Args: { p_years?: number }; Returns: number }
       storage_lead_id: { Args: { p_name: string }; Returns: string }
+      suggest_commission: {
+        Args: { p_amount_annual_ht: number; p_product_code: string }
+        Returns: {
+          commercial_share: number
+          commission: number
+        }[]
+      }
     }
     Enums: {
       commission_status: "estimee" | "confirmee" | "payee" | "annulee"
