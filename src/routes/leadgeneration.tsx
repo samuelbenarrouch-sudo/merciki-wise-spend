@@ -73,14 +73,16 @@ function LeadGenerationLayout() {
       <header className="sticky top-0 z-40 bg-primary text-primary-foreground">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full text-primary-foreground hover:bg-white/10 lg:hidden"
-              aria-label="Ouvrir le menu"
-            >
-              <Menu className="h-6 w-6" strokeWidth={1.75} />
-            </button>
+            {!isAdminPage ? (
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full text-primary-foreground hover:bg-white/10 lg:hidden"
+                aria-label="Ouvrir le menu"
+              >
+                <Menu className="h-6 w-6" strokeWidth={1.75} />
+              </button>
+            ) : null}
             <Link to="/leadgeneration/dashboard" className="flex items-center">
               <Logo variant="light" size="sm" />
             </Link>
@@ -91,7 +93,15 @@ function LeadGenerationLayout() {
             ) : null}
           </div>
           <div className="flex items-center gap-1">
-            {profile?.role === "admin" && profile.is_active ? (
+            {isAdminPage ? (
+              <Link
+                to="/leadgeneration/dashboard"
+                className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
+              >
+                <PenLine className="h-4 w-4" strokeWidth={1.75} />
+                <span className="hidden sm:inline">Saisie de leads</span>
+              </Link>
+            ) : profile?.role === "admin" && profile.is_active ? (
               <Link
                 to="/leadgeneration/admin"
                 className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
