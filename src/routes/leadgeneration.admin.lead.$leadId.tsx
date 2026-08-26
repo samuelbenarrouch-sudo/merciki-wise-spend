@@ -361,7 +361,12 @@ function AdminLeadPage() {
               ) : null}
             </Section>
 
+            <Section title="Contrats">
+              <LeadContracts leadId={leadId} productCode={lead.product_code} />
+            </Section>
+
             <Section title="Historique">
+
               {eventsQuery.isLoading ? (
                 <p className="text-small text-slate">Chargement…</p>
               ) : !eventsQuery.data?.ok ? (
