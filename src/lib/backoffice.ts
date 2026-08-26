@@ -213,12 +213,13 @@ export async function listAttachments(
 }
 
 /**
- * Télécharge une pièce jointe via la route relais de l'application
+ * Récupère une pièce jointe via la route relais de l'application
  * (évite les blocages d'extensions sur les URL *.supabase.co).
+ * La création/libération de l'URL d'objet est laissée à l'appelant.
  */
 export async function openLeadAttachment(
   storagePath: string,
-): Promise<Result<null>> {
+): Promise<Result<Blob>> {
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData.session?.access_token;
   if (!token) return { ok: false, error: "Session expirée, reconnectez-vous." };
@@ -237,10 +238,7 @@ export async function openLeadAttachment(
       };
     }
     const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank", "noopener");
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
-    return { ok: true, data: null };
+    return { ok: true, data: blob };
   } catch (e) {
     console.error("[openLeadAttachment]", e);
     return { ok: false, error: "Téléchargement impossible pour le moment." };
