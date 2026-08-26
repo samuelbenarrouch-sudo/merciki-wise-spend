@@ -20,6 +20,12 @@ const TABS = [
   { to: "/leadgeneration/admin/dashboard", label: "Dashboard", exact: false },
   { to: "/leadgeneration/admin", label: "Leads", exact: true },
   { to: "/leadgeneration/admin/contrats", label: "Contrats", exact: false },
+  { to: "/leadgeneration/admin/finances", label: "Finances", exact: false },
+  {
+    to: "/leadgeneration/admin/fournisseurs",
+    label: "Fournisseurs",
+    exact: false,
+  },
   {
     to: "/leadgeneration/admin/retractations",
     label: "Rétractations",
