@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ClipboardList, Loader2, LogOut } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { listWithdrawalPending, loadFinanceContracts } from "@/lib/backoffice";
 import { filterBillingPending, filterPayoutPending } from "@/lib/analytics";
-import { Logo } from "@/components/layout/logo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leadgeneration/admin")({
@@ -39,7 +38,7 @@ const TABS = [
 
 
 function AdminLayout() {
-  const { status, profile, signOut } = useAuth();
+  const { status, profile } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -97,45 +96,8 @@ function AdminLayout() {
     );
   }
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate({ to: "/leadgeneration/login", replace: true });
-  };
-
   return (
     <div className="min-h-full">
-      <header className="sticky top-0 z-40 bg-primary text-primary-foreground">
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 lg:px-8">
-          <div className="flex items-center gap-3">
-            <Link to="/leadgeneration/admin" className="flex items-center">
-              <Logo variant="light" size="sm" />
-            </Link>
-            {profile?.full_name ? (
-              <span className="hidden text-sm font-medium text-primary-foreground/90 sm:inline">
-                {profile.full_name}
-              </span>
-            ) : null}
-          </div>
-          <div className="flex items-center gap-1">
-            <Link
-              to="/leadgeneration/dashboard"
-              className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
-            >
-              <ClipboardList className="h-4 w-4" strokeWidth={1.75} />
-              <span className="hidden sm:inline">Saisie de leads</span>
-            </Link>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-primary-foreground hover:bg-white/10"
-            >
-              <LogOut className="h-4 w-4" strokeWidth={1.75} />
-              <span className="hidden sm:inline">Déconnexion</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
       <div className="border-b border-mist bg-mist/50">
         <div className="mx-auto flex max-w-[1400px] gap-1 overflow-x-auto px-5 lg:px-8">
           {TABS.map((tab) => {
