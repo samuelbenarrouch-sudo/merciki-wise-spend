@@ -689,13 +689,12 @@ export function emptyKind(periodCount: number, systemCount: number): EmptyKind {
 /* ------------------------------------------------------------------ */
 
 /**
- * Ligne financière : la vue `v_finance_contracts` enrichie du nom du prospect,
- * que la vue n'expose pas et que la couche de lecture rapproche depuis `leads`.
+ * Ligne financière : la vue `v_finance_contracts` telle quelle. Depuis la
+ * migration 012 elle expose `prospect_display` et les anciennetés calculées :
+ * rien n'est recomposé côté client.
  */
 export type FinanceRow =
-  Database["public"]["Views"]["v_finance_contracts"]["Row"] & {
-    prospect_name: string | null;
-  };
+  Database["public"]["Views"]["v_finance_contracts"]["Row"];
 
 export type FinancePeriodPreset =
   | "current-month"
