@@ -914,7 +914,7 @@ export async function loadFinanceContracts(): Promise<Result<FinanceData>> {
     data: {
       rows,
       totalContractsInSystem: countRes.count ?? total,
-      truncated: total > base.length,
+      truncated: total > rows.length,
     },
   };
 }
