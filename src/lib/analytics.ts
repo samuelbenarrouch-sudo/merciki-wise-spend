@@ -926,7 +926,6 @@ export function filterBillingPending(rows: FinanceRow[]): FinanceRow[] {
 /** Regroupement à deux niveaux : produit, puis fournisseur. */
 export function groupBillingByProductSupplier(
   rows: FinanceRow[],
-  now: Date,
 ): ProductBillingGroup[] {
   const byProduct = new Map<string, FinanceRow[]>();
   const labels = new Map<string, string>();
@@ -952,15 +951,17 @@ export function groupBillingByProductSupplier(
         let toInvoiceCount = 0;
         let invoicedCount = 0;
         let overdueCount = 0;
+        let paymentOverdueCount = 0;
         for (const r of supplierRows) {
           const amount = r.commission_ht ?? 0;
           if (r.billing_state === "a_facturer") {
             toInvoiceHt += amount;
             toInvoiceCount += 1;
-            if (isBillingOverdue(r, now)) overdueCount += 1;
+            if (isBillingOverdue(r)) overdueCount += 1;
           } else {
             invoicedHt += amount;
             invoicedCount += 1;
+            if (isPaymentOverdue(r)) paymentOverdueCount += 1;
           }
         }
         return {
