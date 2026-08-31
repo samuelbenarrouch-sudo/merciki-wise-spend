@@ -226,11 +226,6 @@ export function MultiStepForm({
     }
 
     if (!isLast) {
-      console.log("[dbg-before]", JSON.stringify(form.getValues()));
-      setTimeout(
-        () => console.log("[dbg-after]", JSON.stringify(form.getValues()), "fn" in (form.getValues() as any) ? "" : Object.keys(form.getValues()).join(",")),
-        300,
-      );
       setStepIndex((i) => i + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
