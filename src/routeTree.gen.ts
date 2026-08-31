@@ -23,7 +23,6 @@ import { Route as PublicProfessionnelsRouteImport } from './routes/_public.profe
 import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
 import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
-import { Route as PublicDevformtestRouteImport } from './routes/_public.devformtest'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
 import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
@@ -112,11 +111,6 @@ const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
 const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
   id: '/mentions-legales',
   path: '/mentions-legales',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicDevformtestRoute = PublicDevformtestRouteImport.update({
-  id: '/devformtest',
-  path: '/devformtest',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicContactRoute = PublicContactRouteImport.update({
@@ -232,7 +226,6 @@ export interface FileRoutesByFullPath {
   '/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
-  '/devformtest': typeof PublicDevformtestRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/particuliers': typeof PublicParticuliersRouteWithChildren
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
@@ -264,7 +257,6 @@ export interface FileRoutesByTo {
   '/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/contact': typeof PublicContactRoute
-  '/devformtest': typeof PublicDevformtestRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
   '/api/lead-file': typeof ApiLeadFileRoute
@@ -297,7 +289,6 @@ export interface FileRoutesById {
   '/_public/assurances-professionnelles': typeof PublicAssurancesProfessionnellesRoute
   '/_public/conditions-generales': typeof PublicConditionsGeneralesRoute
   '/_public/contact': typeof PublicContactRoute
-  '/_public/devformtest': typeof PublicDevformtestRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/particuliers': typeof PublicParticuliersRouteWithChildren
   '/_public/politique-de-confidentialite': typeof PublicPolitiqueDeConfidentialiteRoute
@@ -334,7 +325,6 @@ export interface FileRouteTypes {
     | '/assurances-professionnelles'
     | '/conditions-generales'
     | '/contact'
-    | '/devformtest'
     | '/mentions-legales'
     | '/particuliers'
     | '/politique-de-confidentialite'
@@ -366,7 +356,6 @@ export interface FileRouteTypes {
     | '/assurances-professionnelles'
     | '/conditions-generales'
     | '/contact'
-    | '/devformtest'
     | '/mentions-legales'
     | '/politique-de-confidentialite'
     | '/api/lead-file'
@@ -398,7 +387,6 @@ export interface FileRouteTypes {
     | '/_public/assurances-professionnelles'
     | '/_public/conditions-generales'
     | '/_public/contact'
-    | '/_public/devformtest'
     | '/_public/mentions-legales'
     | '/_public/particuliers'
     | '/_public/politique-de-confidentialite'
@@ -531,13 +519,6 @@ declare module '@tanstack/react-router' {
       path: '/mentions-legales'
       fullPath: '/mentions-legales'
       preLoaderRoute: typeof PublicMentionsLegalesRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/devformtest': {
-      id: '/_public/devformtest'
-      path: '/devformtest'
-      fullPath: '/devformtest'
-      preLoaderRoute: typeof PublicDevformtestRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/contact': {
@@ -700,7 +681,6 @@ interface PublicRouteChildren {
   PublicAssurancesProfessionnellesRoute: typeof PublicAssurancesProfessionnellesRoute
   PublicConditionsGeneralesRoute: typeof PublicConditionsGeneralesRoute
   PublicContactRoute: typeof PublicContactRoute
-  PublicDevformtestRoute: typeof PublicDevformtestRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicParticuliersRoute: typeof PublicParticuliersRouteWithChildren
   PublicPolitiqueDeConfidentialiteRoute: typeof PublicPolitiqueDeConfidentialiteRoute
@@ -713,7 +693,6 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicAssurancesProfessionnellesRoute: PublicAssurancesProfessionnellesRoute,
   PublicConditionsGeneralesRoute: PublicConditionsGeneralesRoute,
   PublicContactRoute: PublicContactRoute,
-  PublicDevformtestRoute: PublicDevformtestRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicParticuliersRoute: PublicParticuliersRouteWithChildren,
   PublicPolitiqueDeConfidentialiteRoute: PublicPolitiqueDeConfidentialiteRoute,
