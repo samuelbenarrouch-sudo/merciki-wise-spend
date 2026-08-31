@@ -95,6 +95,33 @@ export async function createLead(
     return { ok: false, error: "Le consentement du prospect est obligatoire." };
   }
 
+  // Champs obligatoires en base : on refuse plutôt que d'insérer du vide.
+  const required = [
+    { key: "prospectFirstName", label: "prénom", value: text(values.prospectFirstName) },
+    { key: "prospectLastName", label: "nom", value: text(values.prospectLastName) },
+    { key: "prospectPhone", label: "téléphone", value: text(values.prospectPhone) },
+    { key: "prospectPostalCode", label: "code postal", value: text(values.prospectPostalCode) },
+  ] as const;
+
+  const missing = required.filter((f) => f.value === null);
+  if (missing.length > 0) {
+    // Journalise les clés réellement reçues : un champ renommé se voit ici.
+    console.error(
+      "[createLead] champs obligatoires manquants",
+      missing.map((f) => f.key),
+      "clés reçues :",
+      Object.keys(values),
+    );
+    return {
+      ok: false,
+      error: `Informations manquantes : ${missing
+        .map((f) => f.label)
+        .join(", ")}. Revenez à la première étape.`,
+    };
+  }
+
+  const [firstName, lastName, phone, postalCode] = required.map((f) => f.value!);
+
   // Tout champ non reconnu part dans details, tel quel.
   const details: Record<string, unknown> = {};
   const common = COMMON_FIELD_KEYS as readonly string[];
@@ -114,11 +141,11 @@ export async function createLead(
   const payload: LeadInsert = {
     product_code: productCode,
     commercial_id: userId,
-    prospect_first_name: text(values.prospectFirstName) ?? "",
-    prospect_last_name: text(values.prospectLastName) ?? "",
-    prospect_phone: text(values.prospectPhone) ?? "",
+    prospect_first_name: firstName,
+    prospect_last_name: lastName,
+    prospect_phone: phone,
     prospect_email: text(values.prospectEmail),
-    postal_code: text(values.prospectPostalCode) ?? "",
+    postal_code: postalCode,
     company_name: text(values.companyName),
     siren: text(values.siren),
     consent_given: true,

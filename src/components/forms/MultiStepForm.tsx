@@ -374,7 +374,16 @@ export function MultiStepForm({
         }}
         className="mt-6 space-y-5"
       >
-        {current.render({ control: form.control, watch: form.watch })}
+        {/*
+          La clé par étape est indispensable : sans elle, React réconcilie les
+          champs d'une étape avec ceux de la suivante (mêmes composants au même
+          emplacement). useController voit alors un simple changement de `name`
+          et appelle unregister() sur l'ancien champ, ce qui EFFACE sa valeur.
+          C'est ce qui vidait prospectFirstName / prospectLastName.
+        */}
+        <div key={current.id} className="space-y-5">
+          {current.render({ control: form.control, watch: form.watch })}
+        </div>
 
         {submitError && (
           <div
