@@ -391,8 +391,8 @@ export const COMPANY = {
     full: "10 rue de la Paix, 75002 Paris",
   },
   phone: {
-    display: "07 56 90 63 70",
-    href: "tel:+33756906370",
+    display: "07 64 20 19 63",
+    href: "tel:+33764201963",
   },
 } as const;
 
