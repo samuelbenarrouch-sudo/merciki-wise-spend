@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Download, Eye, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, Eye, Loader2, Send } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { LeadContracts } from "@/components/admin/lead-contracts";
+import { LeadTransmitDialog } from "@/components/admin/lead-transmit-dialog";
 
 import {
   LEAD_STATUSES,
@@ -117,6 +118,7 @@ function AdminLeadPage() {
     mimeType: string;
     objectUrl: string;
   } | null>(null);
+  const [transmitOpen, setTransmitOpen] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -406,6 +408,16 @@ function AdminLeadPage() {
 
           {/* Actions */}
           <aside className="space-y-5">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => setTransmitOpen(true)}
+            >
+              <Send className="h-4 w-4" strokeWidth={1.75} />
+              Transmettre le dossier
+            </Button>
+
             <Section title="Changer le statut">
               <div className="space-y-3">
                 <select
@@ -483,6 +495,13 @@ function AdminLeadPage() {
           </aside>
         </div>
       </Container>
+
+      <LeadTransmitDialog
+        lead={lead}
+        attachments={filesQuery.data?.ok ? filesQuery.data.data : []}
+        open={transmitOpen}
+        onOpenChange={setTransmitOpen}
+      />
 
       <Dialog open={!!preview} onOpenChange={(open) => { if (!open) closePreview(); }}>
         <DialogContent className="max-w-4xl">
