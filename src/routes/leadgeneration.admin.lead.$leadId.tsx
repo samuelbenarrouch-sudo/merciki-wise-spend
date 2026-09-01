@@ -408,6 +408,16 @@ function AdminLeadPage() {
 
           {/* Actions */}
           <aside className="space-y-5">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => setTransmitOpen(true)}
+            >
+              <Send className="h-4 w-4" strokeWidth={1.75} />
+              Transmettre le dossier
+            </Button>
+
             <Section title="Changer le statut">
               <div className="space-y-3">
                 <select
