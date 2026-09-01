@@ -496,6 +496,13 @@ function AdminLeadPage() {
         </div>
       </Container>
 
+      <LeadTransmitDialog
+        lead={lead}
+        attachments={filesQuery.data?.ok ? filesQuery.data.data : []}
+        open={transmitOpen}
+        onOpenChange={setTransmitOpen}
+      />
+
       <Dialog open={!!preview} onOpenChange={(open) => { if (!open) closePreview(); }}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
