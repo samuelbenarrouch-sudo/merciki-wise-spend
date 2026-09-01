@@ -11,8 +11,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export const PHONE_DISPLAY = "07 56 90 63 70";
-export const PHONE_HREF = "tel:+33756906370";
+export const PHONE_DISPLAY = "07 64 20 19 63";
+export const PHONE_HREF = "tel:+33764201963";
 
 export type NavItem = {
   label: string;

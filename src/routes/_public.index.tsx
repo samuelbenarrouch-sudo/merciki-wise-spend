@@ -146,7 +146,7 @@ function RecruitmentPage() {
                 className="h-64 w-full object-cover sm:h-80"
               />
               <figcaption className="bg-mist px-5 py-4 text-small text-slate">
-                L'équipe Sud, entre deux rendez-vous terrain.
+                Une équipe type dans le Sud, en 2025.
               </figcaption>
             </figure>
           </div>
