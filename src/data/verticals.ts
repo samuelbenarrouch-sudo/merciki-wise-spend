@@ -273,7 +273,7 @@ export const VERTICALS: Vertical[] = [
     audience: "professionnels",
     name: "Monétique",
     icon: "CreditCard",
-    tagline: "Encaissez vos clients simplement, en boutique comme en ligne",
+    tagline: "Encaissez vos clients simplement, rapidement, en boutique comme en ligne et à faible coût",
     shortDescription:
       "Terminaux de paiement, encaissement e-commerce et liens de paiement : nous équipons votre activité au bon tarif.",
     problem: [
