@@ -118,6 +118,7 @@ function AdminLeadPage() {
     mimeType: string;
     objectUrl: string;
   } | null>(null);
+  const [transmitOpen, setTransmitOpen] = useState(false);
 
   useEffect(() => {
     return () => {
