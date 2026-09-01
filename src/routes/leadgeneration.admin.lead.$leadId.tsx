@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Download, Eye, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, Eye, Loader2, Send } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { LeadContracts } from "@/components/admin/lead-contracts";
+import { LeadTransmitDialog } from "@/components/admin/lead-transmit-dialog";
 
 import {
   LEAD_STATUSES,
