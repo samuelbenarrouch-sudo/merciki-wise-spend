@@ -7,4 +7,6 @@ export { FormChipsField } from "./FormChipsField";
 export { FormTextarea } from "./FormTextarea";
 export { FormScaleField } from "./FormScaleField";
 export { FormWeekdayDateTimeField } from "./FormWeekdayDateTimeField";
-export type { Option } from "./shared";export { FormFileField } from "./FormFileField";
+export { FormAmountField } from "./FormAmountField";
+export type { Option } from "./shared";
+export { FormFileField } from "./FormFileField";
