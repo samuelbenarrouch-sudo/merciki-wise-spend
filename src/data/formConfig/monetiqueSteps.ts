@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
+  FormAmountField,
   FormNumberField,
   FormRadioGroup,
   FormSelectField,
@@ -102,7 +103,7 @@ export const monetiqueSteps: StepConfig[] = [
             { value: "autre", label: "Autre" },
           ],
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "monthlyVolume",
           control,
           name: "monthlyVolume",
@@ -156,7 +157,7 @@ export const monetiqueSteps: StepConfig[] = [
           placeholder: "ex: Stripe, SumUp, Square, etc.",
         }),
         hasProvider &&
-          createElement(FormNumberField, {
+          createElement(FormAmountField, {
             key: "monthlyFees",
             control,
             name: "monthlyFees",

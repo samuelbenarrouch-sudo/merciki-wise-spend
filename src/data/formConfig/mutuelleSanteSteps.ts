@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
+  FormAmountField,
   FormNumberField,
   FormRadioGroup,
   FormScaleField,
@@ -149,7 +150,7 @@ export const mutuelleSanteSteps: StepConfig[] = [
           label: "Mutuelle actuelle",
           placeholder: "ex: April, Néoliane, etc.",
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "currentPremium",
           control,
           name: "currentPremium",
