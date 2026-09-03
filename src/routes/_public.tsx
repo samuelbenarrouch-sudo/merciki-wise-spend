@@ -18,7 +18,6 @@ function PublicLayout() {
       </main>
       <Footer />
       <FloatingCallButton />
-      <CookieBanner />
     </div>
   );
 }
