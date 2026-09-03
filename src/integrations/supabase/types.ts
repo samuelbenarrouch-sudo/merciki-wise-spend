@@ -785,6 +785,33 @@ export type Database = {
           },
         ]
       }
+      purge_log: {
+        Row: {
+          deleted_count: number
+          error_message: string | null
+          executed_at: string
+          id: number
+          kind: string
+          retention_years: number
+        }
+        Insert: {
+          deleted_count: number
+          error_message?: string | null
+          executed_at?: string
+          id?: number
+          kind?: string
+          retention_years: number
+        }
+        Update: {
+          deleted_count?: number
+          error_message?: string | null
+          executed_at?: string
+          id?: number
+          kind?: string
+          retention_years?: number
+        }
+        Relationships: []
+      }
       supplier_products: {
         Row: {
           product_code: string
@@ -1324,6 +1351,7 @@ export type Database = {
     }
     Functions: {
       jsonb_num: { Args: { p_data: Json; p_key: string }; Returns: number }
+      purge_identity_documents: { Args: { p_days?: number }; Returns: number }
       purge_stale_leads: { Args: { p_years?: number }; Returns: number }
       storage_lead_id: { Args: { p_name: string }; Returns: string }
       suggest_commission: {
