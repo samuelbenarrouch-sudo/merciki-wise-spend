@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FolderOpen, Users } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { PRODUCTS } from "@/data/products";
+import { useAuth } from "@/lib/auth";
+
 
 export const Route = createFileRoute("/leadgeneration/dashboard")({
   head: () => ({
