@@ -20,7 +20,8 @@ function CommercialDashboard() {
   const { profile } = useAuth();
   const isManager = profile?.role === "manager";
 
-  return
+  return (
+
 
     <div className="py-12 lg:py-16">
       <Container>
