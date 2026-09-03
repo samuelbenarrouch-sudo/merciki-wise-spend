@@ -261,7 +261,7 @@ function RecruitmentPage() {
                 size="lg"
                 className="bg-background text-primary hover:bg-background/90"
               >
-                <Link to="/contact" search={{ subject: "reseau" } as never}>
+                <Link to="/recrutement">
                   Envoyer mon profil
                 </Link>
               </Button>
