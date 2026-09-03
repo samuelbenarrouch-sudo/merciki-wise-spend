@@ -11,6 +11,7 @@ export function MonetiqueForm() {
       productLabel="Monétique"
       steps={monetiqueSteps}
       defaultValues={monetiqueDefaultValues}
+      fileDocumentTypes={{ kbisFiles: "kbis", idFiles: "piece_identite" }}
     />
   );
 }

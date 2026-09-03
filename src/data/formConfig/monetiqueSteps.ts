@@ -3,6 +3,7 @@ import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
   FormAmountField,
+  FormFileField,
   FormNumberField,
   FormRadioGroup,
   FormSelectField,
@@ -28,10 +29,18 @@ export const monetiqueDefaultValues = {
   currentProvider: "",
   monthlyFees: "",
   improvements: "",
+  kbisFiles: [] as File[],
+  idFiles: [] as File[],
   ...consentDefaultValues,
 };
 
 const requiredMsg = "Ce champ est requis";
+
+const optionalFiles = (max: number) =>
+  z
+    .array(z.custom<File>((v) => typeof File !== "undefined" && v instanceof File))
+    .max(max, `${max} fichier${max > 1 ? "s" : ""} maximum`)
+    .optional();
 
 export const monetiqueSteps: StepConfig[] = [
   prospectStep,
@@ -175,6 +184,46 @@ export const monetiqueSteps: StepConfig[] = [
         }),
       );
     },
+  },
+  {
+    id: "documents",
+    label: "Documents",
+    title: "Documents (facultatif)",
+    fields: ["kbisFiles", "idFiles"],
+    schema: z.object({
+      kbisFiles: optionalFiles(1),
+      idFiles: optionalFiles(2),
+    }),
+    render: ({ control }) =>
+      createElement(
+        Fragment,
+        null,
+        createElement(FormFileField, {
+          key: "kbisFiles",
+          control,
+          name: "kbisFiles",
+          label: "Extrait Kbis",
+          maxFiles: 1,
+          description: "Kbis de moins de 3 mois. PDF ou photo, 10 Mo maximum.",
+        }),
+        createElement(FormFileField, {
+          key: "idFiles",
+          control,
+          name: "idFiles",
+          label: "Pièce d'identité du dirigeant",
+          maxFiles: 2,
+          description:
+            "Carte d'identité ou passeport en cours de validité. Recto et verso si CNI. 2 fichiers maximum, 10 Mo par fichier.",
+        }),
+        createElement(
+          "p",
+          {
+            key: "rgpd",
+            className: "rounded-xl bg-mist p-4 text-small text-slate",
+          },
+          "Ces documents sont transmis à notre partenaire monétique pour la constitution de votre dossier. La pièce d'identité est supprimée de nos systèmes 30 jours après transmission.",
+        ),
+      ),
   },
   consentStep,
 ];
