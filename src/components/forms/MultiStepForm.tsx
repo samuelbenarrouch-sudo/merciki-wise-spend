@@ -27,13 +27,38 @@ function isFileValue(value: unknown): boolean {
   return Array.isArray(value) && value.some((v) => v instanceof File);
 }
 
-function extractFiles(values: Record<string, unknown>): File[] {
-  const files: File[] = [];
-  for (const value of Object.values(values)) {
+/** Type de document transmis au stockage, contraint en base. */
+export type LeadDocumentType =
+  | "facture"
+  | "kbis"
+  | "mandat"
+  | "contrat"
+  | "piece_identite"
+  | "autre";
+
+interface PendingFile {
+  file: File;
+  documentType: LeadDocumentType;
+}
+
+/**
+ * Rassemble les fichiers en mémoire en conservant, pour chacun, le type de
+ * document déduit du NOM DU CHAMP : un parcours peut ainsi déposer des pièces
+ * de natures différentes (Kbis, pièce d'identité…).
+ */
+function extractFiles(
+  values: Record<string, unknown>,
+  documentTypes: Record<string, LeadDocumentType>,
+): PendingFile[] {
+  const files: PendingFile[] = [];
+  for (const [key, value] of Object.entries(values)) {
     if (typeof File === "undefined") break;
-    if (value instanceof File) files.push(value);
+    const documentType = documentTypes[key] ?? "facture";
+    if (value instanceof File) files.push({ file: value, documentType });
     else if (Array.isArray(value)) {
-      for (const v of value) if (v instanceof File) files.push(v);
+      for (const v of value) {
+        if (v instanceof File) files.push({ file: v, documentType });
+      }
     }
   }
   return files;
@@ -63,6 +88,8 @@ interface Props {
   defaultValues: Record<string, unknown>;
   existingData?: Record<string, unknown>;
   submitLabel?: string;
+  /** Champ fichier -> type de document envoyé au stockage. */
+  fileDocumentTypes?: Record<string, LeadDocumentType>;
 }
 
 export function MultiStepForm({
@@ -72,6 +99,7 @@ export function MultiStepForm({
   defaultValues,
   existingData,
   submitLabel,
+  fileDocumentTypes,
 }: Props) {
   const fullSchema = useMemo(() => {
     const shape = steps.reduce<Record<string, z.ZodTypeAny>>((acc, s) => {
@@ -98,7 +126,7 @@ export function MultiStepForm({
     filesTotal: number;
   } | null>(null);
   // Téléversement : uniquement après création du lead (le chemin en dépend).
-  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([]);
   const [uploadedCount, setUploadedCount] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -132,7 +160,11 @@ export function MultiStepForm({
    * Envoie les fichiers restants, un par un, pour afficher une progression
    * fidèle et ne relancer que ceux qui manquent en cas de reprise.
    */
-  const runUpload = async (leadId: string, files: File[], startAt: number) => {
+  const runUpload = async (
+    leadId: string,
+    files: PendingFile[],
+    startAt: number,
+  ) => {
     if (uploadLock.current) return;
     uploadLock.current = true;
     setUploading(true);
@@ -141,7 +173,12 @@ export function MultiStepForm({
     let index = startAt;
     try {
       for (; index < files.length; index++) {
-        const result = await uploadLeadFiles(leadId, [files[index]]);
+        const entry = files[index];
+        const result = await uploadLeadFiles(
+          leadId,
+          [entry.file],
+          entry.documentType,
+        );
         if (!result.ok) {
           setUploadError(result.error);
           break;
@@ -167,7 +204,7 @@ export function MultiStepForm({
     setSubmitError(null);
 
     const data = form.getValues() as Record<string, unknown>;
-    const files = extractFiles(data);
+    const files = extractFiles(data, fileDocumentTypes ?? {});
     const payload = withoutFiles(data);
     // Sauvegarde locale avant envoi (protection contre les pertes).
     saveDraftToLocalStorage(productId, payload);
