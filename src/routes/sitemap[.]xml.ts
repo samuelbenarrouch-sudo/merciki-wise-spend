@@ -22,6 +22,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/recrutement", changefreq: "monthly", priority: "0.9" },
 
           { path: "/assurances-professionnelles", changefreq: "monthly", priority: "0.8" },
+          { path: "/mentions-legales", changefreq: "yearly", priority: "0.3" },
+          { path: "/politique-de-confidentialite", changefreq: "yearly", priority: "0.3" },
+          { path: "/conditions-generales", changefreq: "yearly", priority: "0.3" },
         ];
 
         for (const v of VERTICALS) {
