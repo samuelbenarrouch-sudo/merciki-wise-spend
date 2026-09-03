@@ -89,7 +89,33 @@ function CommercialDashboard() {
             );
           })}
         </div>
+
+        <section className="mt-12 rounded-2xl border border-mist bg-mist/40 p-5 sm:p-6">
+          <h2 className="text-label uppercase tracking-wider text-slate">Mes dossiers</h2>
+          <p className="mt-2 text-small text-slate">
+            Consultation en lecture seule des leads déjà enregistrés.
+          </p>
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+            <Link
+              to="/leadgeneration/mes-leads"
+              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-primary/40 bg-background px-5 text-small font-medium text-primary transition-colors hover:bg-primary-light"
+            >
+              <FolderOpen className="h-5 w-5" strokeWidth={1.75} />
+              Mes leads
+            </Link>
+            {isManager && (
+              <Link
+                to="/leadgeneration/equipe-leads"
+                className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-primary/40 bg-background px-5 text-small font-medium text-primary transition-colors hover:bg-primary-light"
+              >
+                <Users className="h-5 w-5" strokeWidth={1.75} />
+                Leads de mon équipe
+              </Link>
+            )}
+          </div>
+        </section>
       </Container>
+
     </div>
   );
 }
