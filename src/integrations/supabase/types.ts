@@ -617,17 +617,94 @@ export type Database = {
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
           },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_product_commissions_admin"
+            referencedColumns: ["code"]
+          },
         ]
       }
-      products: {
+      product_commissions: {
         Row: {
-          code: string
           commercial_share_basis: string
           commercial_share_fixed: number | null
           commercial_share_rate: number | null
           commission_basis: string
           commission_fixed: number | null
           commission_rate: number | null
+          product_code: string
+          updated_at: string
+        }
+        Insert: {
+          commercial_share_basis?: string
+          commercial_share_fixed?: number | null
+          commercial_share_rate?: number | null
+          commission_basis?: string
+          commission_fixed?: number | null
+          commission_rate?: number | null
+          product_code: string
+          updated_at?: string
+        }
+        Update: {
+          commercial_share_basis?: string
+          commercial_share_fixed?: number | null
+          commercial_share_rate?: number | null
+          commission_basis?: string
+          commission_fixed?: number | null
+          commission_rate?: number | null
+          product_code?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "v_commission_monthly"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "v_contracts_admin"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "v_finance_contracts"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "v_funnel"
+            referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "product_commissions_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: true
+            referencedRelation: "v_product_commissions_admin"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          code: string
           created_at: string
           icon: string | null
           is_active: boolean
@@ -640,12 +717,6 @@ export type Database = {
         }
         Insert: {
           code: string
-          commercial_share_basis?: string
-          commercial_share_fixed?: number | null
-          commercial_share_rate?: number | null
-          commission_basis?: string
-          commission_fixed?: number | null
-          commission_rate?: number | null
           created_at?: string
           icon?: string | null
           is_active?: boolean
@@ -658,12 +729,6 @@ export type Database = {
         }
         Update: {
           code?: string
-          commercial_share_basis?: string
-          commercial_share_fixed?: number | null
-          commercial_share_rate?: number | null
-          commission_basis?: string
-          commission_fixed?: number | null
-          commission_rate?: number | null
           created_at?: string
           icon?: string | null
           is_active?: boolean
@@ -768,6 +833,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
+          },
+          {
+            foreignKeyName: "supplier_products_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_product_commissions_admin"
+            referencedColumns: ["code"]
           },
           {
             foreignKeyName: "supplier_products_supplier_id_fkey"
@@ -1192,7 +1264,32 @@ export type Database = {
             referencedRelation: "v_funnel"
             referencedColumns: ["product_code"]
           },
+          {
+            foreignKeyName: "leads_product_code_fkey"
+            columns: ["product_code"]
+            isOneToOne: false
+            referencedRelation: "v_product_commissions_admin"
+            referencedColumns: ["code"]
+          },
         ]
+      }
+      v_product_commissions_admin: {
+        Row: {
+          code: string | null
+          commercial_share_basis: string | null
+          commercial_share_fixed: number | null
+          commercial_share_rate: number | null
+          commission_basis: string | null
+          commission_fixed: number | null
+          commission_rate: number | null
+          is_active: boolean | null
+          label: string | null
+          requires_mandate: boolean | null
+          sort_order: number | null
+          tunnel: Database["public"]["Enums"]["tunnel_type"] | null
+          updated_at: string | null
+        }
+        Relationships: []
       }
       v_withdrawal_pending: {
         Row: {
