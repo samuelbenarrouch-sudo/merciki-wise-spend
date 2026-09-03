@@ -48,15 +48,25 @@ function stringList(value: unknown): string[] {
     .filter((v) => v !== "");
 }
 
-function frenchError(code: string | undefined, message: string): string {
+function frenchError(
+  code: string | undefined,
+  message: string,
+  details: string | null,
+  hint: string | null,
+): string {
+  // Journal complet pour diagnostic : message, code, details et hint.
+  console.error("[submitApplication] échec insertion", { code, message, details, hint });
   switch (code) {
     case "23505":
       // La base renvoie ici un message français explicite (candidature déjà envoyée).
       return message;
-    case "42501":
-      return "Envoi refusé. Réessayez dans un instant, et contactez-nous si le problème persiste.";
     case "23514":
-      return "Certaines informations sont invalides : vérifiez votre email, votre téléphone et votre consentement.";
+      return "Certaines informations sont invalides. Vérifiez les champs obligatoires.";
+    case "22P02":
+      // Valeur fautive présente dans details/message : journalisée ci-dessus.
+      return "Valeur non reconnue dans un champ à choix. Signalez ce message.";
+    case "42501":
+      return "Envoi refusé par le serveur.";
     default:
       return `Envoi impossible. Réessayez dans un instant. (${message})`;
   }
@@ -142,7 +152,10 @@ export async function submitApplication(
     .single();
 
   if (error) {
-    return { ok: false, error: frenchError(error.code, error.message) };
+    return {
+      ok: false,
+      error: frenchError(error.code, error.message, error.details ?? null, error.hint ?? null),
+    };
   }
 
   return { ok: true, reference: data.reference };
