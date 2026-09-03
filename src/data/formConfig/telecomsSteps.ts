@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
+  FormAmountField,
   FormNumberField,
   FormSelectField,
   FormTextField,
@@ -86,7 +87,7 @@ export const telecomsSteps: StepConfig[] = [
           required: true,
           placeholder: "ex: Orange, SFR, Free, etc.",
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "monthlyAmount",
           control,
           name: "monthlyAmount",

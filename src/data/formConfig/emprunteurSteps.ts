@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
+  FormAmountField,
   FormNumberField,
   FormSelectField,
   FormTextField,
@@ -69,7 +70,7 @@ export const emprunteurSteps: StepConfig[] = [
             { value: "autre", label: "Autre" },
           ],
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "loanAmount",
           control,
           name: "loanAmount",
@@ -78,7 +79,7 @@ export const emprunteurSteps: StepConfig[] = [
           suffix: "€",
           min: 0,
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "remainingCapital",
           control,
           name: "remainingCapital",
@@ -130,7 +131,7 @@ export const emprunteurSteps: StepConfig[] = [
           required: true,
           placeholder: "ex: Axa, Allianz, Cardif, etc.",
         }),
-        createElement(FormNumberField, {
+        createElement(FormAmountField, {
           key: "currentPremium",
           control,
           name: "currentPremium",
