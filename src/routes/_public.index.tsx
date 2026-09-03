@@ -109,6 +109,15 @@ function RecruitmentPage() {
               Nous cherchons des profils commerciaux qui aiment le contact, qui savent écouter et
               qui veulent porter une offre large et utile. Si c'est vous, parlons-nous.
             </p>
+            <div className="mt-8 flex justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="bg-background text-primary hover:bg-background/90"
+              >
+                <Link to="/recrutement">Envoyer mon profil</Link>
+              </Button>
+            </div>
           </div>
         </Container>
       </section>
