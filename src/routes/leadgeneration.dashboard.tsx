@@ -17,7 +17,11 @@ export const Route = createFileRoute("/leadgeneration/dashboard")({
 });
 
 function CommercialDashboard() {
-  return (
+  const { profile } = useAuth();
+  const isManager = profile?.role === "manager";
+
+  return
+
     <div className="py-12 lg:py-16">
       <Container>
         <div className="max-w-3xl">
