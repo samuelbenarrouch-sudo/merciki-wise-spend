@@ -97,7 +97,7 @@ export const Route = createFileRoute("/_public/recrutement")({
 });
 
 function RecrutementPage() {
-  const [reference, setReference] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [deptQuery, setDeptQuery] = useState("");
   const submitting = useRef(false);
@@ -175,7 +175,7 @@ function RecrutementPage() {
     try {
       // Champ leurre rempli : on simule le succès sans rien enregistrer.
       if (values.website && values.website.trim() !== "") {
-        setReference("—");
+        setSubmitted(true);
         return;
       }
 
@@ -195,7 +195,7 @@ function RecrutementPage() {
       });
 
       if (res.ok) {
-        setReference(res.reference);
+        setSubmitted(true);
       } else {
         setServerError(res.error);
       }
@@ -204,7 +204,7 @@ function RecrutementPage() {
     }
   }
 
-  if (reference) {
+  if (submitted) {
     return (
       <Section background="mist">
         <Container>
@@ -216,12 +216,11 @@ function RecrutementPage() {
             />
             <h1 className="mt-6 text-h2 text-ink">Merci, votre candidature est bien reçue.</h1>
             <p className="mt-4 text-body text-slate">
-              Nous lisons chaque candidature. Un membre de l'équipe vous recontacte rapidement
-              pour faire connaissance.
+              Nous lisons chaque candidature. Elle sera étudiée avec attention et une réponse vous
+              sera apportée dans les meilleurs délais.
             </p>
-            <p className="mt-6 text-label text-ink">
-              Référence de votre candidature
-              <span className="mt-1 block font-display text-2xl text-primary">{reference}</span>
+            <p className="mt-6 text-small text-slate">
+              Un membre de l'équipe vous recontacte rapidement pour faire connaissance.
             </p>
             <div className="mt-8">
               <Button asChild size="lg">

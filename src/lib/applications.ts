@@ -32,7 +32,7 @@ export interface ApplicationFormValues {
 }
 
 export type SubmitApplicationResult =
-  | { ok: true; reference: string }
+  | { ok: true }
   | { ok: false; error: string };
 
 function text(value: unknown): string | null {
@@ -145,11 +145,7 @@ export async function submitApplication(
     consent_version: CONSENT_VERSION,
   };
 
-  const { data, error } = await supabase
-    .from("applications")
-    .insert(payload)
-    .select("reference")
-    .single();
+  const { error } = await supabase.from("applications").insert(payload);
 
   if (error) {
     return {
@@ -158,5 +154,5 @@ export async function submitApplication(
     };
   }
 
-  return { ok: true, reference: data.reference };
+  return { ok: true };
 }
