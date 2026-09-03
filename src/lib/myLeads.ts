@@ -256,3 +256,19 @@ export async function fetchMyLeadFile(storagePath: string): Promise<Result<Blob>
     return { ok: false, error: "Téléchargement impossible pour le moment." };
   }
 }
+
+/** Commerciaux visibles par le manager, pour le filtre de l'écran équipe. */
+export async function listMyTeamCommercials(): Promise<
+  Result<{ id: string; full_name: string | null }[]>
+> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, full_name")
+    .order("full_name", { ascending: true });
+
+  if (error) {
+    console.error("[listMyTeamCommercials]", error);
+    return { ok: false, error: frenchError(error.code, error.message) };
+  }
+  return { ok: true, data: data ?? [] };
+}
