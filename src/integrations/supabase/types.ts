@@ -41,6 +41,75 @@ export type Database = {
         }
         Relationships: []
       }
+      applications: {
+        Row: {
+          admin_notes: string | null
+          availability: Database["public"]["Enums"]["availability"] | null
+          consent_at: string
+          consent_given: boolean
+          consent_version: string
+          created_at: string
+          departments: string[]
+          email: string
+          experience: Database["public"]["Enums"]["sales_experience"]
+          first_name: string
+          id: string
+          last_name: string
+          link: string | null
+          message: string | null
+          phone: string
+          product_codes: string[]
+          reference: string
+          situation: Database["public"]["Enums"]["current_situation"] | null
+          status: Database["public"]["Enums"]["application_status"]
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          availability?: Database["public"]["Enums"]["availability"] | null
+          consent_at?: string
+          consent_given: boolean
+          consent_version?: string
+          created_at?: string
+          departments?: string[]
+          email: string
+          experience: Database["public"]["Enums"]["sales_experience"]
+          first_name: string
+          id?: string
+          last_name: string
+          link?: string | null
+          message?: string | null
+          phone: string
+          product_codes?: string[]
+          reference?: string
+          situation?: Database["public"]["Enums"]["current_situation"] | null
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          availability?: Database["public"]["Enums"]["availability"] | null
+          consent_at?: string
+          consent_given?: boolean
+          consent_version?: string
+          created_at?: string
+          departments?: string[]
+          email?: string
+          experience?: Database["public"]["Enums"]["sales_experience"]
+          first_name?: string
+          id?: string
+          last_name?: string
+          link?: string | null
+          message?: string | null
+          phone?: string
+          product_codes?: string[]
+          reference?: string
+          situation?: Database["public"]["Enums"]["current_situation"] | null
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contracts: {
         Row: {
           amount_annual_ht: number | null
@@ -184,6 +253,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      departments: {
+        Row: {
+          code: string
+          name: string
+        }
+        Insert: {
+          code: string
+          name: string
+        }
+        Update: {
+          code?: string
+          name?: string
+        }
+        Relationships: []
       }
       lead_attachments: {
         Row: {
@@ -735,6 +819,75 @@ export type Database = {
       }
     }
     Views: {
+      v_applications_admin: {
+        Row: {
+          admin_notes: string | null
+          availability: Database["public"]["Enums"]["availability"] | null
+          consent_at: string | null
+          consent_version: string | null
+          created_at: string | null
+          departments: string[] | null
+          departments_labels: string | null
+          email: string | null
+          experience: Database["public"]["Enums"]["sales_experience"] | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          link: string | null
+          message: string | null
+          phone: string | null
+          product_codes: string[] | null
+          products_labels: string | null
+          reference: string | null
+          situation: Database["public"]["Enums"]["current_situation"] | null
+          status: Database["public"]["Enums"]["application_status"] | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          availability?: Database["public"]["Enums"]["availability"] | null
+          consent_at?: string | null
+          consent_version?: string | null
+          created_at?: string | null
+          departments?: string[] | null
+          departments_labels?: never
+          email?: string | null
+          experience?: Database["public"]["Enums"]["sales_experience"] | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          link?: string | null
+          message?: string | null
+          phone?: string | null
+          product_codes?: string[] | null
+          products_labels?: never
+          reference?: string | null
+          situation?: Database["public"]["Enums"]["current_situation"] | null
+          status?: Database["public"]["Enums"]["application_status"] | null
+        }
+        Update: {
+          admin_notes?: string | null
+          availability?: Database["public"]["Enums"]["availability"] | null
+          consent_at?: string | null
+          consent_version?: string | null
+          created_at?: string | null
+          departments?: string[] | null
+          departments_labels?: never
+          email?: string | null
+          experience?: Database["public"]["Enums"]["sales_experience"] | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          link?: string | null
+          message?: string | null
+          phone?: string | null
+          product_codes?: string[] | null
+          products_labels?: never
+          reference?: string | null
+          situation?: Database["public"]["Enums"]["current_situation"] | null
+          status?: Database["public"]["Enums"]["application_status"] | null
+        }
+        Relationships: []
+      }
       v_commission_monthly: {
         Row: {
           commercial_share_total: number | null
@@ -1085,6 +1238,8 @@ export type Database = {
       }
     }
     Enums: {
+      application_status: "nouveau" | "contacte" | "retenu" | "ecarte"
+      availability: "immediate" | "sous_1_mois" | "sous_3_mois" | "a_discuter"
       commission_status: "estimee" | "confirmee" | "payee" | "annulee"
       contract_status:
         | "en_attente"
@@ -1092,6 +1247,7 @@ export type Database = {
         | "retracte"
         | "resilie"
         | "annule"
+      current_situation: "independant" | "salarie" | "recherche" | "autre"
       lead_status:
         | "nouveau"
         | "qualifie"
@@ -1112,6 +1268,7 @@ export type Database = {
         | "non_eligible"
         | "autre"
       mandate_status: "non_requis" | "a_envoyer" | "envoye" | "signe" | "refuse"
+      sales_experience: "aucune" | "moins_1_an" | "1_3_ans" | "plus_3_ans"
       tunnel_type: "particuliers" | "professionnels"
       user_role: "admin" | "manager" | "commercial"
     }
@@ -1129,12 +1286,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1158,11 +1315,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1183,11 +1340,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1208,11 +1365,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1225,11 +1382,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1241,8 +1398,11 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      application_status: ["nouveau", "contacte", "retenu", "ecarte"],
+      availability: ["immediate", "sous_1_mois", "sous_3_mois", "a_discuter"],
       commission_status: ["estimee", "confirmee", "payee", "annulee"],
       contract_status: ["en_attente", "actif", "retracte", "resilie", "annule"],
+      current_situation: ["independant", "salarie", "recherche", "autre"],
       lead_status: [
         "nouveau",
         "qualifie",
@@ -1265,6 +1425,7 @@ export const Constants = {
         "autre",
       ],
       mandate_status: ["non_requis", "a_envoyer", "envoye", "signe", "refuse"],
+      sales_experience: ["aucune", "moins_1_an", "1_3_ans", "plus_3_ans"],
       tunnel_type: ["particuliers", "professionnels"],
       user_role: ["admin", "manager", "commercial"],
     },
