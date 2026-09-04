@@ -75,10 +75,9 @@ export const assurancesProSteps: StepConfig[] = [
     ],
     schema: z.object({
       companyName: z.string().trim().min(1, requiredMsg).max(150),
-      siren: z
-        .string()
-        .trim()
-        .regex(/^\d{9}$|^\d{14}$/, "SIREN (9 chiffres) ou SIRET (14 chiffres)"),
+      // La base exige exactement 9 chiffres : un SIRET était refusé à
+      // l'enregistrement. On valide la valeur nettoyée par FormSirenField.
+      siren: z.string().refine(isValidSiren, SIREN_ERROR),
       legalForm: z.string().trim().min(1, requiredMsg),
       companyAddress: z.string().trim().min(1, requiredMsg).max(200),
       companyCity: z.string().trim().min(1, requiredMsg).max(100),
@@ -93,13 +92,13 @@ export const assurancesProSteps: StepConfig[] = [
           required
           placeholder="Ex. Bâti Sud SARL"
         />
-        <FormTextField
+        <FormSirenField
           control={control}
           name="siren"
-          label="SIREN ou SIRET"
+          label="Numéro SIREN"
           required
-          inputMode="numeric"
-          placeholder="9 ou 14 chiffres"
+          description="9 chiffres, indiqué sur le Kbis."
+          placeholder="930963541"
         />
         <FormSelectField
           control={control}
