@@ -83,13 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurances, énergies renouvelables et monétique.",
+          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
       },
       { name: "author", content: "MERCIKI" },
       {
         name: "keywords",
         content:
-          "énergie, télécoms, assurances, énergies renouvelables, monétique, économies, comparateur",
+          "énergie, télécoms, mutuelle santé, assurance auto, assurance moto, assurance habitation, assurances professionnelles, énergies renouvelables, monétique, économies, comparateur",
       },
       { property: "og:site_name", content: "MERCIKI" },
       { property: "og:locale", content: "fr_FR" },
@@ -97,12 +97,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurances, énergies renouvelables et monétique.",
+          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "MERCIKI — Optimisez vos dépenses" },
-      { name: "twitter:description", content: "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurances, énergies renouvelables et monétique." },
+      { name: "twitter:description", content: "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1b3ac121-a71f-4342-8b25-dd1ab52ab717/id-preview-3ae99f70--e7b9f07b-7e1e-446b-beab-ff90bdcee9f6.lovable.app-1785323307490.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1b3ac121-a71f-4342-8b25-dd1ab52ab717/id-preview-3ae99f70--e7b9f07b-7e1e-446b-beab-ff90bdcee9f6.lovable.app-1785323307490.png" },
     ],

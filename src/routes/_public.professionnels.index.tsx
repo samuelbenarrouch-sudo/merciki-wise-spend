@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_public/professionnels/")({
   component: () => <AudienceHubPage audience="professionnels" />,
   head: () => ({
     meta: [
-      { title: "Professionnels — Énergie et monétique | MERCIKI" },
+      { title: "Professionnels — Énergie, monétique et assurances | MERCIKI" },
       {
         name: "description",
         content:
