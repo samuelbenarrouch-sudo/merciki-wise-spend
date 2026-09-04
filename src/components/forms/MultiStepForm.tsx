@@ -17,7 +17,11 @@ import {
   loadDraftFromLocalStorage,
   saveDraftToLocalStorage,
 } from "@/lib/localStorage";
-import { createLead, uploadLeadFiles } from "@/lib/leads";
+import {
+  createLead,
+  uploadLeadFiles,
+  type LeadDocumentType,
+} from "@/lib/leads";
 import type { ProductId } from "@/data/products";
 
 /** Un File ne se sérialise pas : on l'écarte du brouillon et du payload lead. */
