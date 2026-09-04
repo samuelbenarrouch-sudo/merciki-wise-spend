@@ -310,7 +310,11 @@ function ContractLine({
 
   return (
     <>
-      <tr className="border-t border-mist align-top">
+      <tr
+        className={`border-t border-mist align-top${
+          row.is_billable === true ? "" : " opacity-60"
+        }`}
+      >
         <td className="px-3 py-3 text-ink">{row.reference ?? "—"}</td>
         <td className="px-3 py-3 text-slate">{formatDay(row.signed_at)}</td>
         <td className="px-3 py-3 text-slate">{row.product_label ?? "—"}</td>
@@ -339,6 +343,11 @@ function ContractLine({
         </td>
         <td className="px-3 py-3 text-ink">
           {formatMoney(row.commission_actual ?? row.commission_expected)}
+          {row.is_billable !== true ? (
+            <span className="block text-xs text-slate">
+              Ne compte pas dans les totaux
+            </span>
+          ) : null}
         </td>
         <td className="px-3 py-3 text-ink">{formatMoney(row.commercial_share)}</td>
         <td className="px-3 py-3">
