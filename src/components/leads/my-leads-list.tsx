@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Inbox, Loader2, Search } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { LeadStatusPill } from "@/components/leads/lead-status-pill";
+import { LeadsTable, type LeadTableRow } from "@/components/leads/leads-table";
 import { PRODUCTS } from "@/data/products";
+import { useAuth } from "@/lib/auth";
 import {
   MY_LEADS_PAGE_SIZE,
   MY_LEAD_STATUSES,
   listMyLeads,
-  listMyTeamCommercials,
   type LeadStatus,
 } from "@/lib/myLeads";
 
@@ -25,15 +26,16 @@ function formatDate(value: string): string {
   });
 }
 
-export function MyLeadsList({
-  scope,
-  title,
-  intro,
-}: {
-  scope: "mine" | "team";
-  title: string;
-  intro: string;
-}) {
+export function MyLeadsList() {
+  const navigate = useNavigate();
+  const { profile } = useAuth();
+  const isManager = profile?.role === "manager";
+  const scope = isManager ? "team" : "mine";
+  const title = isManager ? "Leads de mon équipe" : "Mes leads";
+  const intro = isManager
+    ? "Tous les dossiers que vous pouvez consulter, y compris les vôtres. Lecture seule."
+    : "Consultez les dossiers que vous avez enregistrés. Lecture seule.";
+
   const [search, setSearch] = useState("");
   const [productCode, setProductCode] = useState("");
   const [status, setStatus] = useState<LeadStatus | "">("");
@@ -48,25 +50,58 @@ export function MyLeadsList({
         search,
         productCode: productCode || undefined,
         status,
-        commercialId: scope === "team" ? commercialId || undefined : undefined,
+        commercialId: isManager ? commercialId || undefined : undefined,
         page,
       }),
   });
 
-  const commercialsQuery = useQuery({
-    queryKey: ["my-team-commercials"],
-    queryFn: listMyTeamCommercials,
-    enabled: scope === "team",
-  });
-
   const result = leadsQuery.data;
-  const rows = result?.ok ? result.data.rows : [];
+  const rows = useMemo(() => (result?.ok ? result.data.rows : []), [result]);
   const total = result?.ok ? result.data.total : 0;
   const lastPage = Math.max(0, Math.ceil(total / MY_LEADS_PAGE_SIZE) - 1);
   const hasFilters =
     search !== "" || productCode !== "" || status !== "" || commercialId !== "";
 
+  // Liste des commerciaux construite à partir des leads réellement affichés,
+  // jamais d'une lecture de `profiles`.
+  const [knownCommercials, setKnownCommercials] = useState<
+    { id: string; name: string }[]
+  >([]);
+
+  useEffect(() => {
+    if (!isManager || rows.length === 0) return;
+    setKnownCommercials((prev) => {
+      const map = new Map(prev.map((c) => [c.id, c]));
+      for (const lead of rows) {
+        if (!map.has(lead.commercial_id)) {
+          map.set(lead.commercial_id, {
+            id: lead.commercial_id,
+            name: lead.profiles?.full_name ?? "Sans nom",
+          });
+        }
+      }
+      const next = [...map.values()].sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [rows, isManager]);
+
+  const tableRows: LeadTableRow[] = rows.map((lead) => ({
+    id: lead.id,
+    reference: lead.reference,
+    dateLabel: formatDate(lead.created_at),
+    productLabel: lead.products?.label ?? lead.product_code,
+    prospectName: `${lead.prospect_last_name} ${lead.prospect_first_name}`,
+    phone: lead.prospect_phone,
+    postalCode: lead.postal_code,
+    commercialName: lead.profiles?.full_name ?? "—",
+    status: <LeadStatusPill status={lead.status} />,
+  }));
+
   const resetPage = () => setPage(0);
+
+  const openLead = (leadId: string) => {
+    void navigate({ to: "/leadgeneration/lead/$leadId", params: { leadId } });
+  };
 
   return (
     <div className="py-8 lg:py-12">
@@ -126,7 +161,7 @@ export function MyLeadsList({
             ))}
           </select>
 
-          {scope === "team" && (
+          {isManager && (
             <select
               className={selectClass}
               value={commercialId}
@@ -137,9 +172,9 @@ export function MyLeadsList({
               aria-label="Commercial"
             >
               <option value="">Tous les commerciaux</option>
-              {(commercialsQuery.data?.ok ? commercialsQuery.data.data : []).map((c) => (
+              {knownCommercials.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.full_name ?? "Sans nom"}
+                  {c.name}
                 </option>
               ))}
             </select>
@@ -181,43 +216,11 @@ export function MyLeadsList({
               {total} dossier{total > 1 ? "s" : ""}
             </p>
 
-            <ul className="mt-3 grid gap-3">
-              {rows.map((lead) => (
-                <li key={lead.id}>
-                  <Link
-                    to="/leadgeneration/lead/$leadId"
-                    params={{ leadId: lead.id }}
-                    className="block rounded-2xl border border-mist bg-background p-4 shadow-soft transition-shadow hover:shadow-medium"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-label uppercase tracking-wider text-slate">
-                        {lead.reference}
-                      </span>
-                      <LeadStatusPill status={lead.status} />
-                    </div>
-                    <p className="mt-2 text-h3 text-ink">
-                      {lead.prospect_first_name} {lead.prospect_last_name}
-                    </p>
-                    <p className="mt-1 text-small text-slate">
-                      {lead.products?.label ?? lead.product_code} · {formatDate(lead.created_at)} ·{" "}
-                      {lead.postal_code}
-                    </p>
-                    {scope === "team" && (
-                      <p className="mt-1 text-small text-slate">
-                        Commercial : {lead.profiles?.full_name ?? "—"}
-                      </p>
-                    )}
-                    <a
-                      href={`tel:${lead.prospect_phone.replace(/\s/g, "")}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-3 inline-block text-small font-medium text-primary underline underline-offset-4"
-                    >
-                      {lead.prospect_phone}
-                    </a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <LeadsTable
+              rows={tableRows}
+              showCommercial={isManager}
+              onRowClick={openLead}
+            />
 
             {lastPage > 0 && (
               <div className="mt-6 flex items-center justify-between">
