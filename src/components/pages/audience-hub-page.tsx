@@ -15,18 +15,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerStrip } from "@/components/partners/partner-strip";
 import { ResponsablesB2B } from "@/components/pages/responsables-b2b";
-import {
-  COMPANY, getVerticalsByAudience,
-  type Audience, type Vertical, type Partner,
-} from "@/data/verticals";
-import {
-  ASSURANCES_PARTICULIERES,
-  type AssuranceParticuliere,
-} from "@/data/assurances-particulieres";
-
-const ICONS: Record<string, LucideIcon> = {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
-};
+import { COMPANY, type Audience, type Partner } from "@/data/verticals";
+import { getPublicVerticals, type PublicVertical } from "@/data/public-verticals";
 
 type HubCopy = {
   badge: string;
@@ -89,7 +79,7 @@ const PROFESSIONNELS_COPY: HubCopy = {
 
 export function AudienceHubPage({ audience }: { audience: Audience }) {
   const copy = audience === "particuliers" ? PARTICULIERS_COPY : PROFESSIONNELS_COPY;
-  const verticals = getVerticalsByAudience(audience);
+  const verticals = getPublicVerticals(audience);
   const audiencePath = audience === "particuliers" ? "/particuliers" : "/professionnels";
   const partners = dedupePartners(verticals);
 
@@ -97,7 +87,7 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
     <>
       <HubHero copy={copy} />
       {audience === "professionnels" ? <ResponsablesB2B /> : null}
-      <VerticalsSection copy={copy} verticals={verticals} audience={audience} audiencePath={audiencePath} />
+      <VerticalsSection copy={copy} verticals={verticals} audience={audience} />
       <HowSection copy={copy} />
       <ReassuranceSection copy={copy} />
       <PartnersSection partners={partners} />
@@ -106,7 +96,7 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
   );
 }
 
-function dedupePartners(verticals: Vertical[]): Partner[] {
+function dedupePartners(verticals: PublicVertical[]): Partner[] {
   const seen = new Set<string>();
   const out: Partner[] = [];
   for (const v of verticals) {
@@ -168,10 +158,9 @@ function HubHero({ copy }: { copy: HubCopy }) {
 /* ---------------- VERTICALS ---------------- */
 
 function VerticalsSection({
-  copy, verticals, audience, audiencePath,
+  copy, verticals, audience,
 }: {
-  copy: HubCopy; verticals: Vertical[]; audience: Audience;
-  audiencePath: "/particuliers" | "/professionnels";
+  copy: HubCopy; verticals: PublicVertical[]; audience: Audience;
 }) {
   const gridCols =
     audience === "particuliers"
@@ -182,17 +171,14 @@ function VerticalsSection({
       <Container>
         <SectionHeading
           align="center"
-          eyebrow={copy.eyebrow}
+          eyebrow={`${verticals.length} EXPERTISES`}
           title={copy.gridTitle}
           className="mb-12"
         />
         <div className={gridCols}>
           {verticals.map((v) => (
-            <VerticalCard key={`${v.audience}-${v.slug}`} v={v} audiencePath={audiencePath} />
+            <VerticalCard key={`${v.tunnel}-${v.id}`} v={v} />
           ))}
-          {audience === "particuliers"
-            ? ASSURANCES_PARTICULIERES.map((a) => <AssuranceCard key={a.slug} a={a} />)
-            : null}
         </div>
       </Container>
     </Section>
