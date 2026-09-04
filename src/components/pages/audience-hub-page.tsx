@@ -185,19 +185,16 @@ function VerticalsSection({
   );
 }
 
-function VerticalCard({
-  v, audiencePath,
-}: { v: Vertical; audiencePath: "/particuliers" | "/professionnels" }) {
-  const Icon = ICONS[v.icon];
-  const href = `${audiencePath}/${v.slug}`;
+function VerticalCard({ v }: { v: PublicVertical }) {
+  const Icon = v.icon;
   return (
     <Card className="flex h-full flex-col gap-4 p-6">
-      {Icon ? <IconTile icon={Icon} /> : null}
+      <IconTile icon={Icon} />
       <div>
-        <h3 className="text-h3 text-ink">{v.name}</h3>
-        <p className="mt-2 text-small font-semibold text-primary">{v.tagline}</p>
+        <h3 className="text-h3 text-ink">{v.label}</h3>
+        <p className="mt-2 text-small font-semibold text-primary">{v.accroche}</p>
       </div>
-      <p className="text-body text-slate">{v.shortDescription}</p>
+      <p className="text-body text-slate">{v.description}</p>
       <ul className="flex flex-col gap-2">
         {v.products.map((p) => (
           <li key={p.name} className="flex items-start gap-2 text-small text-ink">
@@ -206,57 +203,37 @@ function VerticalCard({
           </li>
         ))}
       </ul>
-      <div className="border-t border-mist my-2" />
-      <div className="flex flex-col gap-2">
-        <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
-          NOS PARTENAIRES
-        </span>
-          <div className="flex flex-wrap gap-2">
-            {v.partners.map((p) => (
-              <PartnerLogo
-                key={p.name}
-                name={p.name}
-                domain={p.domain}
-                showName
-                className="px-3 py-2 shadow-none"
-              />
-            ))}
+      {v.partners.length > 0 ? (
+        <>
+          <div className="border-t border-mist my-2" />
+          <div className="flex flex-col gap-2">
+            <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
+              NOS PARTENAIRES
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {v.partners.map((p) => (
+                <PartnerLogo
+                  key={p.name}
+                  name={p.name}
+                  domain={p.domain}
+                  showName
+                  className="px-3 py-2 shadow-none"
+                />
+              ))}
+            </div>
           </div>
-      </div>
+        </>
+      ) : null}
       <Button asChild variant="outline" size="md" className="mt-auto w-full">
-        <Link
-          to={audiencePath === "/particuliers" ? "/particuliers/$slug" : "/professionnels/$slug"}
-          params={{ slug: v.slug }}
-        >
+        <Link to={v.href}>
           Découvrir
           <ArrowRight className="h-4 w-4" strokeWidth={2} />
         </Link>
       </Button>
-      {/* Fallback plain anchor for typed link parity */}
-      <span className="sr-only">{href}</span>
     </Card>
   );
 }
 
-function AssuranceCard({ a }: { a: AssuranceParticuliere }) {
-  const AIcon = a.icon;
-  return (
-    <Card className="flex h-full flex-col gap-4 p-6">
-      <IconTile icon={AIcon} />
-      <div>
-        <h3 className="text-h3 text-ink">{a.name}</h3>
-        <p className="mt-2 text-small font-semibold text-primary">{a.accroche}</p>
-      </div>
-      <p className="text-body text-slate">{a.paragraphe}</p>
-      <Button asChild variant="outline" size="md" className="mt-auto w-full">
-        <Link to="/particuliers/$slug" params={{ slug: a.slug }}>
-          Découvrir
-          <ArrowRight className="h-4 w-4" strokeWidth={2} />
-        </Link>
-      </Button>
-    </Card>
-  );
-}
 
 /* ---------------- HOW ---------------- */
 
