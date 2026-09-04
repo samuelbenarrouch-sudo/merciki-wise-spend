@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
-  FormAmountField,
+  FormDecimalField,
   FormNumberField,
   FormSelectField,
   FormTextField,
@@ -135,7 +135,7 @@ export const energySteps: StepConfig[] = [
           label: "Consommation annuelle (kWh)",
           placeholder: "ex: 15000",
         }),
-        createElement(FormAmountField, {
+        createElement(FormDecimalField, {
           key: "monthlyAmount",
           control,
           name: "monthlyAmount",

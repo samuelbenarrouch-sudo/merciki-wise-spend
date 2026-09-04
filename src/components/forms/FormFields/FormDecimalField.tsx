@@ -23,7 +23,7 @@ interface Props extends BaseFieldProps {
  * le brouillon local, le JSON stocké et l'affichage backoffice reçoivent donc
  * tous une valeur numérique propre.
  */
-export function FormAmountField({
+export function FormDecimalField({
   name,
   label,
   control,
