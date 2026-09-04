@@ -54,6 +54,12 @@ export interface AnalyticsContract {
   commission_status: Database["public"]["Enums"]["commission_status"] | null;
   status: Database["public"]["Enums"]["contract_status"] | null;
   retractable: boolean | null;
+  /**
+   * Règle d'éligibilité financière calculée EN BASE (contrat rétracté,
+   * résilié ou annulé, ou commission annulée → false). Les agrégats
+   * filtrent dessus et ne redérivent jamais la condition des statuts.
+   */
+  is_billable: boolean | null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -631,13 +637,19 @@ export function financialSummary(contracts: AnalyticsContract[]): FinancialSumma
   let anyCommission = false;
 
   for (const c of contracts) {
-    amountAnnualHt += c.amount_annual_ht ?? 0;
     if (c.retractable) withdrawalPending += 1;
     const amount = c.commission_actual ?? c.commission_expected;
     if (amount !== null && amount !== undefined) anyCommission = true;
     const value = amount ?? 0;
-    if (c.commission_status === "annulee") commissionCancelled += value;
-    else if (c.commission_status === "confirmee" || c.commission_status === "payee")
+    if (c.commission_status === "annulee") {
+      commissionCancelled += value;
+      continue;
+    }
+    // Seuls les contrats éligibles (is_billable, règle portée par la base)
+    // entrent dans les montants et les commissions estimées/sécurisées.
+    if (c.is_billable !== true) continue;
+    amountAnnualHt += c.amount_annual_ht ?? 0;
+    if (c.commission_status === "confirmee" || c.commission_status === "payee")
       commissionSecured += value;
     else commissionEstimated += value;
   }
@@ -780,12 +792,17 @@ export function filterFinanceByProducts(
   return rows.filter((r) => r.product_code !== null && set.has(r.product_code));
 }
 
-/** Contrats dont la commission a été ENCAISSÉE dans la plage. */
+/**
+ * Contrats dont la commission a été ENCAISSÉE dans la plage, éligibles
+ * financièrement. L'éligibilité (`is_billable`) est lue telle quelle : la
+ * règle « rétracté / résilié / annulé ⇒ aucune commission » vit en base.
+ */
 export function filterRealized(
   rows: FinanceRow[],
   range: FinanceRange,
 ): FinanceRow[] {
   return rows.filter((r) => {
+    if (r.is_billable !== true) return false;
     if (!r.commission_paid_at) return false;
     const t = new Date(r.commission_paid_at).getTime();
     return t >= range.from.getTime() && t < range.to.getTime();
@@ -919,7 +936,11 @@ export interface ProductBillingGroup {
 
 export function filterBillingPending(rows: FinanceRow[]): FinanceRow[] {
   return rows.filter(
-    (r) => r.billing_state === "a_facturer" || r.billing_state === "facture",
+    (r) =>
+      // Ceinture et bretelles : billing_state vaut déjà « annule » pour ces
+      // contrats, mais on filtre aussi sur l'éligibilité portée par la base.
+      r.is_billable === true &&
+      (r.billing_state === "a_facturer" || r.billing_state === "facture"),
   );
 }
 
@@ -1001,7 +1022,10 @@ export function groupBillingByProductSupplier(
 export function filterPayoutPending(rows: FinanceRow[]): FinanceRow[] {
   return rows.filter(
     (r) =>
-      r.payout_state === "facture_a_recevoir" || r.payout_state === "a_regler",
+      // Même garde que filterBillingPending : un contrat non éligible n'a
+      // rien à faire dans les montants à régler.
+      r.is_billable === true &&
+      (r.payout_state === "facture_a_recevoir" || r.payout_state === "a_regler"),
   );
 }
 

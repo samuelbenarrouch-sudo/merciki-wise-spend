@@ -65,11 +65,15 @@ function AdminContractsPage() {
   const total = result?.ok ? result.data.total : 0;
 
 
+  // Les totaux ne comptent que les contrats éligibles : la règle
+  // « rétracté / résilié / annulé ⇒ aucune commission ni part » est portée
+  // par la base et lue via is_billable — jamais redérivée des statuts ici.
   const totals = useMemo(() => {
     let estimated = 0;
     let secured = 0;
     let shareTotal = 0;
     for (const row of rows) {
+      if (row.is_billable !== true) continue;
       const amount = row.commission_actual ?? row.commission_expected ?? 0;
       if (isCommissionSecured(row.commission_status)) secured += amount;
       else if (row.commission_status === "estimee") estimated += amount;
@@ -200,7 +204,7 @@ function AdminContractsPage() {
               Part commerciale
             </p>
             <p className="mt-1 text-h3 text-ink">{formatMoney(totals.shareTotal)}</p>
-            <p className="text-xs text-slate">Tous statuts confondus</p>
+            <p className="text-xs text-slate">Contrats éligibles uniquement</p>
           </div>
         </div>
 
@@ -306,7 +310,11 @@ function ContractLine({
 
   return (
     <>
-      <tr className="border-t border-mist align-top">
+      <tr
+        className={`border-t border-mist align-top${
+          row.is_billable === true ? "" : " opacity-60"
+        }`}
+      >
         <td className="px-3 py-3 text-ink">{row.reference ?? "—"}</td>
         <td className="px-3 py-3 text-slate">{formatDay(row.signed_at)}</td>
         <td className="px-3 py-3 text-slate">{row.product_label ?? "—"}</td>
@@ -335,6 +343,11 @@ function ContractLine({
         </td>
         <td className="px-3 py-3 text-ink">
           {formatMoney(row.commission_actual ?? row.commission_expected)}
+          {row.is_billable !== true ? (
+            <span className="block text-xs text-slate">
+              Ne compte pas dans les totaux
+            </span>
+          ) : null}
         </td>
         <td className="px-3 py-3 text-ink">{formatMoney(row.commercial_share)}</td>
         <td className="px-3 py-3">
