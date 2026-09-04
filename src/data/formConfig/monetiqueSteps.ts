@@ -6,6 +6,11 @@ import {
   FormFileField,
   FormNumberField,
   FormRadioGroup,
+  FormSalesPointsField,
+  FormSirenField,
+  SIREN_ERROR,
+  emptySalesPoint,
+  isValidSiren,
   FormSelectField,
   FormTextField,
   FormTextarea,
@@ -21,6 +26,9 @@ import {
 
 export const monetiqueDefaultValues = {
   ...prospectDefaultValues,
+  companyName: "",
+  siren: "",
+  salesPoints: [{ ...emptySalesPoint }],
   needTypes: [] as string[],
   activityType: "",
   monthlyVolume: "",
@@ -45,6 +53,64 @@ const optionalFiles = (max: number) =>
 export const monetiqueSteps: StepConfig[] = [
   prospectStep,
   prospectContactStep,
+  {
+    id: "enseigne",
+    label: "Enseigne",
+    title: "Enseigne et points de vente",
+    fields: ["companyName", "siren", "salesPoints"],
+    schema: z.object({
+      companyName: z.string().trim().min(1, requiredMsg).max(150),
+      // La base exige exactement 9 chiffres : on valide la valeur nettoyée.
+      siren: z.string().refine(isValidSiren, SIREN_ERROR),
+      salesPoints: z
+        .array(
+          z.object({
+            label: z.string().trim().max(120).optional().or(z.literal("")),
+            address: z.string().trim().min(1, requiredMsg).max(200),
+            postalCode: z
+              .string()
+              .trim()
+              .regex(/^\d{5}$/, "Le code postal comporte 5 chiffres"),
+            city: z.string().trim().min(1, requiredMsg).max(100),
+          }),
+        )
+        .min(1, "Indiquez au moins un point de vente")
+        .max(10, "10 points de vente maximum"),
+    }),
+    render: ({ control }) =>
+      createElement(
+        Fragment,
+        null,
+        createElement(FormTextField, {
+          key: "companyName",
+          control,
+          name: "companyName",
+          label: "Nom de l'enseigne",
+          required: true,
+          placeholder: "Ex. Boulangerie du Centre",
+        }),
+        createElement(FormSirenField, {
+          key: "siren",
+          control,
+          name: "siren",
+          label: "Numéro SIREN",
+          required: true,
+          description: "9 chiffres, indiqué sur le Kbis.",
+          placeholder: "930963541",
+        }),
+        createElement(FormSalesPointsField, {
+          key: "salesPoints",
+          control,
+          name: "salesPoints",
+          label: "Points de vente",
+          itemLabel: "Point de vente",
+          required: true,
+          maxItems: 10,
+          description:
+            "Le code postal renseigné précédemment est celui du contact. Indiquez ici l'adresse de chaque point de vente équipé.",
+        }),
+      ),
+  },
   {
     id: "need",
     label: "Besoin",

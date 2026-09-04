@@ -35,6 +35,8 @@ const STEPS_BY_PRODUCT: Record<ProductId, StepConfig[]> = {
 export interface FieldMeta {
   label: string;
   options?: Record<string, string>;
+  /** Nom au singulier d'une entrée, pour les champs répétables. */
+  itemLabel?: string;
 }
 
 type FieldMap = Record<string, FieldMeta>;
@@ -67,6 +69,8 @@ function walk(node: ReactNode, out: FieldMap): void {
       }
       if (Object.keys(map).length > 0) meta.options = map;
     }
+    const itemLabel = props.itemLabel;
+    if (typeof itemLabel === "string") meta.itemLabel = itemLabel;
     out[name] = meta;
   }
 
@@ -154,6 +158,27 @@ export function resolveValueLabel(
   return getFieldMeta(productCode, key)?.options?.[value] ?? value;
 }
 
+/**
+ * Entrée structurée (objet) d'un champ répétable : rendue en une ligne
+ * lisible « Point de vente 1 — Nom, adresse, code postal ville », jamais en
+ * JSON brut ni en « [object Object] ».
+ */
+function formatObjectEntry(
+  productCode: string,
+  key: string,
+  value: unknown,
+  index: number | null,
+): string {
+  if (value === null || typeof value !== "object") return String(value ?? "—");
+  const parts = Object.values(value as Record<string, unknown>)
+    .filter((v) => v !== null && v !== undefined && String(v).trim() !== "")
+    .map((v) => String(v).trim());
+  const body = parts.length > 0 ? parts.join(", ") : "—";
+  if (index === null) return body;
+  const itemLabel = getFieldMeta(productCode, key)?.itemLabel;
+  return itemLabel ? `${itemLabel} ${index + 1} — ${body}` : `${index + 1}. ${body}`;
+}
+
 /** Mise en forme lisible d'une valeur de `details`. */
 export function formatDetailValue(
   productCode: string,
@@ -163,11 +188,15 @@ export function formatDetailValue(
   if (value === null || value === undefined || value === "") return ["—"];
   if (typeof value === "boolean") return [value ? "Oui" : "Non"];
   if (Array.isArray(value)) {
-    return value.map((v) =>
-      typeof v === "string" ? resolveValueLabel(productCode, key, v) : String(v),
+    return value.map((v, i) =>
+      typeof v === "string"
+        ? resolveValueLabel(productCode, key, v)
+        : formatObjectEntry(productCode, key, v, i),
     );
   }
-  if (typeof value === "object") return [JSON.stringify(value)];
+  if (typeof value === "object") {
+    return [formatObjectEntry(productCode, key, value, null)];
+  }
   if (typeof value === "string") return [resolveValueLabel(productCode, key, value)];
   return [String(value)];
 }

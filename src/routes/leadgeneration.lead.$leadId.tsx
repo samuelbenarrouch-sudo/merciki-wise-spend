@@ -186,11 +186,22 @@ function MyLeadDetailPage() {
               <p className="text-small text-slate">Aucune information complémentaire.</p>
             ) : (
               <dl>
-                {detailKeys.map((key) => (
-                  <Row key={key} label={resolveFieldLabel(productCode, key)}>
-                    {formatDetailValue(productCode, key, details[key]).join(", ")}
-                  </Row>
-                ))}
+                {detailKeys.map((key) => {
+                  const values = formatDetailValue(productCode, key, details[key]);
+                  return (
+                    <Row key={key} label={resolveFieldLabel(productCode, key)}>
+                      {values.length > 1 ? (
+                        <ul className="list-inside list-disc">
+                          {values.map((v) => (
+                            <li key={v}>{v}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        values[0]
+                      )}
+                    </Row>
+                  );
+                })}
               </dl>
             )}
           </Section>
