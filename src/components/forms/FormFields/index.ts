@@ -10,3 +10,14 @@ export { FormWeekdayDateTimeField } from "./FormWeekdayDateTimeField";
 export { FormDecimalField } from "./FormDecimalField";
 export type { Option } from "./shared";
 export { FormFileField } from "./FormFileField";
+export {
+  FormSirenField,
+  SIREN_ERROR,
+  isValidSiren,
+  normalizeSiren,
+} from "./FormSirenField";
+export {
+  FormSalesPointsField,
+  emptySalesPoint,
+  type SalesPoint,
+} from "./FormSalesPointsField";

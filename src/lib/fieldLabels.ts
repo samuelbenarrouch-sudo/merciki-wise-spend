@@ -35,6 +35,8 @@ const STEPS_BY_PRODUCT: Record<ProductId, StepConfig[]> = {
 export interface FieldMeta {
   label: string;
   options?: Record<string, string>;
+  /** Nom au singulier d'une entrée, pour les champs répétables. */
+  itemLabel?: string;
 }
 
 type FieldMap = Record<string, FieldMeta>;
