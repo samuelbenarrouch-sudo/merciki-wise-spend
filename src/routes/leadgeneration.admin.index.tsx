@@ -6,6 +6,8 @@ import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { LeadsTable } from "@/components/leads/leads-table";
+
 import { PRODUCTS } from "@/data/products";
 import {
   LEAD_STATUSES,
