@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import {
   Check, Phone, Mail, ChevronRight, ArrowRight,
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
   PhoneCall, Search, Scale, PartyPopper,
   type LucideIcon,
 } from "lucide-react";
@@ -23,7 +22,6 @@ type HubCopy = {
   h1: string;
   intro: string;
   crumb: string;
-  eyebrow: string;
   gridTitle: string;
   steps: { n: string; icon: LucideIcon; title: string; desc: string }[];
   reassuranceTitle: string;
@@ -37,7 +35,6 @@ const PARTICULIERS_COPY: HubCopy = {
   intro:
     "Électricité, gaz, box internet, forfait mobile, mutuelle, assurance de prêt, chauffage… Ce sont des postes que l'on subit rarement par choix. Nous les reprenons un par un, nous comparons le marché et nous vous proposons mieux. Gratuitement.",
   crumb: "Particuliers",
-  eyebrow: "9 EXPERTISES",
   gridTitle: "Ce que nous pouvons optimiser pour vous",
   steps: [
     { n: "01", icon: PhoneCall, title: "Vous nous contactez", desc: "Un appel ou un formulaire suffit. Vous nous dites ce que vous payez aujourd'hui." },
@@ -60,7 +57,6 @@ const PROFESSIONNELS_COPY: HubCopy = {
   intro:
     "Vos contrats d'énergie et vos frais d'encaissement pèsent sur votre rentabilité, souvent sans que personne ne les ait renégociés depuis des années. Nous mettons le marché en concurrence pour vous, sans interrompre votre activité.",
   crumb: "Professionnels",
-  eyebrow: "2 EXPERTISES",
   gridTitle: "Ce que nous pouvons optimiser pour votre entreprise",
   steps: [
     { n: "01", icon: Search, title: "Nous analysons vos factures", desc: "Vous nous transmettez vos contrats actuels. Nous les décryptons ligne par ligne." },
