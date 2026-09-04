@@ -95,7 +95,7 @@ export const enrSteps: StepConfig[] = [
             { value: "autre", label: "Autre" },
           ],
         }),
-        createElement(FormNumberField, {
+        createElement(FormDecimalField, {
           key: "housingSurface",
           control,
           name: "housingSurface",

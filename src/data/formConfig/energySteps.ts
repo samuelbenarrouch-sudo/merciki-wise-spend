@@ -119,14 +119,15 @@ export const energySteps: StepConfig[] = [
             { value: "autre", label: "Autre" },
           ],
         }),
-        createElement(FormNumberField, {
+        createElement(FormDecimalField, {
           key: "surface",
           control,
           name: "surface",
-          label: "Surface du logement (m²)",
+          label: "Surface du logement",
           required: true,
           min: 10,
           max: 500,
+          suffix: "m²",
         }),
         createElement(FormNumberField, {
           key: "annualKwh",

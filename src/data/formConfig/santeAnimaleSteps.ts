@@ -101,13 +101,14 @@ export const santeAnimaleSteps: StepConfig[] = [
           name: "animalBreed",
           label: "Race",
         }),
-        createElement(FormNumberField, {
+        createElement(FormDecimalField, {
           key: "animalWeight",
           control,
           name: "animalWeight",
-          label: "Poids (kg)",
+          label: "Poids",
           min: 0,
           max: 100,
+          suffix: "kg",
         }),
         createElement(FormTextField, {
           key: "animalDob",
