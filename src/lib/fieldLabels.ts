@@ -11,6 +11,9 @@ import { enrSteps } from "@/data/formConfig/enrSteps";
 import { monetiqueSteps } from "@/data/formConfig/monetiqueSteps";
 import { energieProSteps } from "@/data/formConfig/energieProSteps";
 import { assurancesProSteps } from "@/data/formConfig/assurancesProSteps";
+import { autoSteps } from "@/data/formConfig/autoSteps";
+import { motoSteps } from "@/data/formConfig/motoSteps";
+import { habitationSteps } from "@/data/formConfig/habitationSteps";
 
 /**
  * Résolution des libellés affichés au commercial, à partir des configurations
@@ -30,6 +33,9 @@ const STEPS_BY_PRODUCT: Record<ProductId, StepConfig[]> = {
   monetique: monetiqueSteps,
   "energie-pro": energieProSteps,
   "assurances-pro": assurancesProSteps,
+  auto: autoSteps,
+  moto: motoSteps,
+  habitation: habitationSteps,
 };
 
 export interface FieldMeta {

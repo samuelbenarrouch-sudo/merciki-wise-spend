@@ -1,6 +1,9 @@
 import {
+  Bike,
   Building2,
+  Car,
   CreditCard,
+  HandCoins,
   Heart,
   Home,
   Leaf,
@@ -22,6 +25,9 @@ export const PRODUCT_IDS = [
   "monetique",
   "energie-pro",
   "assurances-pro",
+  "auto",
+  "moto",
+  "habitation",
 ] as const;
 
 /** Union des identifiants produits, dérivée de PRODUCT_IDS. */
@@ -63,7 +69,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "emprunteur",
     label: "Assurance Emprunteur",
-    icon: Home,
+    icon: HandCoins,
     description: "Assurance prêt — comparez votre couverture",
   },
   {
@@ -89,6 +95,24 @@ export const PRODUCTS: Product[] = [
     label: "Assurances Pro",
     icon: ShieldCheck,
     description: "RC Pro, RC Exploitation, Garantie Décennale",
+  },
+  {
+    id: "auto",
+    label: "Assurance Auto",
+    icon: Car,
+    description: "Assurance véhicule — comparez votre formule",
+  },
+  {
+    id: "moto",
+    label: "Assurance Moto",
+    icon: Bike,
+    description: "Deux-roues & quad — une couverture adaptée",
+  },
+  {
+    id: "habitation",
+    label: "Assurance Habitation",
+    icon: Home,
+    description: "Maison & appartement — protégez votre logement",
   },
 ];
 

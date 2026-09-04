@@ -9,6 +9,9 @@ import { ENRForm } from "@/components/forms/ENRForm";
 import { MonetiqueForm } from "@/components/forms/MonetiqueForm";
 import { EnergieProForm } from "@/components/forms/EnergieProForm";
 import { AssurancesProForm } from "@/components/forms/AssurancesProForm";
+import { AutoForm } from "@/components/forms/AutoForm";
+import { MotoForm } from "@/components/forms/MotoForm";
+import { HabitationForm } from "@/components/forms/HabitationForm";
 
 /**
  * Registre unique code produit -> composant de formulaire.
@@ -25,6 +28,9 @@ export const PRODUCT_FORMS: Record<ProductId, ComponentType> = {
   monetique: MonetiqueForm,
   "energie-pro": EnergieProForm,
   "assurances-pro": AssurancesProForm,
+  auto: AutoForm,
+  moto: MotoForm,
+  habitation: HabitationForm,
 };
 
 export const getProductForm = (id: string): ComponentType | undefined =>
