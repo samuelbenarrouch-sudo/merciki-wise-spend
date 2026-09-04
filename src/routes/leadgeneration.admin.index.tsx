@@ -200,75 +200,21 @@ function AdminLeadsPage() {
               {total} résultat{total > 1 ? "s" : ""}
             </p>
 
-            {/* Bureau : tableau dense */}
-            <div className="mt-3 hidden overflow-x-auto rounded-2xl border border-mist md:block">
-              <table className="w-full min-w-[900px] text-left text-sm">
-                <thead className="bg-mist/60 text-label uppercase text-slate">
-                  <tr>
-                    <th className="px-4 py-3">Référence</th>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Produit</th>
-                    <th className="px-4 py-3">Prospect</th>
-                    <th className="px-4 py-3">Téléphone</th>
-                    <th className="px-4 py-3">CP</th>
-                    <th className="px-4 py-3">Commercial</th>
-                    <th className="px-4 py-3">Statut</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((lead) => (
-                    <tr
-                      key={lead.id}
-                      onClick={() => openLead(lead.id)}
-                      className="cursor-pointer border-t border-mist transition-colors hover:bg-mist/40"
-                    >
-                      <td className="px-4 py-3 font-medium text-ink">{lead.reference}</td>
-                      <td className="px-4 py-3 text-slate">{formatDate(lead.created_at)}</td>
-                      <td className="px-4 py-3 text-slate">
-                        {lead.products?.label ?? lead.product_code}
-                      </td>
-                      <td className="px-4 py-3 text-ink">
-                        {lead.prospect_last_name} {lead.prospect_first_name}
-                      </td>
-                      <td className="px-4 py-3 text-slate">{lead.prospect_phone}</td>
-                      <td className="px-4 py-3 text-slate">{lead.postal_code}</td>
-                      <td className="px-4 py-3 text-slate">
-                        {lead.profiles?.full_name ?? "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={lead.status} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <LeadsTable
+              rows={rows.map((lead) => ({
+                id: lead.id,
+                reference: lead.reference,
+                dateLabel: formatDate(lead.created_at),
+                productLabel: lead.products?.label ?? lead.product_code,
+                prospectName: `${lead.prospect_last_name} ${lead.prospect_first_name}`,
+                phone: lead.prospect_phone,
+                postalCode: lead.postal_code,
+                commercialName: lead.profiles?.full_name ?? "—",
+                status: <StatusBadge status={lead.status} />,
+              }))}
+              onRowClick={openLead}
+            />
 
-            {/* Mobile : cartes empilées, consultation seule */}
-            <ul className="mt-3 space-y-3 md:hidden">
-              {rows.map((lead) => (
-                <li key={lead.id}>
-                  <button
-                    type="button"
-                    onClick={() => openLead(lead.id)}
-                    className="w-full rounded-2xl border border-mist bg-background p-4 text-left"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-small font-medium text-ink">
-                        {lead.reference}
-                      </span>
-                      <StatusBadge status={lead.status} />
-                    </div>
-                    <p className="mt-2 text-body text-ink">
-                      {lead.prospect_last_name} {lead.prospect_first_name}
-                    </p>
-                    <p className="mt-1 text-small text-slate">
-                      {lead.products?.label ?? lead.product_code}
-                    </p>
-                  </button>
-                </li>
-              ))}
-            </ul>
 
             <div className="mt-6 flex items-center justify-between gap-3">
               <Button
