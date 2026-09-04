@@ -183,13 +183,13 @@ export function AssuranceParticulierePage({ data }: { data: AssuranceParticulier
               const OtherIcon = o.icon;
               return (
                 <Link
-                  key={o.slug}
-                  to="/particuliers/$slug"
-                  params={{ slug: o.slug }}
+                  key={o.id}
+                  to={o.href}
                   className="inline-flex items-center gap-2 rounded-full border border-mist bg-background px-4 py-2 text-small text-ink shadow-soft transition hover:border-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  {OtherIcon ? <OtherIcon className="h-4 w-4 text-primary" strokeWidth={1.75} /> : null}
-                  <span>{o.name}</span>
+                  <OtherIcon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                  <span>{o.label}</span>
+
                   <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                 </Link>
               );
