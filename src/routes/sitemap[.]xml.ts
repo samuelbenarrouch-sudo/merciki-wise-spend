@@ -27,6 +27,14 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/conditions-generales", changefreq: "yearly", priority: "0.3" },
         ];
 
+        for (const slug of ["assurance-auto", "assurance-moto", "assurance-habitation"]) {
+          entries.push({
+            path: `/particuliers/${slug}`,
+            changefreq: "monthly",
+            priority: "0.7",
+          });
+        }
+
         for (const v of VERTICALS) {
           entries.push({
             path: `/${v.audience}/${v.slug}`,

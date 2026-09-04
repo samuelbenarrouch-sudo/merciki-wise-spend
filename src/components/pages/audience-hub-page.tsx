@@ -19,6 +19,10 @@ import {
   COMPANY, getVerticalsByAudience,
   type Audience, type Vertical, type Partner,
 } from "@/data/verticals";
+import {
+  ASSURANCES_PARTICULIERES,
+  type AssuranceParticuliere,
+} from "@/data/assurances-particulieres";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
@@ -43,7 +47,7 @@ const PARTICULIERS_COPY: HubCopy = {
   intro:
     "Électricité, gaz, box internet, forfait mobile, mutuelle, assurance de prêt, chauffage… Ce sont des postes que l'on subit rarement par choix. Nous les reprenons un par un, nous comparons le marché et nous vous proposons mieux. Gratuitement.",
   crumb: "Particuliers",
-  eyebrow: "6 EXPERTISES",
+  eyebrow: "9 EXPERTISES",
   gridTitle: "Ce que nous pouvons optimiser pour vous",
   steps: [
     { n: "01", icon: PhoneCall, title: "Vous nous contactez", desc: "Un appel ou un formulaire suffit. Vous nous dites ce que vous payez aujourd'hui." },
@@ -186,6 +190,9 @@ function VerticalsSection({
           {verticals.map((v) => (
             <VerticalCard key={`${v.audience}-${v.slug}`} v={v} audiencePath={audiencePath} />
           ))}
+          {audience === "particuliers"
+            ? ASSURANCES_PARTICULIERES.map((a) => <AssuranceCard key={a.slug} a={a} />)
+            : null}
         </div>
       </Container>
     </Section>
@@ -241,6 +248,26 @@ function VerticalCard({
       </Button>
       {/* Fallback plain anchor for typed link parity */}
       <span className="sr-only">{href}</span>
+    </Card>
+  );
+}
+
+function AssuranceCard({ a }: { a: AssuranceParticuliere }) {
+  const AIcon = a.icon;
+  return (
+    <Card className="flex h-full flex-col gap-4 p-6">
+      <IconTile icon={AIcon} />
+      <div>
+        <h3 className="text-h3 text-ink">{a.name}</h3>
+        <p className="mt-2 text-small font-semibold text-primary">{a.accroche}</p>
+      </div>
+      <p className="text-body text-slate">{a.paragraphe}</p>
+      <Button asChild variant="outline" size="md" className="mt-auto w-full">
+        <Link to="/particuliers/$slug" params={{ slug: a.slug }}>
+          Découvrir
+          <ArrowRight className="h-4 w-4" strokeWidth={2} />
+        </Link>
+      </Button>
     </Card>
   );
 }

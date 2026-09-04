@@ -42,6 +42,9 @@ import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadge
 import { Route as LeadgenerationAdminDashboardRouteImport } from './routes/leadgeneration.admin.dashboard'
 import { Route as LeadgenerationAdminContratsRouteImport } from './routes/leadgeneration.admin.contrats'
 import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
+import { Route as PublicParticuliersAssuranceMotoRouteImport } from './routes/_public.particuliers.assurance-moto'
+import { Route as PublicParticuliersAssuranceHabitationRouteImport } from './routes/_public.particuliers.assurance-habitation'
+import { Route as PublicParticuliersAssuranceAutoRouteImport } from './routes/_public.particuliers.assurance-auto'
 import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 import { Route as LeadgenerationAdminLeadLeadIdRouteImport } from './routes/leadgeneration.admin.lead.$leadId'
 
@@ -225,6 +228,24 @@ const PublicProfessionnelsSlugRoute =
     path: '/$slug',
     getParentRoute: () => PublicProfessionnelsRoute,
   } as any)
+const PublicParticuliersAssuranceMotoRoute =
+  PublicParticuliersAssuranceMotoRouteImport.update({
+    id: '/assurance-moto',
+    path: '/assurance-moto',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersAssuranceHabitationRoute =
+  PublicParticuliersAssuranceHabitationRouteImport.update({
+    id: '/assurance-habitation',
+    path: '/assurance-habitation',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersAssuranceAutoRoute =
+  PublicParticuliersAssuranceAutoRouteImport.update({
+    id: '/assurance-auto',
+    path: '/assurance-auto',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
 const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -258,6 +279,9 @@ export interface FileRoutesByFullPath {
   '/leadgeneration/mes-leads': typeof LeadgenerationMesLeadsRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/particuliers/assurance-auto': typeof PublicParticuliersAssuranceAutoRoute
+  '/particuliers/assurance-habitation': typeof PublicParticuliersAssuranceHabitationRoute
+  '/particuliers/assurance-moto': typeof PublicParticuliersAssuranceMotoRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
   '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
@@ -290,6 +314,9 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/leadgeneration': typeof LeadgenerationIndexRoute
   '/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/particuliers/assurance-auto': typeof PublicParticuliersAssuranceAutoRoute
+  '/particuliers/assurance-habitation': typeof PublicParticuliersAssuranceHabitationRoute
+  '/particuliers/assurance-moto': typeof PublicParticuliersAssuranceMotoRoute
   '/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
   '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
@@ -328,6 +355,9 @@ export interface FileRoutesById {
   '/_public/': typeof PublicIndexRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
   '/_public/particuliers/$slug': typeof PublicParticuliersSlugRoute
+  '/_public/particuliers/assurance-auto': typeof PublicParticuliersAssuranceAutoRoute
+  '/_public/particuliers/assurance-habitation': typeof PublicParticuliersAssuranceHabitationRoute
+  '/_public/particuliers/assurance-moto': typeof PublicParticuliersAssuranceMotoRoute
   '/_public/professionnels/$slug': typeof PublicProfessionnelsSlugRoute
   '/leadgeneration/admin/contrats': typeof LeadgenerationAdminContratsRoute
   '/leadgeneration/admin/dashboard': typeof LeadgenerationAdminDashboardRoute
@@ -366,6 +396,9 @@ export interface FileRouteTypes {
     | '/leadgeneration/mes-leads'
     | '/leadgeneration/'
     | '/particuliers/$slug'
+    | '/particuliers/assurance-auto'
+    | '/particuliers/assurance-habitation'
+    | '/particuliers/assurance-moto'
     | '/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
     | '/leadgeneration/admin/dashboard'
@@ -398,6 +431,9 @@ export interface FileRouteTypes {
     | '/'
     | '/leadgeneration'
     | '/particuliers/$slug'
+    | '/particuliers/assurance-auto'
+    | '/particuliers/assurance-habitation'
+    | '/particuliers/assurance-moto'
     | '/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
     | '/leadgeneration/admin/dashboard'
@@ -435,6 +471,9 @@ export interface FileRouteTypes {
     | '/_public/'
     | '/leadgeneration/'
     | '/_public/particuliers/$slug'
+    | '/_public/particuliers/assurance-auto'
+    | '/_public/particuliers/assurance-habitation'
+    | '/_public/particuliers/assurance-moto'
     | '/_public/professionnels/$slug'
     | '/leadgeneration/admin/contrats'
     | '/leadgeneration/admin/dashboard'
@@ -691,6 +730,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfessionnelsSlugRouteImport
       parentRoute: typeof PublicProfessionnelsRoute
     }
+    '/_public/particuliers/assurance-moto': {
+      id: '/_public/particuliers/assurance-moto'
+      path: '/assurance-moto'
+      fullPath: '/particuliers/assurance-moto'
+      preLoaderRoute: typeof PublicParticuliersAssuranceMotoRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/assurance-habitation': {
+      id: '/_public/particuliers/assurance-habitation'
+      path: '/assurance-habitation'
+      fullPath: '/particuliers/assurance-habitation'
+      preLoaderRoute: typeof PublicParticuliersAssuranceHabitationRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/assurance-auto': {
+      id: '/_public/particuliers/assurance-auto'
+      path: '/assurance-auto'
+      fullPath: '/particuliers/assurance-auto'
+      preLoaderRoute: typeof PublicParticuliersAssuranceAutoRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
     '/_public/particuliers/$slug': {
       id: '/_public/particuliers/$slug'
       path: '/$slug'
@@ -710,11 +770,18 @@ declare module '@tanstack/react-router' {
 
 interface PublicParticuliersRouteChildren {
   PublicParticuliersSlugRoute: typeof PublicParticuliersSlugRoute
+  PublicParticuliersAssuranceAutoRoute: typeof PublicParticuliersAssuranceAutoRoute
+  PublicParticuliersAssuranceHabitationRoute: typeof PublicParticuliersAssuranceHabitationRoute
+  PublicParticuliersAssuranceMotoRoute: typeof PublicParticuliersAssuranceMotoRoute
   PublicParticuliersIndexRoute: typeof PublicParticuliersIndexRoute
 }
 
 const PublicParticuliersRouteChildren: PublicParticuliersRouteChildren = {
   PublicParticuliersSlugRoute: PublicParticuliersSlugRoute,
+  PublicParticuliersAssuranceAutoRoute: PublicParticuliersAssuranceAutoRoute,
+  PublicParticuliersAssuranceHabitationRoute:
+    PublicParticuliersAssuranceHabitationRoute,
+  PublicParticuliersAssuranceMotoRoute: PublicParticuliersAssuranceMotoRoute,
   PublicParticuliersIndexRoute: PublicParticuliersIndexRoute,
 }
 

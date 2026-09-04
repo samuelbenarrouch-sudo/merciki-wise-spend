@@ -8,6 +8,9 @@ import {
   CreditCard,
   Building2,
   ShieldCheck as ShieldCheckIcon,
+  Car,
+  Bike,
+  House,
   type LucideIcon,
 } from "lucide-react";
 
@@ -57,6 +60,24 @@ export const particuliersItems: NavItem[] = [
     href: "/particuliers/energies-renouvelables",
     icon: Leaf,
     description: "Panneaux solaires et solutions vertes.",
+  },
+  {
+    label: "Assurance Auto",
+    href: "/particuliers/assurance-auto",
+    icon: Car,
+    description: "Le bon niveau de garanties au juste prix.",
+  },
+  {
+    label: "Assurance Moto et 2-roues",
+    href: "/particuliers/assurance-moto",
+    icon: Bike,
+    description: "La couverture adaptée à votre pratique.",
+  },
+  {
+    label: "Assurance Habitation",
+    href: "/particuliers/assurance-habitation",
+    icon: House,
+    description: "Votre logement bien couvert.",
   },
 ];
 
