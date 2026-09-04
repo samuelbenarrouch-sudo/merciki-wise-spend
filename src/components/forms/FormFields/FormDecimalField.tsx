@@ -12,7 +12,7 @@ interface Props extends BaseFieldProps {
 }
 
 /**
- * Saisie d'un MONTANT en euros.
+ * Saisie d'une VALEUR DÉCIMALE (montant, surface, poids…).
  *
  * On n'utilise volontairement PAS type="number" : ce type rejette la virgule,
  * si bien qu'un commercial français tapant « 39,90 » voyait le champ se lire
@@ -39,7 +39,7 @@ export function FormDecimalField({
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <AmountInput
+        <DecimalInput
           id={name}
           label={label}
           required={required}
@@ -64,7 +64,7 @@ function toText(value: unknown): string {
   return String(value).replace(".", ",");
 }
 
-function AmountInput({
+function DecimalInput({
   id,
   label,
   required,
@@ -108,7 +108,7 @@ function AmountInput({
   const handleChange = (raw: string) => {
     // Tout caractère non numérique (hors séparateur décimal) est refusé.
     if (raw !== "" && !/^[0-9]*[.,]?[0-9]*$/.test(raw)) {
-      setLocalError("Saisissez un montant en chiffres, ex : 39,90");
+      setLocalError("Saisissez une valeur en chiffres, ex : 39,90");
       return;
     }
 
@@ -134,11 +134,11 @@ function AmountInput({
       return;
     }
     if (parsed < min) {
-      setLocalError("Le montant doit être positif.");
+      setLocalError("La valeur doit être positive.");
       return;
     }
     if (max !== undefined && parsed > max) {
-      setLocalError(`Le montant ne peut pas dépasser ${max}.`);
+      setLocalError(`La valeur ne peut pas dépasser ${max}.`);
       return;
     }
     onValueChange(parsed);
