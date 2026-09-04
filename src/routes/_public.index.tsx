@@ -8,6 +8,7 @@ import {
   Zap,
   MapPin,
 } from "lucide-react";
+import { countPublicVerticals } from "@/data/public-verticals";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
@@ -49,7 +50,7 @@ const supportCards = [
     icon: Package,
     title: "Une offre large et déjà structurée",
     body:
-      "Pas besoin de réinventer la roue. Les 8 verticales sont documentées, les partenaires sont sélectionnés, les outils commerciaux existent.",
+      `Pas besoin de réinventer la roue. Les ${countPublicVerticals()} verticales sont documentées, les partenaires sont sélectionnés, les outils commerciaux existent.`,
   },
   {
     icon: Handshake,

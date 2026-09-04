@@ -12,33 +12,13 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import {
   Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion";
-import { COMPANY, getVerticalsByAudience } from "@/data/verticals";
-import {
-  ASSURANCES_PARTICULIERES,
-  type AssuranceParticuliere,
-} from "@/data/assurances-particulieres";
-import {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun,
-  type LucideIcon,
-} from "lucide-react";
-
-const VERTICAL_ICONS: Record<string, LucideIcon> = {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun,
-};
+import { COMPANY } from "@/data/verticals";
+import { type AssuranceParticuliere } from "@/data/assurances-particulieres";
+import { getOtherPublicVerticals } from "@/data/public-verticals";
 
 export function AssuranceParticulierePage({ data }: { data: AssuranceParticuliere }) {
-  const others = [
-    ...getVerticalsByAudience("particuliers").map((v) => ({
-      slug: v.slug,
-      name: v.name,
-      icon: VERTICAL_ICONS[v.icon] as LucideIcon | undefined,
-    })),
-    ...ASSURANCES_PARTICULIERES.filter((a) => a.slug !== data.slug).map((a) => ({
-      slug: a.slug,
-      name: a.name,
-      icon: a.icon as LucideIcon,
-    })),
-  ];
+  const others = getOtherPublicVerticals("particuliers", data.slug);
+
 
   return (
     <>
@@ -203,13 +183,13 @@ export function AssuranceParticulierePage({ data }: { data: AssuranceParticulier
               const OtherIcon = o.icon;
               return (
                 <Link
-                  key={o.slug}
-                  to="/particuliers/$slug"
-                  params={{ slug: o.slug }}
+                  key={o.id}
+                  to={o.href}
                   className="inline-flex items-center gap-2 rounded-full border border-mist bg-background px-4 py-2 text-small text-ink shadow-soft transition hover:border-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  {OtherIcon ? <OtherIcon className="h-4 w-4 text-primary" strokeWidth={1.75} /> : null}
-                  <span>{o.name}</span>
+                  <OtherIcon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                  <span>{o.label}</span>
+
                   <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                 </Link>
               );

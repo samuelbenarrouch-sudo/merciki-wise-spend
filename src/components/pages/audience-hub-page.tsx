@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import {
   Check, Phone, Mail, ChevronRight, ArrowRight,
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
   PhoneCall, Search, Scale, PartyPopper,
   type LucideIcon,
 } from "lucide-react";
@@ -15,25 +14,14 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerStrip } from "@/components/partners/partner-strip";
 import { ResponsablesB2B } from "@/components/pages/responsables-b2b";
-import {
-  COMPANY, getVerticalsByAudience,
-  type Audience, type Vertical, type Partner,
-} from "@/data/verticals";
-import {
-  ASSURANCES_PARTICULIERES,
-  type AssuranceParticuliere,
-} from "@/data/assurances-particulieres";
-
-const ICONS: Record<string, LucideIcon> = {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
-};
+import { COMPANY, type Audience, type Partner } from "@/data/verticals";
+import { getPublicVerticals, type PublicVertical } from "@/data/public-verticals";
 
 type HubCopy = {
   badge: string;
   h1: string;
   intro: string;
   crumb: string;
-  eyebrow: string;
   gridTitle: string;
   steps: { n: string; icon: LucideIcon; title: string; desc: string }[];
   reassuranceTitle: string;
@@ -47,7 +35,6 @@ const PARTICULIERS_COPY: HubCopy = {
   intro:
     "Électricité, gaz, box internet, forfait mobile, mutuelle, assurance de prêt, chauffage… Ce sont des postes que l'on subit rarement par choix. Nous les reprenons un par un, nous comparons le marché et nous vous proposons mieux. Gratuitement.",
   crumb: "Particuliers",
-  eyebrow: "9 EXPERTISES",
   gridTitle: "Ce que nous pouvons optimiser pour vous",
   steps: [
     { n: "01", icon: PhoneCall, title: "Vous nous contactez", desc: "Un appel ou un formulaire suffit. Vous nous dites ce que vous payez aujourd'hui." },
@@ -70,7 +57,6 @@ const PROFESSIONNELS_COPY: HubCopy = {
   intro:
     "Vos contrats d'énergie et vos frais d'encaissement pèsent sur votre rentabilité, souvent sans que personne ne les ait renégociés depuis des années. Nous mettons le marché en concurrence pour vous, sans interrompre votre activité.",
   crumb: "Professionnels",
-  eyebrow: "2 EXPERTISES",
   gridTitle: "Ce que nous pouvons optimiser pour votre entreprise",
   steps: [
     { n: "01", icon: Search, title: "Nous analysons vos factures", desc: "Vous nous transmettez vos contrats actuels. Nous les décryptons ligne par ligne." },
@@ -89,7 +75,7 @@ const PROFESSIONNELS_COPY: HubCopy = {
 
 export function AudienceHubPage({ audience }: { audience: Audience }) {
   const copy = audience === "particuliers" ? PARTICULIERS_COPY : PROFESSIONNELS_COPY;
-  const verticals = getVerticalsByAudience(audience);
+  const verticals = getPublicVerticals(audience);
   const audiencePath = audience === "particuliers" ? "/particuliers" : "/professionnels";
   const partners = dedupePartners(verticals);
 
@@ -97,7 +83,7 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
     <>
       <HubHero copy={copy} />
       {audience === "professionnels" ? <ResponsablesB2B /> : null}
-      <VerticalsSection copy={copy} verticals={verticals} audience={audience} audiencePath={audiencePath} />
+      <VerticalsSection copy={copy} verticals={verticals} audience={audience} />
       <HowSection copy={copy} />
       <ReassuranceSection copy={copy} />
       <PartnersSection partners={partners} />
@@ -106,7 +92,7 @@ export function AudienceHubPage({ audience }: { audience: Audience }) {
   );
 }
 
-function dedupePartners(verticals: Vertical[]): Partner[] {
+function dedupePartners(verticals: PublicVertical[]): Partner[] {
   const seen = new Set<string>();
   const out: Partner[] = [];
   for (const v of verticals) {
@@ -168,10 +154,9 @@ function HubHero({ copy }: { copy: HubCopy }) {
 /* ---------------- VERTICALS ---------------- */
 
 function VerticalsSection({
-  copy, verticals, audience, audiencePath,
+  copy, verticals, audience,
 }: {
-  copy: HubCopy; verticals: Vertical[]; audience: Audience;
-  audiencePath: "/particuliers" | "/professionnels";
+  copy: HubCopy; verticals: PublicVertical[]; audience: Audience;
 }) {
   const gridCols =
     audience === "particuliers"
@@ -182,36 +167,30 @@ function VerticalsSection({
       <Container>
         <SectionHeading
           align="center"
-          eyebrow={copy.eyebrow}
+          eyebrow={`${verticals.length} EXPERTISES`}
           title={copy.gridTitle}
           className="mb-12"
         />
         <div className={gridCols}>
           {verticals.map((v) => (
-            <VerticalCard key={`${v.audience}-${v.slug}`} v={v} audiencePath={audiencePath} />
+            <VerticalCard key={`${v.tunnel}-${v.id}`} v={v} />
           ))}
-          {audience === "particuliers"
-            ? ASSURANCES_PARTICULIERES.map((a) => <AssuranceCard key={a.slug} a={a} />)
-            : null}
         </div>
       </Container>
     </Section>
   );
 }
 
-function VerticalCard({
-  v, audiencePath,
-}: { v: Vertical; audiencePath: "/particuliers" | "/professionnels" }) {
-  const Icon = ICONS[v.icon];
-  const href = `${audiencePath}/${v.slug}`;
+function VerticalCard({ v }: { v: PublicVertical }) {
+  const Icon = v.icon;
   return (
     <Card className="flex h-full flex-col gap-4 p-6">
-      {Icon ? <IconTile icon={Icon} /> : null}
+      <IconTile icon={Icon} />
       <div>
-        <h3 className="text-h3 text-ink">{v.name}</h3>
-        <p className="mt-2 text-small font-semibold text-primary">{v.tagline}</p>
+        <h3 className="text-h3 text-ink">{v.label}</h3>
+        <p className="mt-2 text-small font-semibold text-primary">{v.accroche}</p>
       </div>
-      <p className="text-body text-slate">{v.shortDescription}</p>
+      <p className="text-body text-slate">{v.description}</p>
       <ul className="flex flex-col gap-2">
         {v.products.map((p) => (
           <li key={p.name} className="flex items-start gap-2 text-small text-ink">
@@ -220,57 +199,37 @@ function VerticalCard({
           </li>
         ))}
       </ul>
-      <div className="border-t border-mist my-2" />
-      <div className="flex flex-col gap-2">
-        <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
-          NOS PARTENAIRES
-        </span>
-          <div className="flex flex-wrap gap-2">
-            {v.partners.map((p) => (
-              <PartnerLogo
-                key={p.name}
-                name={p.name}
-                domain={p.domain}
-                showName
-                className="px-3 py-2 shadow-none"
-              />
-            ))}
+      {v.partners.length > 0 ? (
+        <>
+          <div className="border-t border-mist my-2" />
+          <div className="flex flex-col gap-2">
+            <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
+              NOS PARTENAIRES
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {v.partners.map((p) => (
+                <PartnerLogo
+                  key={p.name}
+                  name={p.name}
+                  domain={p.domain}
+                  showName
+                  className="px-3 py-2 shadow-none"
+                />
+              ))}
+            </div>
           </div>
-      </div>
+        </>
+      ) : null}
       <Button asChild variant="outline" size="md" className="mt-auto w-full">
-        <Link
-          to={audiencePath === "/particuliers" ? "/particuliers/$slug" : "/professionnels/$slug"}
-          params={{ slug: v.slug }}
-        >
+        <Link to={v.href}>
           Découvrir
           <ArrowRight className="h-4 w-4" strokeWidth={2} />
         </Link>
       </Button>
-      {/* Fallback plain anchor for typed link parity */}
-      <span className="sr-only">{href}</span>
     </Card>
   );
 }
 
-function AssuranceCard({ a }: { a: AssuranceParticuliere }) {
-  const AIcon = a.icon;
-  return (
-    <Card className="flex h-full flex-col gap-4 p-6">
-      <IconTile icon={AIcon} />
-      <div>
-        <h3 className="text-h3 text-ink">{a.name}</h3>
-        <p className="mt-2 text-small font-semibold text-primary">{a.accroche}</p>
-      </div>
-      <p className="text-body text-slate">{a.paragraphe}</p>
-      <Button asChild variant="outline" size="md" className="mt-auto w-full">
-        <Link to="/particuliers/$slug" params={{ slug: a.slug }}>
-          Découvrir
-          <ArrowRight className="h-4 w-4" strokeWidth={2} />
-        </Link>
-      </Button>
-    </Card>
-  );
-}
 
 /* ---------------- HOW ---------------- */
 
