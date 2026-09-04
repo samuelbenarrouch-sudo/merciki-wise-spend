@@ -19,7 +19,10 @@ import {
   COMPANY, getVerticalsByAudience,
   type Audience, type Vertical, type Partner,
 } from "@/data/verticals";
-import { ASSURANCES_PARTICULIERES } from "@/data/assurances-particulieres";
+import {
+  ASSURANCES_PARTICULIERES,
+  type AssuranceParticuliere,
+} from "@/data/assurances-particulieres";
 
 const ICONS: Record<string, LucideIcon> = {
   Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun, CreditCard, Factory,
