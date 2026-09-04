@@ -20,6 +20,7 @@ import {
 import {
   COMPANY, getVerticalsByAudience, type Audience, type Vertical,
 } from "@/data/verticals";
+import { ASSURANCES_PARTICULIERES } from "@/data/assurances-particulieres";
 import myposSolutionAsset from "@/assets/mypos-solution.webp.asset.json";
 
 
@@ -601,6 +602,23 @@ export function VerticalPage({
                 </Link>
               );
             })}
+            {isPro
+              ? null
+              : ASSURANCES_PARTICULIERES.map((a) => {
+                  const AIcon = a.icon;
+                  return (
+                    <Link
+                      key={a.slug}
+                      to="/particuliers/$slug"
+                      params={{ slug: a.slug }}
+                      className="inline-flex items-center gap-2 rounded-full border border-mist bg-background px-4 py-2 text-small text-ink shadow-soft transition hover:border-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      <AIcon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                      <span>{a.name}</span>
+                      <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+                    </Link>
+                  );
+                })}
           </div>
         </Container>
       </section>
