@@ -1019,6 +1019,7 @@ export type Database = {
           created_at: string | null
           duration_months: number | null
           id: string | null
+          is_billable: boolean | null
           lead_id: string | null
           lead_reference: string | null
           notes: string | null
@@ -1109,6 +1110,7 @@ export type Database = {
           contract_id: string | null
           contract_reference: string | null
           contract_status: Database["public"]["Enums"]["contract_status"] | null
+          is_billable: boolean | null
           jours_depuis_facturation: number | null
           jours_encours: number | null
           lead_id: string | null
