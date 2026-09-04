@@ -792,12 +792,17 @@ export function filterFinanceByProducts(
   return rows.filter((r) => r.product_code !== null && set.has(r.product_code));
 }
 
-/** Contrats dont la commission a été ENCAISSÉE dans la plage. */
+/**
+ * Contrats dont la commission a été ENCAISSÉE dans la plage, éligibles
+ * financièrement. L'éligibilité (`is_billable`) est lue telle quelle : la
+ * règle « rétracté / résilié / annulé ⇒ aucune commission » vit en base.
+ */
 export function filterRealized(
   rows: FinanceRow[],
   range: FinanceRange,
 ): FinanceRow[] {
   return rows.filter((r) => {
+    if (r.is_billable !== true) return false;
     if (!r.commission_paid_at) return false;
     const t = new Date(r.commission_paid_at).getTime();
     return t >= range.from.getTime() && t < range.to.getTime();
@@ -931,7 +936,11 @@ export interface ProductBillingGroup {
 
 export function filterBillingPending(rows: FinanceRow[]): FinanceRow[] {
   return rows.filter(
-    (r) => r.billing_state === "a_facturer" || r.billing_state === "facture",
+    (r) =>
+      // Ceinture et bretelles : billing_state vaut déjà « annule » pour ces
+      // contrats, mais on filtre aussi sur l'éligibilité portée par la base.
+      r.is_billable === true &&
+      (r.billing_state === "a_facturer" || r.billing_state === "facture"),
   );
 }
 
@@ -1013,7 +1022,10 @@ export function groupBillingByProductSupplier(
 export function filterPayoutPending(rows: FinanceRow[]): FinanceRow[] {
   return rows.filter(
     (r) =>
-      r.payout_state === "facture_a_recevoir" || r.payout_state === "a_regler",
+      // Même garde que filterBillingPending : un contrat non éligible n'a
+      // rien à faire dans les montants à régler.
+      r.is_billable === true &&
+      (r.payout_state === "facture_a_recevoir" || r.payout_state === "a_regler"),
   );
 }
 
