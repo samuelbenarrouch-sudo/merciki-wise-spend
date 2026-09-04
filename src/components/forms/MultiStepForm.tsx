@@ -17,7 +17,11 @@ import {
   loadDraftFromLocalStorage,
   saveDraftToLocalStorage,
 } from "@/lib/localStorage";
-import { createLead, uploadLeadFiles } from "@/lib/leads";
+import {
+  createLead,
+  uploadLeadFiles,
+  type LeadDocumentType,
+} from "@/lib/leads";
 import type { ProductId } from "@/data/products";
 
 /** Un File ne se sérialise pas : on l'écarte du brouillon et du payload lead. */
@@ -26,15 +30,6 @@ function isFileValue(value: unknown): boolean {
   if (value instanceof File) return true;
   return Array.isArray(value) && value.some((v) => v instanceof File);
 }
-
-/** Type de document transmis au stockage, contraint en base. */
-export type LeadDocumentType =
-  | "facture"
-  | "kbis"
-  | "mandat"
-  | "contrat"
-  | "piece_identite"
-  | "autre";
 
 interface PendingFile {
   file: File;

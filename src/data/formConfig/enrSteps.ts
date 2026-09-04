@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
-  FormAmountField,
+  FormDecimalField,
   FormNumberField,
   FormRadioGroup,
   FormSelectField,
@@ -95,7 +95,7 @@ export const enrSteps: StepConfig[] = [
             { value: "autre", label: "Autre" },
           ],
         }),
-        createElement(FormNumberField, {
+        createElement(FormDecimalField, {
           key: "housingSurface",
           control,
           name: "housingSurface",
@@ -156,7 +156,7 @@ export const enrSteps: StepConfig[] = [
             { value: "environnement", label: "Impact environnemental" },
           ],
         }),
-        createElement(FormAmountField, {
+        createElement(FormDecimalField, {
           key: "budget",
           control,
           name: "budget",

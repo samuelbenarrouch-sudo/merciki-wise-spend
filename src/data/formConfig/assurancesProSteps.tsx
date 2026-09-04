@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
   FormChipsField,
-  FormAmountField,
+  FormDecimalField,
   FormNumberField,
   FormRadioGroup,
   FormSelectField,
@@ -201,7 +201,7 @@ export const assurancesProSteps: StepConfig[] = [
             "Autre",
           ].map((v) => ({ value: v, label: v }))}
         />
-        <FormAmountField
+        <FormDecimalField
           control={control}
           name="annualRevenue"
           label="Chiffre d'affaires annuel HT"
@@ -225,7 +225,7 @@ export const assurancesProSteps: StepConfig[] = [
           options={ouiNon}
         />
         {watch("subcontracting") === "oui" && (
-          <FormAmountField
+          <FormDecimalField
             control={control}
             name="subcontractingAmount"
             label="Montant annuel sous-traité HT"
@@ -298,7 +298,7 @@ export const assurancesProSteps: StepConfig[] = [
                 required
                 description="Lister les corps de métier à couvrir (maçonnerie, plomberie, électricité…)"
               />
-              <FormAmountField
+              <FormDecimalField
                 control={control}
                 name="buildingRevenue"
                 label="Chiffre d'affaires bâtiment HT"
@@ -312,7 +312,7 @@ export const assurancesProSteps: StepConfig[] = [
                 label="Nombre de chantiers par an"
                 min={0}
               />
-              <FormAmountField
+              <FormDecimalField
                 control={control}
                 name="averageSiteAmount"
                 label="Montant moyen d'un chantier HT"

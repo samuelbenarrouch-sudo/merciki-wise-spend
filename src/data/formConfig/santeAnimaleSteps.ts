@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { StepConfig } from "@/components/forms/MultiStepForm";
 import {
-  FormAmountField,
+  FormDecimalField,
   FormNumberField,
   FormRadioGroup,
   FormSelectField,
@@ -101,13 +101,14 @@ export const santeAnimaleSteps: StepConfig[] = [
           name: "animalBreed",
           label: "Race",
         }),
-        createElement(FormNumberField, {
+        createElement(FormDecimalField, {
           key: "animalWeight",
           control,
           name: "animalWeight",
-          label: "Poids (kg)",
+          label: "Poids",
           min: 0,
           max: 100,
+          suffix: "kg",
         }),
         createElement(FormTextField, {
           key: "animalDob",
@@ -161,7 +162,7 @@ export const santeAnimaleSteps: StepConfig[] = [
             label: "Assureur actuel",
           }),
         insured &&
-          createElement(FormAmountField, {
+          createElement(FormDecimalField, {
             key: "currentPremium",
             control,
             name: "currentPremium",
