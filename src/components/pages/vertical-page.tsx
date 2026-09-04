@@ -18,9 +18,10 @@ import {
   Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion";
 import {
-  COMPANY, getVerticalsByAudience, type Audience, type Vertical,
+  COMPANY, type Audience, type Vertical,
 } from "@/data/verticals";
-import { ASSURANCES_PARTICULIERES } from "@/data/assurances-particulieres";
+import { getOtherPublicVerticals } from "@/data/public-verticals";
+
 import myposSolutionAsset from "@/assets/mypos-solution.webp.asset.json";
 
 
