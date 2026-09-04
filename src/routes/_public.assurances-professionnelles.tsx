@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Phone, Mail, ChevronRight, Check, ShieldCheck, Building2, HardHat,
-  Store, Stethoscope, Truck, Briefcase, Search, Scale, PhoneCall, FileCheck,
+  Store, Stethoscope, Truck, Briefcase, Search, Scale, PhoneCall, FileCheck, ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { COMPANY } from "@/data/verticals";
+import { getOtherPublicVerticals } from "@/data/public-verticals";
 import { absoluteUrl } from "@/lib/seo";
 
 const TITLE = "Assurances Professionnelles : RC Pro, RC Exploitation, Décennale | MERCIKI";
@@ -100,6 +101,8 @@ function AssurancesProPage() {
         <Container className="py-12 md:py-20">
           <nav aria-label="Fil d'Ariane" className="mb-6 flex flex-wrap items-center gap-1.5 text-small text-slate">
             <Link to="/" className="hover:text-primary">Accueil</Link>
+            <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
+            <Link to="/professionnels" className="hover:text-primary">Professionnels</Link>
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
             <span className="text-ink font-medium">Assurances Professionnelles</span>
           </nav>
@@ -237,6 +240,31 @@ function AssurancesProPage() {
           </ol>
         </Container>
       </Section>
+
+      {/* 3bis. NAV CROISÉE */}
+      <section className="py-12 md:py-16 bg-background">
+        <Container>
+          <p className="mb-5 text-label uppercase tracking-wider text-slate">
+            Nos autres solutions pour les professionnels
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {getOtherPublicVerticals("professionnels", "assurances-professionnelles").map((v) => {
+              const OtherIcon = v.icon;
+              return (
+                <Link
+                  key={v.id}
+                  to={v.href}
+                  className="inline-flex items-center gap-2 rounded-full border border-mist bg-background px-4 py-2 text-small text-ink shadow-soft transition hover:border-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <OtherIcon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                  <span>{v.label}</span>
+                  <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
 
       {/* 4. CTA */}
       <Section background="mist">
