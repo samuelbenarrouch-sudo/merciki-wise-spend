@@ -12,33 +12,13 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import {
   Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion";
-import { COMPANY, getVerticalsByAudience } from "@/data/verticals";
-import {
-  ASSURANCES_PARTICULIERES,
-  type AssuranceParticuliere,
-} from "@/data/assurances-particulieres";
-import {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun,
-  type LucideIcon,
-} from "lucide-react";
-
-const VERTICAL_ICONS: Record<string, LucideIcon> = {
-  Zap, Wifi, HeartPulse, PawPrint, HandCoins, Sun,
-};
+import { COMPANY } from "@/data/verticals";
+import { type AssuranceParticuliere } from "@/data/assurances-particulieres";
+import { getOtherPublicVerticals } from "@/data/public-verticals";
 
 export function AssuranceParticulierePage({ data }: { data: AssuranceParticuliere }) {
-  const others = [
-    ...getVerticalsByAudience("particuliers").map((v) => ({
-      slug: v.slug,
-      name: v.name,
-      icon: VERTICAL_ICONS[v.icon] as LucideIcon | undefined,
-    })),
-    ...ASSURANCES_PARTICULIERES.filter((a) => a.slug !== data.slug).map((a) => ({
-      slug: a.slug,
-      name: a.name,
-      icon: a.icon as LucideIcon,
-    })),
-  ];
+  const others = getOtherPublicVerticals("particuliers", data.slug);
+
 
   return (
     <>
