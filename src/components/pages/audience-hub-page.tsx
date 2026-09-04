@@ -249,6 +249,26 @@ function VerticalCard({
   );
 }
 
+function AssuranceCard({ a }: { a: AssuranceParticuliere }) {
+  const AIcon = a.icon;
+  return (
+    <Card className="flex h-full flex-col gap-4 p-6">
+      <IconTile icon={AIcon} />
+      <div>
+        <h3 className="text-h3 text-ink">{a.name}</h3>
+        <p className="mt-2 text-small font-semibold text-primary">{a.accroche}</p>
+      </div>
+      <p className="text-body text-slate">{a.paragraphe}</p>
+      <Button asChild variant="outline" size="md" className="mt-auto w-full">
+        <Link to="/particuliers/$slug" params={{ slug: a.slug }}>
+          Découvrir
+          <ArrowRight className="h-4 w-4" strokeWidth={2} />
+        </Link>
+      </Button>
+    </Card>
+  );
+}
+
 /* ---------------- HOW ---------------- */
 
 function HowSection({ copy }: { copy: HubCopy }) {
