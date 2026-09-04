@@ -33,7 +33,26 @@ function CommercialDashboard() {
           </p>
         </div>
 
+        <section className="mt-8 rounded-2xl border border-primary/30 bg-mist/40 p-5 sm:p-6">
+          <h2 className="text-label uppercase tracking-wider text-slate">Consultation</h2>
+          <p className="mt-2 text-small text-slate">
+            Vos dossiers déjà enregistrés, en lecture seule.
+          </p>
+          <Link
+            to="/leadgeneration/mes-leads"
+            className="mt-4 inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-primary/40 bg-background px-5 text-small font-medium text-primary transition-colors hover:bg-primary-light"
+          >
+            {isManager ? (
+              <Users className="h-5 w-5" strokeWidth={1.75} />
+            ) : (
+              <FolderOpen className="h-5 w-5" strokeWidth={1.75} />
+            )}
+            {isManager ? "Leads de mon équipe" : "Mes leads"}
+          </Link>
+        </section>
+
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
           {PRODUCTS.map((p) => {
             const Icon = p.icon;
             const isPro = p.id === "energie-pro";

@@ -16,7 +16,6 @@ import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as LeadgenerationMesLeadsRouteImport } from './routes/leadgeneration.mes-leads'
 import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
-import { Route as LeadgenerationEquipeLeadsRouteImport } from './routes/leadgeneration.equipe-leads'
 import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
 import { Route as LeadgenerationAssurancesProRouteImport } from './routes/leadgeneration.assurances-pro'
 import { Route as LeadgenerationAdminRouteImport } from './routes/leadgeneration.admin'
@@ -80,12 +79,6 @@ const LeadgenerationLoginRoute = LeadgenerationLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => LeadgenerationRoute,
 } as any)
-const LeadgenerationEquipeLeadsRoute =
-  LeadgenerationEquipeLeadsRouteImport.update({
-    id: '/equipe-leads',
-    path: '/equipe-leads',
-    getParentRoute: () => LeadgenerationRoute,
-  } as any)
 const LeadgenerationDashboardRoute = LeadgenerationDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -261,7 +254,6 @@ export interface FileRoutesByFullPath {
   '/leadgeneration/admin': typeof LeadgenerationAdminRouteWithChildren
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
-  '/leadgeneration/equipe-leads': typeof LeadgenerationEquipeLeadsRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/mes-leads': typeof LeadgenerationMesLeadsRoute
   '/leadgeneration/': typeof LeadgenerationIndexRoute
@@ -293,7 +285,6 @@ export interface FileRoutesByTo {
   '/api/lead-file': typeof ApiLeadFileRoute
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
-  '/leadgeneration/equipe-leads': typeof LeadgenerationEquipeLeadsRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/mes-leads': typeof LeadgenerationMesLeadsRoute
   '/': typeof PublicIndexRoute
@@ -332,7 +323,6 @@ export interface FileRoutesById {
   '/leadgeneration/admin': typeof LeadgenerationAdminRouteWithChildren
   '/leadgeneration/assurances-pro': typeof LeadgenerationAssurancesProRoute
   '/leadgeneration/dashboard': typeof LeadgenerationDashboardRoute
-  '/leadgeneration/equipe-leads': typeof LeadgenerationEquipeLeadsRoute
   '/leadgeneration/login': typeof LeadgenerationLoginRoute
   '/leadgeneration/mes-leads': typeof LeadgenerationMesLeadsRoute
   '/_public/': typeof PublicIndexRoute
@@ -372,7 +362,6 @@ export interface FileRouteTypes {
     | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
-    | '/leadgeneration/equipe-leads'
     | '/leadgeneration/login'
     | '/leadgeneration/mes-leads'
     | '/leadgeneration/'
@@ -404,7 +393,6 @@ export interface FileRouteTypes {
     | '/api/lead-file'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
-    | '/leadgeneration/equipe-leads'
     | '/leadgeneration/login'
     | '/leadgeneration/mes-leads'
     | '/'
@@ -442,7 +430,6 @@ export interface FileRouteTypes {
     | '/leadgeneration/admin'
     | '/leadgeneration/assurances-pro'
     | '/leadgeneration/dashboard'
-    | '/leadgeneration/equipe-leads'
     | '/leadgeneration/login'
     | '/leadgeneration/mes-leads'
     | '/_public/'
@@ -520,13 +507,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/leadgeneration/login'
       preLoaderRoute: typeof LeadgenerationLoginRouteImport
-      parentRoute: typeof LeadgenerationRoute
-    }
-    '/leadgeneration/equipe-leads': {
-      id: '/leadgeneration/equipe-leads'
-      path: '/equipe-leads'
-      fullPath: '/leadgeneration/equipe-leads'
-      preLoaderRoute: typeof LeadgenerationEquipeLeadsRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
     '/leadgeneration/dashboard': {
@@ -814,7 +794,6 @@ interface LeadgenerationRouteChildren {
   LeadgenerationAdminRoute: typeof LeadgenerationAdminRouteWithChildren
   LeadgenerationAssurancesProRoute: typeof LeadgenerationAssurancesProRoute
   LeadgenerationDashboardRoute: typeof LeadgenerationDashboardRoute
-  LeadgenerationEquipeLeadsRoute: typeof LeadgenerationEquipeLeadsRoute
   LeadgenerationLoginRoute: typeof LeadgenerationLoginRoute
   LeadgenerationMesLeadsRoute: typeof LeadgenerationMesLeadsRoute
   LeadgenerationIndexRoute: typeof LeadgenerationIndexRoute
@@ -826,7 +805,6 @@ const LeadgenerationRouteChildren: LeadgenerationRouteChildren = {
   LeadgenerationAdminRoute: LeadgenerationAdminRouteWithChildren,
   LeadgenerationAssurancesProRoute: LeadgenerationAssurancesProRoute,
   LeadgenerationDashboardRoute: LeadgenerationDashboardRoute,
-  LeadgenerationEquipeLeadsRoute: LeadgenerationEquipeLeadsRoute,
   LeadgenerationLoginRoute: LeadgenerationLoginRoute,
   LeadgenerationMesLeadsRoute: LeadgenerationMesLeadsRoute,
   LeadgenerationIndexRoute: LeadgenerationIndexRoute,
