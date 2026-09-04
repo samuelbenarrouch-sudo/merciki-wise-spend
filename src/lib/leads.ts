@@ -40,6 +40,9 @@ const AMOUNT_FIELD_BY_PRODUCT: Record<ProductId, string | null> = {
   "monetique": "monthlyFees",
   "energie-pro": null,
   "assurances-pro": null,
+  "auto": "currentPremium",
+  "moto": "currentPremium",
+  "habitation": "currentPremium",
 };
 
 export type LeadFormValues = Record<string, unknown>;
