@@ -173,6 +173,19 @@ export async function createLead(
   return { ok: true, id: data.id, reference: data.reference };
 }
 
+/**
+ * Type de document rattaché à un lead.
+ * Les valeurs sont contrôlées par une contrainte en base : elles doivent
+ * correspondre exactement. Ajout d'un type en base = une ligne ici.
+ */
+export type LeadDocumentType =
+  | "facture"
+  | "kbis"
+  | "mandat"
+  | "contrat"
+  | "piece_identite"
+  | "autre";
+
 /** Contraintes de téléversement — doivent rester alignées sur celles du bucket. */
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
 export const MAX_FILES = 5;
@@ -209,7 +222,7 @@ function safeFileName(name: string): string {
 export async function uploadLeadFiles(
   leadId: string,
   files: File[],
-  documentType: "facture" | "mandat" | "contrat" | "piece_identite" | "autre" = "facture",
+  documentType: LeadDocumentType = "facture",
 ): Promise<UploadLeadFilesResult> {
   const { data: sessionData } = await supabase.auth.getSession();
   const userId = sessionData.session?.user?.id;
