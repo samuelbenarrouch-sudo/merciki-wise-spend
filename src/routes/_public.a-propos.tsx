@@ -15,9 +15,10 @@ import { IconTile } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PartnerLogo } from "@/components/partners/partner-logo";
 import { PartnerCarousel } from "@/components/partners/partner-carousel";
+import { getPublicVerticals, countPublicVerticals, type PublicVertical } from "@/data/public-verticals";
 import {
   VERTICALS, COMPANY, TRUST,
-  getVerticalsByAudience, getAllPartners,
+  getAllPartners,
   type Vertical, type Partner,
 } from "@/data/verticals";
 import heroImg from "@/assets/hero-conseil.webp.asset.json";
@@ -56,8 +57,8 @@ export const Route = createFileRoute("/_public/a-propos")({
 });
 
 function HomePage() {
-  const particuliers = getVerticalsByAudience("particuliers");
-  const professionnels = getVerticalsByAudience("professionnels");
+  const particuliers = getPublicVerticals("particuliers");
+  const professionnels = getPublicVerticals("professionnels");
   const allPartners = getAllPartners();
 
   return (
@@ -111,7 +112,7 @@ function HeroSection() {
             <ul className="flex flex-col gap-2 pt-2 text-small text-slate sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
               {[
                 `Plus de ${TRUST.yearsOfExperience} ans d'expérience`,
-                `${TRUST.expertiseAreas} domaines d'expertise`,
+                `${countPublicVerticals()} domaines d'expertise`,
                 "Sans aucun frais pour vous",
               ].map((t) => (
                 <li key={t} className="flex items-center gap-2">
@@ -152,7 +153,7 @@ function HeroSection() {
 
 function TwoDoorsSection({
   particuliers, professionnels,
-}: { particuliers: Vertical[]; professionnels: Vertical[] }) {
+}: { particuliers: PublicVertical[]; professionnels: PublicVertical[] }) {
   return (
     <Section background="white">
       <Container>
@@ -189,7 +190,7 @@ function DoorCard({
   to, icon: Icon, title, description, verticals, linkLabel,
 }: {
   to: string; icon: LucideIcon; title: string; description: string;
-  verticals: Vertical[]; linkLabel: string;
+  verticals: PublicVertical[]; linkLabel: string;
 }) {
   return (
     <Link
@@ -204,14 +205,14 @@ function DoorCard({
         </div>
         <ul className="flex flex-wrap gap-2">
           {verticals.map((v) => {
-            const VIcon = ICONS[v.icon];
+            const VIcon = v.icon;
             return (
               <li
-                key={`${v.audience}-${v.slug}`}
+                key={`${v.tunnel}-${v.id}`}
                 className="inline-flex items-center gap-2 rounded-full bg-mist px-3 py-2 text-small text-ink"
               >
-                {VIcon ? <VIcon className="h-4 w-4 text-primary" strokeWidth={1.75} /> : null}
-                {v.name}
+                <VIcon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                {v.label}
               </li>
             );
           })}
@@ -229,14 +230,14 @@ function DoorCard({
 
 function AllVerticalsSection({
   particuliers, professionnels,
-}: { particuliers: Vertical[]; professionnels: Vertical[] }) {
+}: { particuliers: PublicVertical[]; professionnels: PublicVertical[] }) {
   return (
     <Section background="mist">
       <Container>
         <SectionHeading
           align="center"
           eyebrow="NOS EXPERTISES"
-          title="8 domaines, un seul interlocuteur"
+          title={`${particuliers.length + professionnels.length} domaines, un seul interlocuteur`}
           subtitle="Un accompagnement complet et transparent, pour chaque dépense du foyer comme de l'entreprise."
           className="mb-12"
         />
@@ -244,36 +245,32 @@ function AllVerticalsSection({
         <div className="mb-4">
           <span className="text-label uppercase text-slate tracking-wider">Pour les particuliers</span>
         </div>
-        <VerticalGrid verticals={particuliers} audiencePath="/particuliers" />
+        <VerticalGrid verticals={particuliers} />
 
         <div className="mt-16 mb-4">
           <span className="text-label uppercase text-slate tracking-wider">Pour les professionnels</span>
         </div>
-        <VerticalGrid verticals={professionnels} audiencePath="/professionnels" />
+        <VerticalGrid verticals={professionnels} />
       </Container>
     </Section>
   );
 }
 
-function VerticalGrid({
-  verticals, audiencePath,
-}: { verticals: Vertical[]; audiencePath: "/particuliers" | "/professionnels" }) {
+function VerticalGrid({ verticals }: { verticals: PublicVertical[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {verticals.map((v) => (
-        <VerticalCard key={`${v.audience}-${v.slug}`} v={v} audiencePath={audiencePath} />
+        <VerticalCard key={`${v.tunnel}-${v.id}`} v={v} />
       ))}
     </div>
   );
 }
 
-function VerticalCard({
-  v, audiencePath,
-}: { v: Vertical; audiencePath: "/particuliers" | "/professionnels" }) {
-  const Icon = ICONS[v.icon];
+function VerticalCard({ v }: { v: PublicVertical }) {
+  const Icon = v.icon;
   const visiblePartners = v.partners.slice(0, 5);
   const remaining = v.partners.length - visiblePartners.length;
-  const href = `${audiencePath}/${v.slug}`;
+  const href = v.href;
 
   return (
     <Link
@@ -281,9 +278,9 @@ function VerticalCard({
       className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <Card className="flex h-full flex-col gap-4 p-6 transition-transform duration-200 group-hover:-translate-y-1">
-        {Icon ? <IconTile icon={Icon} /> : null}
-        <h3 className="text-h3 text-ink">{v.name}</h3>
-        <p className="text-body text-slate">{v.shortDescription}</p>
+        <IconTile icon={Icon} />
+        <h3 className="text-h3 text-ink">{v.label}</h3>
+        <p className="text-body text-slate">{v.description}</p>
         <ul className="flex flex-col gap-2">
           {v.products.map((p) => (
             <li key={p.name} className="flex items-start gap-2 text-small text-ink">
@@ -292,28 +289,32 @@ function VerticalCard({
             </li>
           ))}
         </ul>
-        <div className="border-t border-mist my-2" />
-        <div className="flex flex-col gap-2">
-          <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
-            NOS PARTENAIRES
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {visiblePartners.map((p) => (
-              <PartnerLogo
-                key={p.name}
-                name={p.name}
-                domain={p.domain}
-                showName
-                className="px-3 py-2 shadow-none"
-              />
-            ))}
-            {remaining > 0 ? (
-              <span className="inline-flex items-center rounded-xl border border-mist bg-background px-3 py-1.5 text-xs font-semibold text-slate">
-                +{remaining} autres
+        {visiblePartners.length > 0 ? (
+          <>
+            <div className="border-t border-mist my-2" />
+            <div className="flex flex-col gap-2">
+              <span className="text-slate" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
+                NOS PARTENAIRES
               </span>
-            ) : null}
-          </div>
-        </div>
+              <div className="flex flex-wrap gap-2">
+                {visiblePartners.map((p) => (
+                  <PartnerLogo
+                    key={p.name}
+                    name={p.name}
+                    domain={p.domain}
+                    showName
+                    className="px-3 py-2 shadow-none"
+                  />
+                ))}
+                {remaining > 0 ? (
+                  <span className="inline-flex items-center rounded-xl border border-mist bg-background px-3 py-1.5 text-xs font-semibold text-slate">
+                    +{remaining} autres
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          </>
+        ) : null}
         <span className="mt-auto inline-flex items-center gap-2 pt-2 text-primary font-semibold">
           En savoir plus
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={2} />
@@ -421,7 +422,7 @@ function WhySection() {
 function StatsSection() {
   const stats = [
     { value: `${TRUST.yearsOfExperience}+`, label: "ans d'expérience" },
-    { value: `${TRUST.expertiseAreas}`, label: "domaines d'expertise" },
+    { value: `${countPublicVerticals()}`, label: "domaines d'expertise" },
     { value: `${Math.floor(TRUST.partnersCount / 5) * 5}+`, label: "partenaires référencés" },
     { value: "100 %", label: "gratuit pour vous" },
   ];
