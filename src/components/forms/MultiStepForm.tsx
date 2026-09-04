@@ -27,15 +27,6 @@ function isFileValue(value: unknown): boolean {
   return Array.isArray(value) && value.some((v) => v instanceof File);
 }
 
-/** Type de document transmis au stockage, contraint en base. */
-export type LeadDocumentType =
-  | "facture"
-  | "kbis"
-  | "mandat"
-  | "contrat"
-  | "piece_identite"
-  | "autre";
-
 interface PendingFile {
   file: File;
   documentType: LeadDocumentType;
