@@ -305,7 +305,7 @@ export function VerticalPage({
       ? "energie-pro"
       : vertical.slug;
   const steps = HOW_STEPS[stepsKey] ?? [];
-  const others = getVerticalsByAudience(audience).filter((v) => v.slug !== vertical.slug);
+  const others = getOtherPublicVerticals(audience, vertical.slug);
   const partnersHaveNotes = vertical.partners.some((p) => p.note);
   const isEnR = audience === "particuliers" && vertical.slug === "energies-renouvelables";
   const isPro = audience === "professionnels";
