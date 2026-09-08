@@ -92,7 +92,7 @@ export const Route = createFileRoute("/_public/contact")({
       {
         name: "description",
         content:
-          "Contactez MERCIKI par téléphone au 07 64 20 19 63 ou via notre formulaire. Réponse sous 24 heures ouvrées.",
+          "Contactez MERCIKI par téléphone au 06 23 72 78 84 ou via notre formulaire. Réponse sous 24 heures ouvrées.",
       },
       { property: "og:title", content: "Contact — MERCIKI" },
       {
