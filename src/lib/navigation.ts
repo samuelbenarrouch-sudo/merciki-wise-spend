@@ -1,8 +1,8 @@
 import { type LucideIcon } from "lucide-react";
 import { getPublicVerticals } from "@/data/public-verticals";
 
-export const PHONE_DISPLAY = "07 64 20 19 63";
-export const PHONE_HREF = "tel:+33764201963";
+export const PHONE_DISPLAY = "06 23 72 78 84";
+export const PHONE_HREF = "tel:+33623727884";
 
 export type NavItem = {
   label: string;
