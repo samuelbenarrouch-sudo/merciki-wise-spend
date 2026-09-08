@@ -53,7 +53,7 @@ const PARTICULIERS_COPY: HubCopy = {
 
 const PROFESSIONNELS_COPY: HubCopy = {
   badge: "Pour les professionnels",
-  h1: "Moins de charges, un meilleur encaissement.",
+  h1: "Moins de frais généraux et réduisez vos frais d'encaissement",
   intro:
     "Vos contrats d'énergie et vos frais d'encaissement pèsent sur votre rentabilité, souvent sans que personne ne les ait renégociés depuis des années. Nous mettons le marché en concurrence pour vous, sans interrompre votre activité.",
   crumb: "Professionnels",

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_public/professionnels/")({
       {
         property: "og:description",
         content:
-          "Moins de charges, un meilleur encaissement. Un interlocuteur unique pour vos contrats d'entreprise.",
+          "Moins de frais généraux et réduisez vos frais d'encaissement. Un interlocuteur unique pour vos contrats d'entreprise.",
       },
       { property: "og:type", content: "website" },
       ...canonical("/professionnels").meta,
