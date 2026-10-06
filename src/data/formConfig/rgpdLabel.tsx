@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 export const CONSENT_LABEL = (
   <>
     Le prospect a donné son accord pour être recontacté et pour le traitement de
-    ses données par MERCIKI et ses partenaires.{" "}
+    ses données par « Merciki ? » et ses partenaires.{" "}
     <Link
       to="/politique-de-confidentialite"
       className="text-primary underline hover:no-underline"

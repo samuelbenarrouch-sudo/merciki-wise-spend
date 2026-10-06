@@ -10,7 +10,7 @@ export const Route = createFileRoute("/leadgeneration/dashboard")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "Tableau de bord — Espace commercial MERCIKI" },
+      { title: "Tableau de bord — Espace commercial « Merciki ? »" },
     ],
   }),
   component: CommercialDashboard,

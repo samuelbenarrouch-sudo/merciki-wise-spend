@@ -14,7 +14,7 @@ export function ResponsablesB2B() {
           <div className="mx-auto w-48 shrink-0 sm:w-56 md:w-64">
             <img
               src={responsablesAsset.url}
-              alt="Les responsables du pôle professionnels de MERCIKI"
+              alt="Les responsables du pôle professionnels de « Merciki ? »"
               width={900}
               height={900}
               loading="lazy"

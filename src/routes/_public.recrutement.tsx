@@ -76,9 +76,9 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const TITLE = "Recrutement commercial — Rejoignez le réseau MERCIKI";
+const TITLE = "Recrutement commercial — Rejoignez le réseau « Merciki ? »";
 const DESCRIPTION =
-  "Candidatez en quelques minutes pour rejoindre le réseau de commerciaux MERCIKI : énergie, télécoms, santé, monétique. Pas de CV, pas de format imposé.";
+  "Candidatez en quelques minutes pour rejoindre le réseau de commerciaux « Merciki ? » : énergie, télécoms, santé, monétique. Pas de CV, pas de format imposé.";
 
 export const Route = createFileRoute("/_public/recrutement")({
   head: () => ({
@@ -241,7 +241,7 @@ function RecrutementPage() {
             <Badge variant="primary-light" className="mb-6">
               Nous recrutons
             </Badge>
-            <h1 className="text-h1 text-ink">Rejoignez le réseau MERCIKI.</h1>
+            <h1 className="text-h1 text-ink">Rejoignez le réseau « Merciki ? ».</h1>
             <p className="mt-6 text-body text-slate">
               Pas de CV, pas de format imposé. Dites-nous simplement qui vous êtes, où vous
               travaillez et ce qui vous intéresse. On revient vers vous.
@@ -485,7 +485,7 @@ function RecrutementPage() {
                 />
                 <div>
                   <Label htmlFor="consent" className="text-small leading-relaxed text-slate">
-                    J'accepte que mes données soient utilisées par MERCIKI dans le cadre de ma
+                    J'accepte que mes données soient utilisées par « Merciki ? » dans le cadre de ma
                     candidature.{" "}
                     <Link
                       to="/politique-de-confidentialite"

@@ -399,7 +399,7 @@ export const assurancesProSteps: StepConfig[] = [
           name="partner"
           label="Partenaire envisagé"
           required
-          options={["April", "Zenioo", "Matrisk", "À déterminer par Merciki"].map(
+          options={["April", "Zenioo", "Matrisk", "À déterminer par « Merciki ? »"].map(
             (v) => ({ value: v, label: v }),
           )}
         />

@@ -15,9 +15,9 @@ import { COMPANY } from "@/data/verticals";
 import { getOtherPublicVerticals } from "@/data/public-verticals";
 import { absoluteUrl } from "@/lib/seo";
 
-const TITLE = "Assurances Professionnelles : RC Pro, RC Exploitation, Décennale | MERCIKI";
+const TITLE = "Assurances Professionnelles : RC Pro, RC Exploitation, Décennale | « Merciki ? »";
 const DESCRIPTION =
-  "RC Pro, RC Exploitation, garantie décennale : MERCIKI compare les offres des principaux assureurs et vous accompagne de la souscription à la gestion des sinistres.";
+  "RC Pro, RC Exploitation, garantie décennale : « Merciki ? » compare les offres des principaux assureurs et vous accompagne de la souscription à la gestion des sinistres.";
 
 export const Route = createFileRoute("/_public/assurances-professionnelles")({
   head: () => {
@@ -120,7 +120,7 @@ function AssurancesProPage() {
                 </p>
               </div>
               <p className="text-body text-slate">
-                MERCIKI compare pour vous les offres des principaux assureurs du marché et vous
+                « Merciki ? » compare pour vous les offres des principaux assureurs du marché et vous
                 accompagne de la souscription à la gestion de vos sinistres.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">

@@ -33,8 +33,8 @@ export interface Vertical {
 }
 
 const REMUNERATION_FAQ: FaqItem = {
-  q: "Comment MERCIKI est-elle rémunérée ?",
-  a: "MERCIKI est rémunérée exclusivement par ses partenaires lorsqu'un contrat est souscrit. Vous ne payez jamais rien, ni pour la comparaison, ni pour l'accompagnement. Notre service est 100 % gratuit et sans engagement.",
+  q: "Comment « Merciki ? » est-elle rémunérée ?",
+  a: "« Merciki ? » est rémunérée exclusivement par ses partenaires lorsqu'un contrat est souscrit. Vous ne payez jamais rien, ni pour la comparaison, ni pour l'accompagnement. Notre service est 100 % gratuit et sans engagement.",
 };
 
 export const VERTICALS: Vertical[] = [
@@ -379,7 +379,7 @@ export function getAllPartners(): Partner[] {
 }
 
 export const COMPANY = {
-  name: "MERCIKI",
+  name: "« Merciki ? »",
   legalForm: "SAS",
   capital: "100 €",
   siren: "930 963 541",
@@ -399,7 +399,7 @@ export const COMPANY = {
 export const BROKER = {
   name: "ZEPPELIN",
   orias: "25004656",
-  note: "MERCIKI agit en qualité d'apporteur d'affaires. Les opérations de courtage en assurance sont réalisées par notre partenaire ZEPPELIN, immatriculé à l'ORIAS sous le n° 25004656.",
+  note: "« Merciki ? » agit en qualité d'apporteur d'affaires. Les opérations de courtage en assurance sont réalisées par notre partenaire ZEPPELIN, immatriculé à l'ORIAS sous le n° 25004656.",
 } as const;
 
 export const TRUST = {

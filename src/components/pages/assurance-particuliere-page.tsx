@@ -242,9 +242,9 @@ export function AssuranceParticulierePage({ data }: { data: AssuranceParticulier
               <ShieldCheck className="h-4 w-4 text-primary" strokeWidth={1.75} />
               <span className="text-label uppercase tracking-wider">Mention légale</span>
             </div>
-            MERCIKI intervient en qualité d'apporteur d'affaires. Les opérations de courtage
+            « Merciki ? » intervient en qualité d'apporteur d'affaires. Les opérations de courtage
             en assurance sont réalisées par notre partenaire ZEPPELIN, société de courtage
-            immatriculée à l'ORIAS sous le numéro 25004656 (www.orias.fr). MERCIKI n'exerce
+            immatriculée à l'ORIAS sous le numéro 25004656 (www.orias.fr). « Merciki ? » n'exerce
             aucune activité de courtage en assurance et ne délivre aucun conseil en assurance.
           </div>
         </Container>

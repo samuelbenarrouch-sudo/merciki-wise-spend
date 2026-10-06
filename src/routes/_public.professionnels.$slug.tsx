@@ -6,8 +6,8 @@ import { getVerticalBySlug } from "@/data/verticals";
 import { absoluteUrl } from "@/lib/seo";
 
 const SEO_TITLE: Record<string, string> = {
-  monetique: "Monétique et encaissement pour professionnels | MERCIKI",
-  energie: "Renégociation des contrats d'énergie professionnels | MERCIKI",
+  monetique: "Monétique et encaissement pour professionnels | « Merciki ? »",
+  energie: "Renégociation des contrats d'énergie professionnels | « Merciki ? »",
 };
 
 export const Route = createFileRoute("/_public/professionnels/$slug")({
@@ -18,10 +18,10 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Page introuvable — MERCIKI" }, { name: "robots", content: "noindex" }] };
+      return { meta: [{ title: "Page introuvable — « Merciki ? »" }, { name: "robots", content: "noindex" }] };
     }
     const v = loaderData.vertical;
-    const title = SEO_TITLE[v.slug] ?? `${v.name} pour professionnels | MERCIKI`;
+    const title = SEO_TITLE[v.slug] ?? `${v.name} pour professionnels | « Merciki ? »`;
     const description = v.shortDescription;
     const url = absoluteUrl(`/professionnels/${params.slug}`);
     return {

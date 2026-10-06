@@ -18,7 +18,7 @@ export const Route = createFileRoute("/leadgeneration/lead/$leadId")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "Fiche lead — Espace commercial MERCIKI" },
+      { title: "Fiche lead — Espace commercial « Merciki ? »" },
     ],
   }),
   component: MyLeadDetailPage,

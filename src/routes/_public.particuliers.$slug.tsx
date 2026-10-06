@@ -21,11 +21,11 @@ export const Route = createFileRoute("/_public/particuliers/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Page introuvable — MERCIKI" }, { name: "robots", content: "noindex" }] };
+      return { meta: [{ title: "Page introuvable — « Merciki ? »" }, { name: "robots", content: "noindex" }] };
     }
     const v = loaderData.vertical;
     const benefit = SEO_BENEFIT[v.slug] ?? v.tagline;
-    const title = `${v.name} — ${benefit} | MERCIKI`;
+    const title = `${v.name} — ${benefit} | « Merciki ? »`;
     const description = v.shortDescription;
     const url = absoluteUrl(`/particuliers/${params.slug}`);
     return {

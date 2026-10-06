@@ -39,7 +39,7 @@ function identityLines(lead: LeadWithRelations): string[] {
 /** Corps complet : identité + qualification avec libellés résolus. */
 export function buildTransmitRecap(lead: LeadWithRelations): TransmitRecap {
   const productLabel = lead.products?.label ?? lead.product_code;
-  const subject = `[MERCIKI] Dossier ${productLabel} — ${lead.reference}`;
+  const subject = `[« Merciki ? »] Dossier ${productLabel} — ${lead.reference}`;
 
   const details = (lead.details ?? {}) as Record<string, unknown>;
   const qualification = Object.keys(details).flatMap((key) => {

@@ -25,13 +25,13 @@ import formationAsset from "@/assets/formation-equipe.webp.asset.json";
 export const Route = createFileRoute("/_public/")({
   head: () => ({
     meta: [
-      { title: "Rejoignez le réseau MERCIKI — Recrutement commercial" },
+      { title: "Rejoignez le réseau « Merciki ? » — Recrutement commercial" },
       {
         name: "description",
         content:
-          "Nous cherchons des profils commerciaux qui aiment le contact et veulent porter une offre large et utile. Rejoignez le réseau MERCIKI.",
+          "Nous cherchons des profils commerciaux qui aiment le contact et veulent porter une offre large et utile. Rejoignez le réseau « Merciki ? ».",
       },
-      { property: "og:title", content: "Rejoignez le réseau MERCIKI" },
+      { property: "og:title", content: "Rejoignez le réseau « Merciki ? »" },
       {
         property: "og:description",
         content:
@@ -56,7 +56,7 @@ const supportCards = [
     icon: Handshake,
     title: "Des partenaires établis",
     body:
-      "Tu ne négocies pas seul avec les fournisseurs. MERCIKI a déjà construit ces relations.",
+      "Tu ne négocies pas seul avec les fournisseurs. « Merciki ? » a déjà construit ces relations.",
   },
   {
     icon: Smartphone,
@@ -77,7 +77,7 @@ const profileCards = [
     icon: Briefcase,
     title: "Vous êtes indépendant ou en micro-entreprise",
     body:
-      "Vous travaillez en B2C, vous avez un portefeuille clients, vous cherchez à le monétiser autrement ou à l'enrichir. MERCIKI vous offre une offre complémentaire immédiate.",
+      "Vous travaillez en B2C, vous avez un portefeuille clients, vous cherchez à le monétiser autrement ou à l'enrichir. « Merciki ? » vous offre une offre complémentaire immédiate.",
   },
   {
     icon: Zap,
@@ -105,7 +105,7 @@ function RecruitmentPage() {
             <Badge variant="primary-light" className="mb-6">
               Nous recrutons
             </Badge>
-            <h1 className="text-h1">Rejoignez le réseau MERCIKI.</h1>
+            <h1 className="text-h1">Rejoignez le réseau « Merciki ? ».</h1>
             <p className="mt-6 text-body text-primary-foreground/85">
               Nous cherchons des profils commerciaux qui aiment le contact, qui savent écouter et
               qui veulent porter une offre large et utile. Si c'est vous, parlons-nous.
@@ -136,7 +136,7 @@ function RecruitmentPage() {
             <figure className="overflow-hidden rounded-3xl shadow-soft">
               <img
                 src={soireeAsset.url}
-                alt="Équipe commerciale MERCIKI réunie lors d'une soirée challenge"
+                alt="Équipe commerciale « Merciki ? » réunie lors d'une soirée challenge"
                 width={1200}
                 height={900}
                 loading="lazy"
@@ -149,7 +149,7 @@ function RecruitmentPage() {
             <figure className="overflow-hidden rounded-3xl shadow-soft">
               <img
                 src={teamSudAsset.url}
-                alt="Équipe MERCIKI du Sud réunie en bord de mer"
+                alt="Équipe « Merciki ? » du Sud réunie en bord de mer"
                 width={1200}
                 height={900}
                 loading="lazy"
@@ -232,7 +232,7 @@ function RecruitmentPage() {
             <figure className="overflow-hidden rounded-3xl shadow-soft">
               <img
                 src={formationAsset.url}
-                alt="Équipe commerciale MERCIKI en formation produit dans une salle de réunion"
+                alt="Équipe commerciale « Merciki ? » en formation produit dans une salle de réunion"
                 width={1200}
                 height={800}
                 loading="lazy"

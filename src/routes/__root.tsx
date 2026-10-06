@@ -79,30 +79,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MERCIKI — Optimisez vos dépenses" },
+      { title: "« Merciki ? » — Optimisez vos dépenses" },
       {
         name: "description",
         content:
-          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
+          "« Merciki ? » aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
       },
-      { name: "author", content: "MERCIKI" },
+      { name: "author", content: "« Merciki ? »" },
       {
         name: "keywords",
         content:
           "énergie, télécoms, mutuelle santé, assurance auto, assurance moto, assurance habitation, assurances professionnelles, énergies renouvelables, monétique, économies, comparateur",
       },
-      { property: "og:site_name", content: "MERCIKI" },
+      { property: "og:site_name", content: "« Merciki ? »" },
       { property: "og:locale", content: "fr_FR" },
-      { property: "og:title", content: "MERCIKI — Optimisez vos dépenses" },
+      { property: "og:title", content: "« Merciki ? » — Optimisez vos dépenses" },
       {
         property: "og:description",
         content:
-          "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
+          "« Merciki ? » aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "MERCIKI — Optimisez vos dépenses" },
-      { name: "twitter:description", content: "MERCIKI aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles." },
+      { name: "twitter:title", content: "« Merciki ? » — Optimisez vos dépenses" },
+      { name: "twitter:description", content: "« Merciki ? » aide particuliers et professionnels à réduire leurs dépenses : énergie, télécoms, assurance auto, moto et habitation, mutuelle, énergies renouvelables, monétique et assurances professionnelles." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1b3ac121-a71f-4342-8b25-dd1ab52ab717/id-preview-3ae99f70--e7b9f07b-7e1e-446b-beab-ff90bdcee9f6.lovable.app-1785323307490.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1b3ac121-a71f-4342-8b25-dd1ab52ab717/id-preview-3ae99f70--e7b9f07b-7e1e-446b-beab-ff90bdcee9f6.lovable.app-1785323307490.png" },
     ],
@@ -126,10 +126,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "MERCIKI",
+        name: "« Merciki ? »",
         url: SITE_URL,
         description:
-          "MERCIKI aide les particuliers et professionnels à optimiser leurs dépenses contraintes : énergie, télécoms, assurances, énergies renouvelables et monétique.",
+          "« Merciki ? » aide les particuliers et professionnels à optimiser leurs dépenses contraintes : énergie, télécoms, assurances, énergies renouvelables et monétique.",
         contactPoint: {
           "@type": "ContactPoint",
           telephone: "+33-7-56-90-63-70",

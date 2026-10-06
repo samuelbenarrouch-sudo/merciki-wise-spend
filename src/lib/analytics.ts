@@ -813,11 +813,11 @@ export interface FinanceTotals {
   contracts: number;
   /** Volume d'affaires apporté au fournisseur : indicateur d'ACTIVITÉ. */
   volumeClientHt: number;
-  /** CA MERCIKI : la commission encaissée — le seul vrai revenu. */
+  /** CA « Merciki ? » : la commission encaissée — le seul vrai revenu. */
   revenueHt: number;
   /** Coûts commerciaux : parts reversées aux commerciaux. */
   commercialCostHt: number;
-  /** Marge nette = CA MERCIKI − coûts commerciaux. */
+  /** Marge nette = CA « Merciki ? » − coûts commerciaux. */
   marginHt: number;
   /** Taux de marge = marge / CA. `null` quand le CA est nul (non calculable). */
   marginRate: number | null;
@@ -850,7 +850,7 @@ export interface FinanceProductBreakdown extends FinanceTotals {
   productLabel: string;
 }
 
-/** Ventilation par produit, triée par CA MERCIKI décroissant. */
+/** Ventilation par produit, triée par CA « Merciki ? » décroissant. */
 export function financeByProduct(rows: FinanceRow[]): FinanceProductBreakdown[] {
   const groups = new Map<string, { label: string; rows: FinanceRow[] }>();
   for (const r of rows) {
@@ -886,7 +886,7 @@ export function daysSince(value: string | null, now: Date): number | null {
 export const BILLING_OVERDUE_DAYS = 60;
 
 /**
- * Retard imputable à MERCIKI : la commission est facturable depuis plus de
+ * Retard imputable à « Merciki ? » : la commission est facturable depuis plus de
  * 60 jours et la facture n'a toujours pas été émise. `jours_encours` vient de
  * la vue.
  */
@@ -918,7 +918,7 @@ export interface SupplierBillingGroup {
   invoicedHt: number;
   toInvoiceCount: number;
   invoicedCount: number;
-  /** Encours facturables depuis > 60 j : facture à émettre par MERCIKI. */
+  /** Encours facturables depuis > 60 j : facture à émettre par « Merciki ? ». */
   overdueCount: number;
   /** Factures émises depuis > 60 j et non encaissées : fournisseur à relancer. */
   paymentOverdueCount: number;

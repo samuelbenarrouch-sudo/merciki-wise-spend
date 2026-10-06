@@ -117,7 +117,7 @@ const ASSURANCES_PRO: PublicVertical = {
   accroche:
     "Responsabilité civile, garantie décennale : protégez votre activité avec les bonnes garanties, au bon prix.",
   description:
-    "MERCIKI compare pour vous les offres des principaux assureurs du marché et vous accompagne de la souscription à la gestion de vos sinistres.",
+    "« Merciki ? » compare pour vous les offres des principaux assureurs du marché et vous accompagne de la souscription à la gestion de vos sinistres.",
   menuDescription: "RC Pro, RC Exploitation et garantie décennale.",
   products: [
     {

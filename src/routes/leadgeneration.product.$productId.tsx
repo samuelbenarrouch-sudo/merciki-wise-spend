@@ -11,10 +11,10 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
     return {
       meta: [
         { name: "robots", content: "noindex, nofollow" },
-        { title: `${label} — Espace commercial MERCIKI` },
+        { title: `${label} — Espace commercial « Merciki ? »` },
         {
           name: "description",
-          content: `Optimisez vos dépenses en ${label.toLowerCase()}. Qualification de lead MERCIKI.`,
+          content: `Optimisez vos dépenses en ${label.toLowerCase()}. Qualification de lead « Merciki ? ».`,
         },
       ],
     };

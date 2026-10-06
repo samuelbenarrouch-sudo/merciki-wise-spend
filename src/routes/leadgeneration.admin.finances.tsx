@@ -161,7 +161,7 @@ function AdminFinancePage() {
       <Container>
         <h1 className="text-h2 text-ink">Finances</h1>
         <p className="mt-1 text-small text-slate">
-          MERCIKI est apporteur d'affaires : son chiffre d'affaires est la
+          « Merciki ? » est apporteur d'affaires : son chiffre d'affaires est la
           commission encaissée, jamais le volume d'affaires apporté.
         </p>
 
@@ -253,11 +253,11 @@ function AdminFinancePage() {
                 <Kpi
                   label="Volume d'affaires apporté"
                   value={formatMoney(totals.volumeClientHt)}
-                  hint="Indicateur d'activité — ce n'est PAS le chiffre d'affaires de MERCIKI."
+                  hint="Indicateur d'activité — ce n'est PAS le chiffre d'affaires de « Merciki ? »."
                 />
                 <Kpi
                   accent
-                  label="CA MERCIKI"
+                  label="CA « Merciki ? »"
                   value={formatMoney(totals.revenueHt)}
                   hint="Commissions encaissées : le revenu réel."
                 />
@@ -280,7 +280,7 @@ function AdminFinancePage() {
                       <th className="px-4 py-3 font-medium">Produit</th>
                       <th className="px-4 py-3 font-medium">Contrats</th>
                       <th className="px-4 py-3 font-medium">Volume apporté</th>
-                      <th className="px-4 py-3 font-medium">CA MERCIKI</th>
+                      <th className="px-4 py-3 font-medium">CA « Merciki ? »</th>
                       <th className="px-4 py-3 font-medium">Coûts</th>
                       <th className="px-4 py-3 font-medium">Marge</th>
                       <th className="px-4 py-3 font-medium">Taux</th>
@@ -684,7 +684,7 @@ function PayoutSection({
         : await markCommercialPaid(ids, date);
     setBusy(false);
     if (!res.ok) {
-      // Contrainte de base (règlement avant encaissement MERCIKI) : son
+      // Contrainte de base (règlement avant encaissement « Merciki ? ») : son
       // message est affiché tel quel, sans reformulation.
       setError(res.error);
       return;
@@ -833,7 +833,7 @@ function PayoutSection({
                             <th className="px-4 py-2 font-medium">Produit</th>
                             <th className="px-4 py-2 font-medium">Prospect</th>
                             <th className="px-4 py-2 font-medium">
-                              Encaissé par MERCIKI
+                              Encaissé par « Merciki ? »
                             </th>
                             <th className="px-4 py-2 font-medium">Part due</th>
                             <th className="px-4 py-2 font-medium">État</th>

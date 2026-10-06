@@ -31,7 +31,7 @@ export function Logo({
   const baselineColor = variant === "light" ? "text-background/70" : "text-slate";
 
   return (
-    <div className={cn("inline-flex flex-col leading-none", className)} aria-label="MERCIKI">
+    <div className={cn("inline-flex flex-col leading-none", className)} aria-label="merciki?">
       <span
         className={cn(
           "font-display font-bold leading-none tracking-tight inline-flex items-start",
@@ -39,7 +39,7 @@ export function Logo({
           wordColor,
         )}
       >
-        {/* "merciki" with dotless final i */}
+        {/* "merciki?" with dotless final i */}
         <span>mercik</span>
         <span className="relative inline-flex items-end">
           {/* dotless i using ı (Latin small letter dotless i) */}
@@ -52,6 +52,8 @@ export function Logo({
             )}
           />
         </span>
+      </span>
+        <span aria-hidden="true">?</span>
       </span>
       {showBaseline ? (
         <span

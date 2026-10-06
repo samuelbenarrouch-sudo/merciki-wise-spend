@@ -61,7 +61,7 @@ export function Header() {
         <Container className="flex h-16 items-center justify-between lg:h-20">
           <Link
             to="/"
-            aria-label="Accueil MERCIKI"
+            aria-label="Accueil « Merciki ? »"
             className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
           >
             <span className="lg:hidden">

@@ -86,7 +86,7 @@ export function Footer() {
               {PHONE_DISPLAY}
             </a>
             <address className="mt-4 text-small text-background/70 not-italic">
-              MERCIKI
+              « Merciki ? »
               <br />
               10 rue de la Paix
               <br />
@@ -102,8 +102,8 @@ export function Footer() {
             className="text-background/60"
             style={{ fontSize: "12px", lineHeight: 1.6 }}
           >
-            MERCIKI — SAS au capital de 100 € — SIREN 930 963 541 — RCS Paris 930 963 541 —
-            Siège social : 10 rue de la Paix, 75002 Paris. MERCIKI agit en qualité d'apporteur
+            « Merciki ? » — SAS au capital de 100 € — SIREN 930 963 541 — RCS Paris 930 963 541 —
+            Siège social : 10 rue de la Paix, 75002 Paris. « Merciki ? » agit en qualité d'apporteur
             d'affaires. Les opérations de courtage en assurance sont réalisées par notre
             partenaire ZEPPELIN, immatriculé à l'ORIAS sous le n° 25004656.
           </p>
@@ -113,7 +113,7 @@ export function Footer() {
       <div className="border-t border-background/10">
         <Container className="flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
           <p className="text-small text-background/70">
-            © 2026 MERCIKI. Tous droits réservés.
+            © 2026 « Merciki ? ». Tous droits réservés.
           </p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {legalLinks.map((link) => (
