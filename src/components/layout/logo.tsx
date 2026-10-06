@@ -52,7 +52,6 @@ export function Logo({
             )}
           />
         </span>
-      </span>
         <span aria-hidden="true">?</span>
       </span>
       {showBaseline ? (
