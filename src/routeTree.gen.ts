@@ -9,47 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PublicRouteImport } from './routes/_public'
-import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as PublicIndexRouteImport } from './routes/_public.index'
-import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
-import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
-import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
-import { Route as PublicContactRouteImport } from './routes/_public.contact'
-import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
-import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
-import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
-import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
-import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
-import { Route as ApiLeadFileRouteImport } from './routes/api/lead-file'
+import { Route as LeadgenerationRouteImport } from './routes/leadgeneration'
+import { Route as PublicRouteImport } from './routes/_public'
 import { Route as LeadgenerationIndexRouteImport } from './routes/leadgeneration.index'
-import { Route as LeadgenerationAdminRouteImport } from './routes/leadgeneration.admin'
-import { Route as LeadgenerationAssurancesProRouteImport } from './routes/leadgeneration.assurances-pro'
-import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
-import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
+import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as LeadgenerationMesLeadsRouteImport } from './routes/leadgeneration.mes-leads'
-import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
-import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
-import { Route as PublicParticuliersAssuranceAutoRouteImport } from './routes/_public.particuliers.assurance-auto'
-import { Route as PublicParticuliersAssuranceHabitationRouteImport } from './routes/_public.particuliers.assurance-habitation'
-import { Route as PublicParticuliersAssuranceMotoRouteImport } from './routes/_public.particuliers.assurance-moto'
-import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
-import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
+import { Route as LeadgenerationLoginRouteImport } from './routes/leadgeneration.login'
+import { Route as LeadgenerationDashboardRouteImport } from './routes/leadgeneration.dashboard'
+import { Route as LeadgenerationAssurancesProRouteImport } from './routes/leadgeneration.assurances-pro'
+import { Route as LeadgenerationAdminRouteImport } from './routes/leadgeneration.admin'
+import { Route as ApiLeadFileRouteImport } from './routes/api/lead-file'
+import { Route as PublicRecrutementRouteImport } from './routes/_public.recrutement'
+import { Route as PublicProfessionnelsRouteImport } from './routes/_public.professionnels'
+import { Route as PublicPolitiqueDeConfidentialiteRouteImport } from './routes/_public.politique-de-confidentialite'
+import { Route as PublicParticuliersRouteImport } from './routes/_public.particuliers'
+import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
+import { Route as PublicContactRouteImport } from './routes/_public.contact'
+import { Route as PublicConditionsGeneralesRouteImport } from './routes/_public.conditions-generales'
+import { Route as PublicAssurancesProfessionnellesRouteImport } from './routes/_public.assurances-professionnelles'
+import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 import { Route as LeadgenerationAdminIndexRouteImport } from './routes/leadgeneration.admin.index'
-import { Route as LeadgenerationAdminContratsRouteImport } from './routes/leadgeneration.admin.contrats'
-import { Route as LeadgenerationAdminDashboardRouteImport } from './routes/leadgeneration.admin.dashboard'
-import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadgeneration.admin.doublons'
-import { Route as LeadgenerationAdminEquipeRouteImport } from './routes/leadgeneration.admin.equipe'
-import { Route as LeadgenerationAdminFinancesRouteImport } from './routes/leadgeneration.admin.finances'
-import { Route as LeadgenerationAdminFournisseursRouteImport } from './routes/leadgeneration.admin.fournisseurs'
-import { Route as LeadgenerationAdminRetractationsRouteImport } from './routes/leadgeneration.admin.retractations'
-import { Route as LeadgenerationLeadLeadIdRouteImport } from './routes/leadgeneration.lead.$leadId'
+import { Route as PublicProfessionnelsIndexRouteImport } from './routes/_public.professionnels.index'
+import { Route as PublicParticuliersIndexRouteImport } from './routes/_public.particuliers.index'
 import { Route as LeadgenerationProductProductIdRouteImport } from './routes/leadgeneration.product.$productId'
+import { Route as LeadgenerationLeadLeadIdRouteImport } from './routes/leadgeneration.lead.$leadId'
+import { Route as LeadgenerationAdminRetractationsRouteImport } from './routes/leadgeneration.admin.retractations'
+import { Route as LeadgenerationAdminFournisseursRouteImport } from './routes/leadgeneration.admin.fournisseurs'
+import { Route as LeadgenerationAdminFinancesRouteImport } from './routes/leadgeneration.admin.finances'
+import { Route as LeadgenerationAdminEquipeRouteImport } from './routes/leadgeneration.admin.equipe'
+import { Route as LeadgenerationAdminDoublonsRouteImport } from './routes/leadgeneration.admin.doublons'
+import { Route as LeadgenerationAdminDashboardRouteImport } from './routes/leadgeneration.admin.dashboard'
+import { Route as LeadgenerationAdminContratsRouteImport } from './routes/leadgeneration.admin.contrats'
+import { Route as PublicProfessionnelsSlugRouteImport } from './routes/_public.professionnels.$slug'
+import { Route as PublicParticuliersAssuranceMotoRouteImport } from './routes/_public.particuliers.assurance-moto'
+import { Route as PublicParticuliersAssuranceHabitationRouteImport } from './routes/_public.particuliers.assurance-habitation'
+import { Route as PublicParticuliersAssuranceAutoRouteImport } from './routes/_public.particuliers.assurance-auto'
+import { Route as PublicParticuliersSlugRouteImport } from './routes/_public.particuliers.$slug'
 import { Route as LeadgenerationAdminLeadLeadIdRouteImport } from './routes/leadgeneration.admin.lead.$leadId'
 
-const PublicRoute = PublicRouteImport.update({
-  id: '/_public',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadgenerationRoute = LeadgenerationRouteImport.update({
@@ -57,67 +58,8 @@ const LeadgenerationRoute = LeadgenerationRouteImport.update({
   path: '/leadgeneration',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PublicIndexRoute = PublicIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicAProposRoute = PublicAProposRouteImport.update({
-  id: '/a-propos',
-  path: '/a-propos',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicAssurancesProfessionnellesRoute =
-  PublicAssurancesProfessionnellesRouteImport.update({
-    id: '/assurances-professionnelles',
-    path: '/assurances-professionnelles',
-    getParentRoute: () => PublicRoute,
-  } as any)
-const PublicConditionsGeneralesRoute =
-  PublicConditionsGeneralesRouteImport.update({
-    id: '/conditions-generales',
-    path: '/conditions-generales',
-    getParentRoute: () => PublicRoute,
-  } as any)
-const PublicContactRoute = PublicContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
-  id: '/mentions-legales',
-  path: '/mentions-legales',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
-  id: '/particuliers',
-  path: '/particuliers',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicPolitiqueDeConfidentialiteRoute =
-  PublicPolitiqueDeConfidentialiteRouteImport.update({
-    id: '/politique-de-confidentialite',
-    path: '/politique-de-confidentialite',
-    getParentRoute: () => PublicRoute,
-  } as any)
-const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
-  id: '/professionnels',
-  path: '/professionnels',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
-  id: '/recrutement',
-  path: '/recrutement',
-  getParentRoute: () => PublicRoute,
-} as any)
-const ApiLeadFileRoute = ApiLeadFileRouteImport.update({
-  id: '/api/lead-file',
-  path: '/api/lead-file',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadgenerationIndexRoute = LeadgenerationIndexRouteImport.update({
@@ -125,9 +67,24 @@ const LeadgenerationIndexRoute = LeadgenerationIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LeadgenerationRoute,
 } as any)
-const LeadgenerationAdminRoute = LeadgenerationAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const PublicIndexRoute = PublicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const LeadgenerationMesLeadsRoute = LeadgenerationMesLeadsRouteImport.update({
+  id: '/mes-leads',
+  path: '/mes-leads',
+  getParentRoute: () => LeadgenerationRoute,
+} as any)
+const LeadgenerationLoginRoute = LeadgenerationLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => LeadgenerationRoute,
+} as any)
+const LeadgenerationDashboardRoute = LeadgenerationDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => LeadgenerationRoute,
 } as any)
 const LeadgenerationAssurancesProRoute =
@@ -136,48 +93,69 @@ const LeadgenerationAssurancesProRoute =
     path: '/assurances-pro',
     getParentRoute: () => LeadgenerationRoute,
   } as any)
-const LeadgenerationDashboardRoute = LeadgenerationDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const LeadgenerationAdminRoute = LeadgenerationAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => LeadgenerationRoute,
 } as any)
-const LeadgenerationLoginRoute = LeadgenerationLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => LeadgenerationRoute,
+const ApiLeadFileRoute = ApiLeadFileRouteImport.update({
+  id: '/api/lead-file',
+  path: '/api/lead-file',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const LeadgenerationMesLeadsRoute = LeadgenerationMesLeadsRouteImport.update({
-  id: '/mes-leads',
-  path: '/mes-leads',
-  getParentRoute: () => LeadgenerationRoute,
+const PublicRecrutementRoute = PublicRecrutementRouteImport.update({
+  id: '/recrutement',
+  path: '/recrutement',
+  getParentRoute: () => PublicRoute,
 } as any)
-const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PublicParticuliersRoute,
+const PublicProfessionnelsRoute = PublicProfessionnelsRouteImport.update({
+  id: '/professionnels',
+  path: '/professionnels',
+  getParentRoute: () => PublicRoute,
 } as any)
-const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PublicParticuliersRoute,
-} as any)
-const PublicParticuliersAssuranceAutoRoute =
-  PublicParticuliersAssuranceAutoRouteImport.update({
-    id: '/assurance-auto',
-    path: '/assurance-auto',
-    getParentRoute: () => PublicParticuliersRoute,
+const PublicPolitiqueDeConfidentialiteRoute =
+  PublicPolitiqueDeConfidentialiteRouteImport.update({
+    id: '/politique-de-confidentialite',
+    path: '/politique-de-confidentialite',
+    getParentRoute: () => PublicRoute,
   } as any)
-const PublicParticuliersAssuranceHabitationRoute =
-  PublicParticuliersAssuranceHabitationRouteImport.update({
-    id: '/assurance-habitation',
-    path: '/assurance-habitation',
-    getParentRoute: () => PublicParticuliersRoute,
+const PublicParticuliersRoute = PublicParticuliersRouteImport.update({
+  id: '/particuliers',
+  path: '/particuliers',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicContactRoute = PublicContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicConditionsGeneralesRoute =
+  PublicConditionsGeneralesRouteImport.update({
+    id: '/conditions-generales',
+    path: '/conditions-generales',
+    getParentRoute: () => PublicRoute,
   } as any)
-const PublicParticuliersAssuranceMotoRoute =
-  PublicParticuliersAssuranceMotoRouteImport.update({
-    id: '/assurance-moto',
-    path: '/assurance-moto',
-    getParentRoute: () => PublicParticuliersRoute,
+const PublicAssurancesProfessionnellesRoute =
+  PublicAssurancesProfessionnellesRouteImport.update({
+    id: '/assurances-professionnelles',
+    path: '/assurances-professionnelles',
+    getParentRoute: () => PublicRoute,
+  } as any)
+const PublicAProposRoute = PublicAProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
+  getParentRoute: () => PublicRoute,
+} as any)
+const LeadgenerationAdminIndexRoute =
+  LeadgenerationAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
 const PublicProfessionnelsIndexRoute =
   PublicProfessionnelsIndexRouteImport.update({
@@ -185,46 +163,27 @@ const PublicProfessionnelsIndexRoute =
     path: '/',
     getParentRoute: () => PublicProfessionnelsRoute,
   } as any)
-const PublicProfessionnelsSlugRoute =
-  PublicProfessionnelsSlugRouteImport.update({
-    id: '/$slug',
-    path: '/$slug',
-    getParentRoute: () => PublicProfessionnelsRoute,
+const PublicParticuliersIndexRoute = PublicParticuliersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PublicParticuliersRoute,
+} as any)
+const LeadgenerationProductProductIdRoute =
+  LeadgenerationProductProductIdRouteImport.update({
+    id: '/product/$productId',
+    path: '/product/$productId',
+    getParentRoute: () => LeadgenerationRoute,
   } as any)
-const LeadgenerationAdminIndexRoute =
-  LeadgenerationAdminIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => LeadgenerationAdminRoute,
+const LeadgenerationLeadLeadIdRoute =
+  LeadgenerationLeadLeadIdRouteImport.update({
+    id: '/lead/$leadId',
+    path: '/lead/$leadId',
+    getParentRoute: () => LeadgenerationRoute,
   } as any)
-const LeadgenerationAdminContratsRoute =
-  LeadgenerationAdminContratsRouteImport.update({
-    id: '/contrats',
-    path: '/contrats',
-    getParentRoute: () => LeadgenerationAdminRoute,
-  } as any)
-const LeadgenerationAdminDashboardRoute =
-  LeadgenerationAdminDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => LeadgenerationAdminRoute,
-  } as any)
-const LeadgenerationAdminDoublonsRoute =
-  LeadgenerationAdminDoublonsRouteImport.update({
-    id: '/doublons',
-    path: '/doublons',
-    getParentRoute: () => LeadgenerationAdminRoute,
-  } as any)
-const LeadgenerationAdminEquipeRoute =
-  LeadgenerationAdminEquipeRouteImport.update({
-    id: '/equipe',
-    path: '/equipe',
-    getParentRoute: () => LeadgenerationAdminRoute,
-  } as any)
-const LeadgenerationAdminFinancesRoute =
-  LeadgenerationAdminFinancesRouteImport.update({
-    id: '/finances',
-    path: '/finances',
+const LeadgenerationAdminRetractationsRoute =
+  LeadgenerationAdminRetractationsRouteImport.update({
+    id: '/retractations',
+    path: '/retractations',
     getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
 const LeadgenerationAdminFournisseursRoute =
@@ -233,24 +192,65 @@ const LeadgenerationAdminFournisseursRoute =
     path: '/fournisseurs',
     getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
-const LeadgenerationAdminRetractationsRoute =
-  LeadgenerationAdminRetractationsRouteImport.update({
-    id: '/retractations',
-    path: '/retractations',
+const LeadgenerationAdminFinancesRoute =
+  LeadgenerationAdminFinancesRouteImport.update({
+    id: '/finances',
+    path: '/finances',
     getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
-const LeadgenerationLeadLeadIdRoute =
-  LeadgenerationLeadLeadIdRouteImport.update({
-    id: '/lead/$leadId',
-    path: '/lead/$leadId',
-    getParentRoute: () => LeadgenerationRoute,
+const LeadgenerationAdminEquipeRoute =
+  LeadgenerationAdminEquipeRouteImport.update({
+    id: '/equipe',
+    path: '/equipe',
+    getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
-const LeadgenerationProductProductIdRoute =
-  LeadgenerationProductProductIdRouteImport.update({
-    id: '/product/$productId',
-    path: '/product/$productId',
-    getParentRoute: () => LeadgenerationRoute,
+const LeadgenerationAdminDoublonsRoute =
+  LeadgenerationAdminDoublonsRouteImport.update({
+    id: '/doublons',
+    path: '/doublons',
+    getParentRoute: () => LeadgenerationAdminRoute,
   } as any)
+const LeadgenerationAdminDashboardRoute =
+  LeadgenerationAdminDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
+const LeadgenerationAdminContratsRoute =
+  LeadgenerationAdminContratsRouteImport.update({
+    id: '/contrats',
+    path: '/contrats',
+    getParentRoute: () => LeadgenerationAdminRoute,
+  } as any)
+const PublicProfessionnelsSlugRoute =
+  PublicProfessionnelsSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => PublicProfessionnelsRoute,
+  } as any)
+const PublicParticuliersAssuranceMotoRoute =
+  PublicParticuliersAssuranceMotoRouteImport.update({
+    id: '/assurance-moto',
+    path: '/assurance-moto',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersAssuranceHabitationRoute =
+  PublicParticuliersAssuranceHabitationRouteImport.update({
+    id: '/assurance-habitation',
+    path: '/assurance-habitation',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersAssuranceAutoRoute =
+  PublicParticuliersAssuranceAutoRouteImport.update({
+    id: '/assurance-auto',
+    path: '/assurance-auto',
+    getParentRoute: () => PublicParticuliersRoute,
+  } as any)
+const PublicParticuliersSlugRoute = PublicParticuliersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PublicParticuliersRoute,
+} as any)
 const LeadgenerationAdminLeadLeadIdRoute =
   LeadgenerationAdminLeadLeadIdRouteImport.update({
     id: '/lead/$leadId',
@@ -499,11 +499,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_public': {
-      id: '/_public'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof PublicRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leadgeneration': {
@@ -513,88 +513,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_public/': {
-      id: '/_public/'
-      path: '/'
+    '/_public': {
+      id: '/_public'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof PublicIndexRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/a-propos': {
-      id: '/_public/a-propos'
-      path: '/a-propos'
-      fullPath: '/a-propos'
-      preLoaderRoute: typeof PublicAProposRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/assurances-professionnelles': {
-      id: '/_public/assurances-professionnelles'
-      path: '/assurances-professionnelles'
-      fullPath: '/assurances-professionnelles'
-      preLoaderRoute: typeof PublicAssurancesProfessionnellesRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/conditions-generales': {
-      id: '/_public/conditions-generales'
-      path: '/conditions-generales'
-      fullPath: '/conditions-generales'
-      preLoaderRoute: typeof PublicConditionsGeneralesRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/contact': {
-      id: '/_public/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof PublicContactRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/mentions-legales': {
-      id: '/_public/mentions-legales'
-      path: '/mentions-legales'
-      fullPath: '/mentions-legales'
-      preLoaderRoute: typeof PublicMentionsLegalesRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/particuliers': {
-      id: '/_public/particuliers'
-      path: '/particuliers'
-      fullPath: '/particuliers'
-      preLoaderRoute: typeof PublicParticuliersRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/politique-de-confidentialite': {
-      id: '/_public/politique-de-confidentialite'
-      path: '/politique-de-confidentialite'
-      fullPath: '/politique-de-confidentialite'
-      preLoaderRoute: typeof PublicPolitiqueDeConfidentialiteRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/professionnels': {
-      id: '/_public/professionnels'
-      path: '/professionnels'
-      fullPath: '/professionnels'
-      preLoaderRoute: typeof PublicProfessionnelsRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/recrutement': {
-      id: '/_public/recrutement'
-      path: '/recrutement'
-      fullPath: '/recrutement'
-      preLoaderRoute: typeof PublicRecrutementRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/api/lead-file': {
-      id: '/api/lead-file'
-      path: '/api/lead-file'
-      fullPath: '/api/lead-file'
-      preLoaderRoute: typeof ApiLeadFileRouteImport
+      preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leadgeneration/': {
@@ -604,25 +527,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationIndexRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
-    '/leadgeneration/admin': {
-      id: '/leadgeneration/admin'
-      path: '/admin'
-      fullPath: '/leadgeneration/admin'
-      preLoaderRoute: typeof LeadgenerationAdminRouteImport
-      parentRoute: typeof LeadgenerationRoute
+    '/_public/': {
+      id: '/_public/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/leadgeneration/assurances-pro': {
-      id: '/leadgeneration/assurances-pro'
-      path: '/assurances-pro'
-      fullPath: '/leadgeneration/assurances-pro'
-      preLoaderRoute: typeof LeadgenerationAssurancesProRouteImport
-      parentRoute: typeof LeadgenerationRoute
-    }
-    '/leadgeneration/dashboard': {
-      id: '/leadgeneration/dashboard'
-      path: '/dashboard'
-      fullPath: '/leadgeneration/dashboard'
-      preLoaderRoute: typeof LeadgenerationDashboardRouteImport
+    '/leadgeneration/mes-leads': {
+      id: '/leadgeneration/mes-leads'
+      path: '/mes-leads'
+      fullPath: '/leadgeneration/mes-leads'
+      preLoaderRoute: typeof LeadgenerationMesLeadsRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
     '/leadgeneration/login': {
@@ -632,61 +548,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationLoginRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
-    '/leadgeneration/mes-leads': {
-      id: '/leadgeneration/mes-leads'
-      path: '/mes-leads'
-      fullPath: '/leadgeneration/mes-leads'
-      preLoaderRoute: typeof LeadgenerationMesLeadsRouteImport
+    '/leadgeneration/dashboard': {
+      id: '/leadgeneration/dashboard'
+      path: '/dashboard'
+      fullPath: '/leadgeneration/dashboard'
+      preLoaderRoute: typeof LeadgenerationDashboardRouteImport
       parentRoute: typeof LeadgenerationRoute
     }
-    '/_public/particuliers/': {
-      id: '/_public/particuliers/'
-      path: '/'
-      fullPath: '/particuliers/'
-      preLoaderRoute: typeof PublicParticuliersIndexRouteImport
-      parentRoute: typeof PublicParticuliersRoute
+    '/leadgeneration/assurances-pro': {
+      id: '/leadgeneration/assurances-pro'
+      path: '/assurances-pro'
+      fullPath: '/leadgeneration/assurances-pro'
+      preLoaderRoute: typeof LeadgenerationAssurancesProRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
-    '/_public/particuliers/$slug': {
-      id: '/_public/particuliers/$slug'
-      path: '/$slug'
-      fullPath: '/particuliers/$slug'
-      preLoaderRoute: typeof PublicParticuliersSlugRouteImport
-      parentRoute: typeof PublicParticuliersRoute
+    '/leadgeneration/admin': {
+      id: '/leadgeneration/admin'
+      path: '/admin'
+      fullPath: '/leadgeneration/admin'
+      preLoaderRoute: typeof LeadgenerationAdminRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
-    '/_public/particuliers/assurance-auto': {
-      id: '/_public/particuliers/assurance-auto'
-      path: '/assurance-auto'
-      fullPath: '/particuliers/assurance-auto'
-      preLoaderRoute: typeof PublicParticuliersAssuranceAutoRouteImport
-      parentRoute: typeof PublicParticuliersRoute
+    '/api/lead-file': {
+      id: '/api/lead-file'
+      path: '/api/lead-file'
+      fullPath: '/api/lead-file'
+      preLoaderRoute: typeof ApiLeadFileRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_public/particuliers/assurance-habitation': {
-      id: '/_public/particuliers/assurance-habitation'
-      path: '/assurance-habitation'
-      fullPath: '/particuliers/assurance-habitation'
-      preLoaderRoute: typeof PublicParticuliersAssuranceHabitationRouteImport
-      parentRoute: typeof PublicParticuliersRoute
+    '/_public/recrutement': {
+      id: '/_public/recrutement'
+      path: '/recrutement'
+      fullPath: '/recrutement'
+      preLoaderRoute: typeof PublicRecrutementRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_public/particuliers/assurance-moto': {
-      id: '/_public/particuliers/assurance-moto'
-      path: '/assurance-moto'
-      fullPath: '/particuliers/assurance-moto'
-      preLoaderRoute: typeof PublicParticuliersAssuranceMotoRouteImport
-      parentRoute: typeof PublicParticuliersRoute
+    '/_public/professionnels': {
+      id: '/_public/professionnels'
+      path: '/professionnels'
+      fullPath: '/professionnels'
+      preLoaderRoute: typeof PublicProfessionnelsRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_public/professionnels/': {
-      id: '/_public/professionnels/'
-      path: '/'
-      fullPath: '/professionnels/'
-      preLoaderRoute: typeof PublicProfessionnelsIndexRouteImport
-      parentRoute: typeof PublicProfessionnelsRoute
+    '/_public/politique-de-confidentialite': {
+      id: '/_public/politique-de-confidentialite'
+      path: '/politique-de-confidentialite'
+      fullPath: '/politique-de-confidentialite'
+      preLoaderRoute: typeof PublicPolitiqueDeConfidentialiteRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_public/professionnels/$slug': {
-      id: '/_public/professionnels/$slug'
-      path: '/$slug'
-      fullPath: '/professionnels/$slug'
-      preLoaderRoute: typeof PublicProfessionnelsSlugRouteImport
-      parentRoute: typeof PublicProfessionnelsRoute
+    '/_public/particuliers': {
+      id: '/_public/particuliers'
+      path: '/particuliers'
+      fullPath: '/particuliers'
+      preLoaderRoute: typeof PublicParticuliersRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/mentions-legales': {
+      id: '/_public/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof PublicMentionsLegalesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/contact': {
+      id: '/_public/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof PublicContactRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/conditions-generales': {
+      id: '/_public/conditions-generales'
+      path: '/conditions-generales'
+      fullPath: '/conditions-generales'
+      preLoaderRoute: typeof PublicConditionsGeneralesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/assurances-professionnelles': {
+      id: '/_public/assurances-professionnelles'
+      path: '/assurances-professionnelles'
+      fullPath: '/assurances-professionnelles'
+      preLoaderRoute: typeof PublicAssurancesProfessionnellesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/a-propos': {
+      id: '/_public/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof PublicAProposRouteImport
+      parentRoute: typeof PublicRoute
     }
     '/leadgeneration/admin/': {
       id: '/leadgeneration/admin/'
@@ -695,39 +646,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationAdminIndexRouteImport
       parentRoute: typeof LeadgenerationAdminRoute
     }
-    '/leadgeneration/admin/contrats': {
-      id: '/leadgeneration/admin/contrats'
-      path: '/contrats'
-      fullPath: '/leadgeneration/admin/contrats'
-      preLoaderRoute: typeof LeadgenerationAdminContratsRouteImport
-      parentRoute: typeof LeadgenerationAdminRoute
+    '/_public/professionnels/': {
+      id: '/_public/professionnels/'
+      path: '/'
+      fullPath: '/professionnels/'
+      preLoaderRoute: typeof PublicProfessionnelsIndexRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
     }
-    '/leadgeneration/admin/dashboard': {
-      id: '/leadgeneration/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/leadgeneration/admin/dashboard'
-      preLoaderRoute: typeof LeadgenerationAdminDashboardRouteImport
-      parentRoute: typeof LeadgenerationAdminRoute
+    '/_public/particuliers/': {
+      id: '/_public/particuliers/'
+      path: '/'
+      fullPath: '/particuliers/'
+      preLoaderRoute: typeof PublicParticuliersIndexRouteImport
+      parentRoute: typeof PublicParticuliersRoute
     }
-    '/leadgeneration/admin/doublons': {
-      id: '/leadgeneration/admin/doublons'
-      path: '/doublons'
-      fullPath: '/leadgeneration/admin/doublons'
-      preLoaderRoute: typeof LeadgenerationAdminDoublonsRouteImport
-      parentRoute: typeof LeadgenerationAdminRoute
+    '/leadgeneration/product/$productId': {
+      id: '/leadgeneration/product/$productId'
+      path: '/product/$productId'
+      fullPath: '/leadgeneration/product/$productId'
+      preLoaderRoute: typeof LeadgenerationProductProductIdRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
-    '/leadgeneration/admin/equipe': {
-      id: '/leadgeneration/admin/equipe'
-      path: '/equipe'
-      fullPath: '/leadgeneration/admin/equipe'
-      preLoaderRoute: typeof LeadgenerationAdminEquipeRouteImport
-      parentRoute: typeof LeadgenerationAdminRoute
+    '/leadgeneration/lead/$leadId': {
+      id: '/leadgeneration/lead/$leadId'
+      path: '/lead/$leadId'
+      fullPath: '/leadgeneration/lead/$leadId'
+      preLoaderRoute: typeof LeadgenerationLeadLeadIdRouteImport
+      parentRoute: typeof LeadgenerationRoute
     }
-    '/leadgeneration/admin/finances': {
-      id: '/leadgeneration/admin/finances'
-      path: '/finances'
-      fullPath: '/leadgeneration/admin/finances'
-      preLoaderRoute: typeof LeadgenerationAdminFinancesRouteImport
+    '/leadgeneration/admin/retractations': {
+      id: '/leadgeneration/admin/retractations'
+      path: '/retractations'
+      fullPath: '/leadgeneration/admin/retractations'
+      preLoaderRoute: typeof LeadgenerationAdminRetractationsRouteImport
       parentRoute: typeof LeadgenerationAdminRoute
     }
     '/leadgeneration/admin/fournisseurs': {
@@ -737,26 +688,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadgenerationAdminFournisseursRouteImport
       parentRoute: typeof LeadgenerationAdminRoute
     }
-    '/leadgeneration/admin/retractations': {
-      id: '/leadgeneration/admin/retractations'
-      path: '/retractations'
-      fullPath: '/leadgeneration/admin/retractations'
-      preLoaderRoute: typeof LeadgenerationAdminRetractationsRouteImport
+    '/leadgeneration/admin/finances': {
+      id: '/leadgeneration/admin/finances'
+      path: '/finances'
+      fullPath: '/leadgeneration/admin/finances'
+      preLoaderRoute: typeof LeadgenerationAdminFinancesRouteImport
       parentRoute: typeof LeadgenerationAdminRoute
     }
-    '/leadgeneration/lead/$leadId': {
-      id: '/leadgeneration/lead/$leadId'
-      path: '/lead/$leadId'
-      fullPath: '/leadgeneration/lead/$leadId'
-      preLoaderRoute: typeof LeadgenerationLeadLeadIdRouteImport
-      parentRoute: typeof LeadgenerationRoute
+    '/leadgeneration/admin/equipe': {
+      id: '/leadgeneration/admin/equipe'
+      path: '/equipe'
+      fullPath: '/leadgeneration/admin/equipe'
+      preLoaderRoute: typeof LeadgenerationAdminEquipeRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
     }
-    '/leadgeneration/product/$productId': {
-      id: '/leadgeneration/product/$productId'
-      path: '/product/$productId'
-      fullPath: '/leadgeneration/product/$productId'
-      preLoaderRoute: typeof LeadgenerationProductProductIdRouteImport
-      parentRoute: typeof LeadgenerationRoute
+    '/leadgeneration/admin/doublons': {
+      id: '/leadgeneration/admin/doublons'
+      path: '/doublons'
+      fullPath: '/leadgeneration/admin/doublons'
+      preLoaderRoute: typeof LeadgenerationAdminDoublonsRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
+    '/leadgeneration/admin/dashboard': {
+      id: '/leadgeneration/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/leadgeneration/admin/dashboard'
+      preLoaderRoute: typeof LeadgenerationAdminDashboardRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
+    '/leadgeneration/admin/contrats': {
+      id: '/leadgeneration/admin/contrats'
+      path: '/contrats'
+      fullPath: '/leadgeneration/admin/contrats'
+      preLoaderRoute: typeof LeadgenerationAdminContratsRouteImport
+      parentRoute: typeof LeadgenerationAdminRoute
+    }
+    '/_public/professionnels/$slug': {
+      id: '/_public/professionnels/$slug'
+      path: '/$slug'
+      fullPath: '/professionnels/$slug'
+      preLoaderRoute: typeof PublicProfessionnelsSlugRouteImport
+      parentRoute: typeof PublicProfessionnelsRoute
+    }
+    '/_public/particuliers/assurance-moto': {
+      id: '/_public/particuliers/assurance-moto'
+      path: '/assurance-moto'
+      fullPath: '/particuliers/assurance-moto'
+      preLoaderRoute: typeof PublicParticuliersAssuranceMotoRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/assurance-habitation': {
+      id: '/_public/particuliers/assurance-habitation'
+      path: '/assurance-habitation'
+      fullPath: '/particuliers/assurance-habitation'
+      preLoaderRoute: typeof PublicParticuliersAssuranceHabitationRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/assurance-auto': {
+      id: '/_public/particuliers/assurance-auto'
+      path: '/assurance-auto'
+      fullPath: '/particuliers/assurance-auto'
+      preLoaderRoute: typeof PublicParticuliersAssuranceAutoRouteImport
+      parentRoute: typeof PublicParticuliersRoute
+    }
+    '/_public/particuliers/$slug': {
+      id: '/_public/particuliers/$slug'
+      path: '/$slug'
+      fullPath: '/particuliers/$slug'
+      preLoaderRoute: typeof PublicParticuliersSlugRouteImport
+      parentRoute: typeof PublicParticuliersRoute
     }
     '/leadgeneration/admin/lead/$leadId': {
       id: '/leadgeneration/admin/lead/$leadId'
