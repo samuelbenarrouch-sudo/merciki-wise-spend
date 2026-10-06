@@ -39,7 +39,7 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
   },
   component: ProVerticalRouteComponent,
   notFoundComponent: ProVerticalNotFound,
-  errorComponent: ProVerticalNotFound,
+  errorComponent: ProVerticalNotFoundError,
 });
 
 function ProVerticalRouteComponent() {
@@ -58,4 +58,7 @@ function ProVerticalNotFound() {
       </p>
     </Container>
   );
+}
+function ProVerticalNotFoundError() {
+  return <ProVerticalNotFound />;
 }

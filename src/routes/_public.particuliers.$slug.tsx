@@ -43,7 +43,7 @@ export const Route = createFileRoute("/_public/particuliers/$slug")({
   },
   component: VerticalRouteComponent,
   notFoundComponent: VerticalNotFound,
-  errorComponent: VerticalNotFound,
+  errorComponent: VerticalNotFoundError,
 });
 
 function VerticalRouteComponent() {
@@ -60,4 +60,7 @@ function VerticalNotFound() {
       </p>
     </Container>
   );
+}
+function VerticalNotFoundError() {
+  return <VerticalNotFound />;
 }
