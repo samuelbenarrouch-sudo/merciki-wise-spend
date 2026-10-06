@@ -5,16 +5,16 @@ import { canonical } from "@/lib/seo";
 export const Route = createFileRoute("/_public/politique-de-confidentialite")({
   head: () => ({
     meta: [
-      { title: "Politique de confidentialité — MERCIKI" },
+      { title: "Politique de confidentialité — « Merciki ? »" },
       {
         name: "description",
         content:
-          "Politique de confidentialité de MERCIKI : données collectées, finalités, destinataires, durées de conservation, sécurité et vos droits.",
+          "Politique de confidentialité de « Merciki ? » : données collectées, finalités, destinataires, durées de conservation, sécurité et vos droits.",
       },
-      { property: "og:title", content: "Politique de confidentialité — MERCIKI" },
+      { property: "og:title", content: "Politique de confidentialité — « Merciki ? »" },
       {
         property: "og:description",
-        content: "Comment MERCIKI collecte, protège et utilise vos données personnelles.",
+        content: "Comment « Merciki ? » collecte, protège et utilise vos données personnelles.",
       },
     ],
     links: canonical("/politique-de-confidentialite").links,
@@ -31,7 +31,7 @@ function PrivacyPolicyPage() {
 
       <h2>1. Qui traite vos données</h2>
       <p>
-        MERCIKI, société par actions simplifiée au capital de 100 €, immatriculée au RCS de Paris
+        « Merciki ? », société par actions simplifiée au capital de 100 €, immatriculée au RCS de Paris
         sous le numéro 930 963 541, dont le siège social est situé 10 rue de la Paix, 75002 Paris,
         est responsable des traitements décrits ci-dessous.
       </p>
@@ -105,7 +105,7 @@ function PrivacyPolicyPage() {
       <h3>3.1 En interne</h3>
       <p>
         Le commercial qui a recueilli votre demande, son responsable hiérarchique le cas échéant,
-        et l'administration de MERCIKI. Nos outils cloisonnent techniquement ces accès : un
+        et l'administration de « Merciki ? ». Nos outils cloisonnent techniquement ces accès : un
         commercial ne peut pas consulter les dossiers d'un autre.
       </p>
 
@@ -122,7 +122,7 @@ function PrivacyPolicyPage() {
       </p>
       <p>
         ZEPPELIN traite les dossiers d'assurance, exerce le devoir de conseil et intervient en
-        qualité d'intermédiaire auprès des compagnies. MERCIKI n'exerce aucune activité de courtage
+        qualité d'intermédiaire auprès des compagnies. « Merciki ? » n'exerce aucune activité de courtage
         en assurance.
       </p>
       <p>
@@ -243,7 +243,7 @@ function PrivacyPolicyPage() {
       </p>
       <p>
         Pour les exercer : écrivez à <a href={`mailto:${EMAIL}`}>{EMAIL}</a>, ou par courrier à
-        MERCIKI, 10 rue de la Paix, 75002 Paris. Nous vous répondons dans un délai d'un mois.
+        « Merciki ? », 10 rue de la Paix, 75002 Paris. Nous vous répondons dans un délai d'un mois.
       </p>
       <p>
         Nous pouvons vous demander une preuve d'identité si un doute existe sur l'origine de la

@@ -37,7 +37,7 @@ type SubjectShort = "produit" | "reseau" | "autre";
 
 const SUBJECT_LABELS: Record<SubjectShort, string> = {
   produit: "J'ai une question sur un produit",
-  reseau: "Je veux rejoindre le réseau MERCIKI",
+  reseau: "Je veux rejoindre le réseau « Merciki ? »",
   autre: "Autre",
 };
 
@@ -88,17 +88,17 @@ export const Route = createFileRoute("/_public/contact")({
   }),
   head: () => ({
     meta: [
-      { title: "Contact — MERCIKI" },
+      { title: "Contact — « Merciki ? »" },
       {
         name: "description",
         content:
-          "Contactez MERCIKI par téléphone au 06 23 72 78 84 ou via notre formulaire. Réponse sous 24 heures ouvrées.",
+          "Contactez « Merciki ? » par téléphone au 06 23 72 78 84 ou via notre formulaire. Réponse sous 24 heures ouvrées.",
       },
-      { property: "og:title", content: "Contact — MERCIKI" },
+      { property: "og:title", content: "Contact — « Merciki ? »" },
       {
         property: "og:description",
         content:
-          "Une question, un projet ? Un conseiller MERCIKI vous répond sous 24 heures ouvrées.",
+          "Une question, un projet ? Un conseiller « Merciki ? » vous répond sous 24 heures ouvrées.",
       },
       ...canonical("/contact").meta,
     ],
@@ -317,7 +317,7 @@ function ContactPage() {
                     />
                     <div>
                       <Label htmlFor="consent" className="text-small text-slate leading-relaxed">
-                        J'accepte que MERCIKI utilise mes coordonnées pour me recontacter au
+                        J'accepte que « Merciki ? » utilise mes coordonnées pour me recontacter au
                         sujet de ma demande.{" "}
                         <Link
                           to="/politique-de-confidentialite"
@@ -372,7 +372,7 @@ function ContactPage() {
                       aria-hidden
                     />
                     <address className="not-italic text-body text-slate">
-                      MERCIKI
+                      « Merciki ? »
                       <br />
                       10 rue de la Paix
                       <br />

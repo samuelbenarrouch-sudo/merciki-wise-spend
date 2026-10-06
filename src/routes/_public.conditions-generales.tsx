@@ -4,10 +4,10 @@ import { LegalPage } from "@/components/pages/legal-page";
 export const Route = createFileRoute("/_public/conditions-generales")({
   head: () => ({
     meta: [
-      { title: "Conditions générales — MERCIKI" },
-      { name: "description", content: "Conditions générales d'utilisation du site MERCIKI." },
-      { property: "og:title", content: "Conditions générales — MERCIKI" },
-      { property: "og:description", content: "Conditions générales d'utilisation du site MERCIKI." },
+      { title: "Conditions générales — « Merciki ? »" },
+      { name: "description", content: "Conditions générales d'utilisation du site « Merciki ? »." },
+      { property: "og:title", content: "Conditions générales — « Merciki ? »" },
+      { property: "og:description", content: "Conditions générales d'utilisation du site « Merciki ? »." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -25,7 +25,7 @@ function TermsPage() {
 
       <h2>Nature du service</h2>
       <p>
-        MERCIKI est un apporteur d'affaires. Nous mettons en relation les utilisateurs avec des
+        « Merciki ? » est un apporteur d'affaires. Nous mettons en relation les utilisateurs avec des
         fournisseurs et assureurs partenaires. Nous n'exécutons pas les contrats.
       </p>
 
@@ -35,9 +35,9 @@ function TermsPage() {
         fausse déclaration engage sa responsabilité.
       </p>
 
-      <h2>Responsabilité de MERCIKI</h2>
+      <h2>Responsabilité de « Merciki ? »</h2>
       <p>
-        MERCIKI s'efforce de fournir des informations exactes, mais ne garantit pas l'exhaustivité
+        « Merciki ? » s'efforce de fournir des informations exactes, mais ne garantit pas l'exhaustivité
         ou la mise à jour des données. Les partenaires assument leur responsabilité propre.
       </p>
 
@@ -49,13 +49,13 @@ function TermsPage() {
 
       <h2>Liens externes</h2>
       <p>
-        MERCIKI ne maîtrise pas les contenus externes. Les liens vers des sites tiers sont
+        « Merciki ? » ne maîtrise pas les contenus externes. Les liens vers des sites tiers sont
         fournis à titre informatif.
       </p>
 
       <h2>Modification des conditions</h2>
       <p>
-        MERCIKI se réserve le droit de modifier ces conditions. L'utilisation continue du site
+        « Merciki ? » se réserve le droit de modifier ces conditions. L'utilisation continue du site
         vaut acceptation.
       </p>
 

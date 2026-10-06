@@ -32,13 +32,13 @@ export const Route = createFileRoute("/_public/a-propos")({
   component: HomePage,
   head: () => ({
     meta: [
-      { title: "À propos — MERCIKI, économies sur énergie, télécoms et assurances" },
+      { title: "À propos — « Merciki ? », économies sur énergie, télécoms et assurances" },
       {
         name: "description",
         content:
-          "MERCIKI compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé et assurance de prêt. Service 100 % gratuit pour les particuliers et les professionnels.",
+          "« Merciki ? » compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé et assurance de prêt. Service 100 % gratuit pour les particuliers et les professionnels.",
       },
-      { property: "og:title", content: "À propos de MERCIKI — Optimisation & économies" },
+      { property: "og:title", content: "À propos de « Merciki ? » — Optimisation & économies" },
       {
         property: "og:description",
         content:
@@ -126,7 +126,7 @@ function HeroSection() {
           <div className="relative">
             <img
               src={heroImg.url}
-              alt="Conseiller MERCIKI échangeant avec des clients autour de leurs contrats"
+              alt="Conseiller « Merciki ? » échangeant avec des clients autour de leurs contrats"
               width={1200}
               height={1400}
               className="w-full rounded-3xl object-cover shadow-medium aspect-[4/5]"

@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 const NOINDEX_META = [
   { name: "robots", content: "noindex, nofollow" },
-  { title: "Espace commercial — MERCIKI" },
+  { title: "Espace commercial — « Merciki ? »" },
 ];
 
 export const Route = createFileRoute("/leadgeneration")({

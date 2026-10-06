@@ -6,7 +6,7 @@ export const Route = createFileRoute("/leadgeneration/assurances-pro")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "Soumission dossier Assurances Professionnelles — MERCIKI" },
+      { title: "Soumission dossier Assurances Professionnelles — « Merciki ? »" },
       {
         name: "description",
         content:
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/leadgeneration/assurances-pro")({
       },
       {
         property: "og:title",
-        content: "Soumission dossier Assurances Professionnelles — MERCIKI",
+        content: "Soumission dossier Assurances Professionnelles — « Merciki ? »",
       },
       {
         property: "og:description",

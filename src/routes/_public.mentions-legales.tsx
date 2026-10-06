@@ -5,16 +5,16 @@ import { canonical } from "@/lib/seo";
 export const Route = createFileRoute("/_public/mentions-legales")({
   head: () => ({
     meta: [
-      { title: "Mentions légales — MERCIKI" },
+      { title: "Mentions légales — « Merciki ? »" },
       {
         name: "description",
         content:
-          "Mentions légales de MERCIKI : éditeur, hébergement, statuts par activité, partenaire de courtage ZEPPELIN, réclamations et propriété intellectuelle.",
+          "Mentions légales de « Merciki ? » : éditeur, hébergement, statuts par activité, partenaire de courtage ZEPPELIN, réclamations et propriété intellectuelle.",
       },
-      { property: "og:title", content: "Mentions légales — MERCIKI" },
+      { property: "og:title", content: "Mentions légales — « Merciki ? »" },
       {
         property: "og:description",
-        content: "Mentions légales de MERCIKI : éditeur, hébergement, statuts et responsabilités.",
+        content: "Mentions légales de « Merciki ? » : éditeur, hébergement, statuts et responsabilités.",
       },
     ],
     links: canonical("/mentions-legales").links,
@@ -31,7 +31,7 @@ function LegalNoticePage() {
 
       <h2>1. Éditeur du site</h2>
       <p>
-        MERCIKI
+        « Merciki ? »
         <br />
         Société par actions simplifiée au capital de 100 €<br />
         Siège social : 10 rue de la Paix, 75002 Paris
@@ -61,7 +61,7 @@ function LegalNoticePage() {
 
       <h2>3. Activité et statuts</h2>
       <p>
-        MERCIKI accompagne les particuliers et les professionnels dans l'optimisation de leurs
+        « Merciki ? » accompagne les particuliers et les professionnels dans l'optimisation de leurs
         dépenses contraintes et de leur équipement. Nous comparons les offres du marché,
         sélectionnons celle qui correspond à votre situation, et vous mettons en relation avec le
         partenaire concerné.
@@ -78,31 +78,31 @@ function LegalNoticePage() {
         <thead>
           <tr>
             <th>Activité</th>
-            <th>Statut de MERCIKI</th>
+            <th>Statut de « Merciki ? »</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td data-label="Activité">Énergie, particuliers et professionnels</td>
-            <td data-label="Statut de MERCIKI">Apporteur d'affaires et mandataire des fournisseurs</td>
+            <td data-label="Statut de « Merciki ? »">Apporteur d'affaires et mandataire des fournisseurs</td>
           </tr>
           <tr>
             <td data-label="Activité">Télécommunications</td>
-            <td data-label="Statut de MERCIKI">Apporteur d'affaires et distributeur</td>
+            <td data-label="Statut de « Merciki ? »">Apporteur d'affaires et distributeur</td>
           </tr>
           <tr>
             <td data-label="Activité">Énergies renouvelables</td>
-            <td data-label="Statut de MERCIKI">
+            <td data-label="Statut de « Merciki ? »">
               Apporteur d'affaires auprès d'installateurs certifiés RGE
             </td>
           </tr>
           <tr>
             <td data-label="Activité">Monétique</td>
-            <td data-label="Statut de MERCIKI">Apporteur d'affaires et distributeur</td>
+            <td data-label="Statut de « Merciki ? »">Apporteur d'affaires et distributeur</td>
           </tr>
           <tr>
             <td data-label="Activité">Assurances (santé, animaux, emprunteur, professionnelles)</td>
-            <td data-label="Statut de MERCIKI">
+            <td data-label="Statut de « Merciki ? »">
               Apporteur d'affaires auprès de notre cabinet de courtage partenaire
             </td>
           </tr>
@@ -111,12 +111,12 @@ function LegalNoticePage() {
 
       <h2>4. Assurances — le rôle de notre partenaire ZEPPELIN</h2>
       <p>
-        MERCIKI n'exerce aucune activité de courtage en assurance et n'est pas immatriculée à
+        « Merciki ? » n'exerce aucune activité de courtage en assurance et n'est pas immatriculée à
         l'ORIAS.
       </p>
       <p>
         Sur l'ensemble des produits d'assurance présentés sur ce site — mutuelle santé, assurance
-        animaux, assurance emprunteur, assurances professionnelles — MERCIKI intervient
+        animaux, assurance emprunteur, assurances professionnelles — « Merciki ? » intervient
         exclusivement en qualité d'apporteur d'affaires. Notre rôle se limite à recueillir votre
         demande et à la transmettre à notre partenaire.
       </p>
@@ -180,7 +180,7 @@ function LegalNoticePage() {
       <p>
         L'ensemble des éléments composant ce site — structure, textes, identité visuelle,
         photographies, code — est protégé par le droit de la propriété intellectuelle et demeure la
-        propriété de MERCIKI ou de ses partenaires. Toute reproduction ou représentation, totale ou
+        propriété de « Merciki ? » ou de ses partenaires. Toute reproduction ou représentation, totale ou
         partielle, sans autorisation écrite préalable, est interdite.
       </p>
 
@@ -191,7 +191,7 @@ function LegalNoticePage() {
         fournisseur, l'assureur ou l'intermédiaire concerné font foi.
       </p>
       <p>
-        MERCIKI ne conclut aucun contrat en ligne. Aucune souscription, aucun paiement ne
+        « Merciki ? » ne conclut aucun contrat en ligne. Aucune souscription, aucun paiement ne
         s'effectue sur ce site.
       </p>
       <p>

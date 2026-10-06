@@ -931,7 +931,7 @@ export async function markCommissionInvoiced(
   });
 }
 
-/** Marque un lot de contrats comme encaissés par MERCIKI. */
+/** Marque un lot de contrats comme encaissés par « Merciki ? ». */
 export async function markCommissionPaid(
   contractIds: string[],
   paidAt: string,
@@ -962,7 +962,7 @@ export async function markCommercialPaid(
 /**
  * Écriture en lot : une facture fournisseur couvre plusieurs contrats.
  * En cas de refus de la base (contrainte métier — un règlement commercial
- * avant encaissement MERCIKI, par exemple), son message est remonté tel quel.
+ * avant encaissement « Merciki ? », par exemple), son message est remonté tel quel.
  */
 async function bulkUpdateContracts(
   contractIds: string[],

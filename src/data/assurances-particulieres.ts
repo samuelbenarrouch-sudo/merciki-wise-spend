@@ -22,7 +22,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
     accroche: "Le bon niveau de garanties, sans payer pour ce qui ne vous sert pas",
     paragraphe:
       "Votre cotisation augmente chaque année alors que votre voiture vieillit ? Nous comparons les offres du marché et vous proposons la formule qui correspond à votre usage réel.",
-    metaTitle: "Assurance Auto — comparez et payez le juste prix | MERCIKI",
+    metaTitle: "Assurance Auto — comparez et payez le juste prix | « Merciki ? »",
     metaDescription:
       "Tous risques, tiers étendu ou au tiers : nous comparons les offres et trouvons la formule adaptée à votre véhicule et à votre usage.",
     garanties: [
@@ -104,7 +104,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
         a: "Oui. Certaines compagnies sont spécialisées dans ces profils. La démarche prend simplement un peu plus de temps.",
       },
       {
-        q: "Comment MERCIKI est-elle rémunérée ?",
+        q: "Comment « Merciki ? » est-elle rémunérée ?",
         a: "Par ses partenaires, jamais par vous. Le service est gratuit et sans engagement.",
       },
     ],
@@ -116,7 +116,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
     accroche: "Scooter, 125 ou grosse cylindrée : la couverture adaptée à votre pratique",
     paragraphe:
       "Trajets quotidiens ou balades du dimanche, un scooter en ville ou une routière : les besoins n'ont rien à voir, et les tarifs non plus. Nous comparons sur votre usage réel.",
-    metaTitle: "Assurance Moto et 2-roues — comparez les offres | MERCIKI",
+    metaTitle: "Assurance Moto et 2-roues — comparez les offres | « Merciki ? »",
     metaDescription:
       "Scooter, 125, moto : nous comparons les assurances 2-roues et trouvons la formule adaptée à votre cylindrée et à votre usage.",
     garanties: [
@@ -198,7 +198,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
         a: "Nettement. Le vol étant le premier risque en 2-roues, un garage fermé et un antivol agréé pèsent fortement sur la cotisation.",
       },
       {
-        q: "Comment MERCIKI est-elle rémunérée ?",
+        q: "Comment « Merciki ? » est-elle rémunérée ?",
         a: "Par ses partenaires, jamais par vous. Le service est gratuit et sans engagement.",
       },
     ],
@@ -210,7 +210,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
     accroche: "Votre logement bien couvert, sans garanties inutiles",
     paragraphe:
       "Locataire ou propriétaire, appartement ou maison : nous comparons les offres et ajustons la couverture à ce que vous avez vraiment à protéger.",
-    metaTitle: "Assurance Habitation — comparez et économisez | MERCIKI",
+    metaTitle: "Assurance Habitation — comparez et économisez | « Merciki ? »",
     metaDescription:
       "Locataire ou propriétaire, appartement ou maison : nous comparons les assurances habitation et ajustons vos garanties à vos besoins réels.",
     garanties: [
@@ -292,7 +292,7 @@ export const ASSURANCES_PARTICULIERES: AssuranceParticuliere[] = [
         a: "Au-delà d'un certain montant, ils doivent être déclarés spécifiquement. Sans déclaration, l'indemnisation est plafonnée.",
       },
       {
-        q: "Comment MERCIKI est-elle rémunérée ?",
+        q: "Comment « Merciki ? » est-elle rémunérée ?",
         a: "Par ses partenaires, jamais par vous. Le service est gratuit et sans engagement.",
       },
     ],

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/leadgeneration/login")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "Connexion — Espace commercial MERCIKI" },
+      { title: "Connexion — Espace commercial « Merciki ? »" },
     ],
   }),
   component: LoginPage,
@@ -40,7 +40,7 @@ function LoginPage() {
   useEffect(() => {
     if (status === "disabled") {
       setError(
-        "Votre compte a été désactivé. Contactez votre référent MERCIKI.",
+        "Votre compte a été désactivé. Contactez votre référent « Merciki ? ».",
       );
       setSubmitting(false);
     }
@@ -66,7 +66,7 @@ function LoginPage() {
           </a>
         </div>
         <div className="rounded-2xl bg-background p-8 shadow-soft">
-          <h1 className="text-h2 text-ink">Espace commercial MERCIKI</h1>
+          <h1 className="text-h2 text-ink">Espace commercial « Merciki ? »</h1>
           <p className="mt-3 text-body text-slate">
             Connectez-vous pour accéder à votre espace de saisie de leads.
           </p>

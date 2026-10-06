@@ -6,13 +6,13 @@ export const Route = createFileRoute("/_public/particuliers/")({
   component: () => <AudienceHubPage audience="particuliers" />,
   head: () => ({
     meta: [
-      { title: "Particuliers — Énergie, télécoms, mutuelle, assurance | MERCIKI" },
+      { title: "Particuliers — Énergie, télécoms, mutuelle, assurance | « Merciki ? »" },
       {
         name: "description",
         content:
-          "MERCIKI compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé, assurance de prêt et vos travaux de rénovation. Service 100 % gratuit et sans engagement.",
+          "« Merciki ? » compare et négocie pour vous vos contrats d'énergie, télécoms, mutuelle santé, assurance de prêt et vos travaux de rénovation. Service 100 % gratuit et sans engagement.",
       },
-      { property: "og:title", content: "Particuliers — MERCIKI" },
+      { property: "og:title", content: "Particuliers — « Merciki ? »" },
       {
         property: "og:description",
         content:

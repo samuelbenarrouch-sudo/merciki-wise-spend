@@ -11,7 +11,7 @@ export const Route = createFileRoute("/leadgeneration/admin")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "Administration — MERCIKI" },
+      { title: "Administration — « Merciki ? »" },
     ],
   }),
   component: AdminLayout,
