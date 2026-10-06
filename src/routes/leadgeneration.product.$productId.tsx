@@ -23,11 +23,11 @@ export const Route = createFileRoute("/leadgeneration/product/$productId")({
     if (!getProduct(params.productId)) throw notFound();
   },
   component: ProductPage,
-  errorComponent: ProductNotFound,
-  notFoundComponent: ProductNotFound,
+  errorComponent: ProductNotFoundErrorView,
+  notFoundComponent: ProductNotFoundView,
 });
 
-function ProductNotFound() {
+function ProductNotFoundMessage() {
   return (
     <div className="py-12 lg:py-16">
       <Container>
@@ -77,4 +77,12 @@ function ProductPage() {
       </Container>
     </div>
   );
+}
+
+function ProductNotFoundView() {
+  return <ProductNotFoundMessage />;
+}
+
+function ProductNotFoundErrorView() {
+  return <ProductNotFoundMessage />;
 }
