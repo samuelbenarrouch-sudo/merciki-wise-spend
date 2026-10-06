@@ -42,8 +42,8 @@ export const Route = createFileRoute("/_public/particuliers/$slug")({
     };
   },
   component: VerticalRouteComponent,
-  notFoundComponent: VerticalNotFound,
-  errorComponent: VerticalNotFoundError,
+  notFoundComponent: VerticalNotFoundView,
+  errorComponent: VerticalNotFoundErrorView,
 });
 
 function VerticalRouteComponent() {
@@ -51,7 +51,7 @@ function VerticalRouteComponent() {
   return <VerticalPage vertical={vertical} />;
 }
 
-function VerticalNotFound() {
+function VerticalNotFoundMessage() {
   return (
     <Container className="py-24 text-center">
       <h1 className="text-h1 text-ink">Solution introuvable</h1>
@@ -61,6 +61,11 @@ function VerticalNotFound() {
     </Container>
   );
 }
-function VerticalNotFoundError() {
-  return <VerticalNotFound />;
+
+function VerticalNotFoundView() {
+  return <VerticalNotFoundMessage />;
+}
+
+function VerticalNotFoundErrorView() {
+  return <VerticalNotFoundMessage />;
 }

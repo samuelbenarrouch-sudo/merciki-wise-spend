@@ -38,8 +38,8 @@ export const Route = createFileRoute("/_public/professionnels/$slug")({
     };
   },
   component: ProVerticalRouteComponent,
-  notFoundComponent: ProVerticalNotFound,
-  errorComponent: ProVerticalNotFoundError,
+  notFoundComponent: ProVerticalNotFoundView,
+  errorComponent: ProVerticalNotFoundErrorView,
 });
 
 function ProVerticalRouteComponent() {
@@ -49,7 +49,7 @@ function ProVerticalRouteComponent() {
   );
 }
 
-function ProVerticalNotFound() {
+function ProVerticalNotFoundMessage() {
   return (
     <Container className="py-24 text-center">
       <h1 className="text-h1 text-ink">Solution introuvable</h1>
@@ -59,6 +59,11 @@ function ProVerticalNotFound() {
     </Container>
   );
 }
-function ProVerticalNotFoundError() {
-  return <ProVerticalNotFound />;
+
+function ProVerticalNotFoundView() {
+  return <ProVerticalNotFoundMessage />;
+}
+
+function ProVerticalNotFoundErrorView() {
+  return <ProVerticalNotFoundMessage />;
 }
